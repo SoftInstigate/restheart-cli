@@ -163,7 +163,11 @@ function watchFiles() {
 
 // Function to handle running commands
 function runCommand(command, options = {}) {
-    const { rhversion: rhversion, forceInstall, options: restheartOptions } = options
+    const {
+        rhversion: rhversion,
+        forceInstall,
+        options: restheartOptions,
+    } = options
     switch (command) {
         case 'install':
             if (rhversion) {
@@ -204,13 +208,13 @@ function runCommand(command, options = {}) {
 }
 
 // Command line arguments setup with command and options handling
-const argv = yargs(hideBin(process.argv))
+yargs(hideBin(process.argv))
     .usage('Usage: $0 [command] [options]')
     .command(
-        'install <rhversion>',
+        'install <restheart-version>',
         'Install RESTHeart',
         (yargs) => {
-            yargs.positional('rhversion', {
+            yargs.positional('restheart-version', {
                 describe: 'RESTHeart version to install',
                 type: 'string',
                 demandOption: true,
@@ -218,7 +222,7 @@ const argv = yargs(hideBin(process.argv))
         },
         (argv) =>
             runCommand('install', {
-                rhversion: argv.rhversion,
+                rhversion: argv["restheart-version"],
                 forceInstall: argv.force,
             })
     )
