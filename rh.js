@@ -173,7 +173,7 @@ function watchFiles() {
 // Function to handle running commands
 function runCommand(command, options = {}) {
     const {
-        restheartVersion: restheartVersion,
+        restheartVersion,
         forceInstall,
         options: restheartOptions,
     } = options
@@ -223,11 +223,17 @@ yargs(hideBin(process.argv))
         ['install <restheart-version>', 'i'],
         'Install RESTHeart',
         (yargs) => {
-            yargs.positional('restheart-version', {
-                describe: 'RESTHeart version to install',
-                type: 'string',
-                demandOption: true,
-            })
+            yargs
+                .positional('restheart-version', {
+                    describe: 'RESTHeart version to install',
+                    type: 'string',
+                    demandOption: true,
+                })
+                .option('force', {
+                    alias: 'f',
+                    type: 'boolean',
+                    description: 'Force reinstalling RESTHeart',
+                })
         },
         (argv) =>
             runCommand('install', {
@@ -254,16 +260,11 @@ yargs(hideBin(process.argv))
         runCommand('kill', argv)
     )
     .command(
-        ['watch','w'],
+        ['watch', 'w'],
         'Watch sources and build and deploy the plugin on changes, restarting RESTHeart',
         {},
         (argv) => runCommand('watch', argv)
     )
-    .option('force', {
-        alias: 'f',
-        type: 'boolean',
-        description: 'Force reinstalling RESTHeart',
-    })
     .option('port', {
         alias: 'p',
         type: 'number',
@@ -274,10 +275,6 @@ yargs(hideBin(process.argv))
         alias: 'o',
         type: 'string',
         description: 'Pass options to RESTHeart',
-    })
-    .option('no-color', {
-        type: 'boolean',
-        description: 'Disable colored output',
     })
     .help('h')
     .alias('h', 'help')
