@@ -1,272 +1,271 @@
 #!/usr/bin/env node
 
 const shell = require('shelljs')
-const { program } = require('commander')
 const path = require('path')
 const fs = require('fs')
+const yargs = require('yargs')
 const chokidar = require('chokidar')
+const { hideBin } = require('yargs/helpers')
 
-// Set shell.config.fatal to true to exit on errors
-shell.config.fatal = true
-
-// Define constants
-const scriptDir = __dirname
-const repoDir = path.resolve(scriptDir, '..')
+// Directory setup
+const scriptDir = process.cwd() // Use the current working directory
+const repoDir = scriptDir
 const cacheDir = path.join(repoDir, '.cache')
 const rhDir = path.join(cacheDir, 'restheart')
 let httpPort = 8080
 
-// Helper functions
-function msg(text) {
-    console.log(text)
+// Color setup
+const colors = {
+    reset: '\x1b[0m',
+    red: '\x1b[31m',
+    green: '\x1b[32m',
+    yellow: '\x1b[33m',
+    cyan: '\x1b[36m',
 }
 
-function die(msg, code = 1) {
-    console.error(msg)
-    process.exit(code)
+// Function to display messages
+function msg(message, color = colors.reset) {
+    console.log(color + message + colors.reset)
 }
 
-function mongodbRunning() {
-    return (
-        shell.exec('curl -s -o /dev/null localhost:27017', { silent: true })
-            .code === 0
-    )
+// Function to handle script cleanup
+function cleanup() {
+    // Cleanup code here
 }
 
-function restheartRunning() {
-    return (
-        shell.exec(`curl -s -o /dev/null localhost:${httpPort}/ping`, {
-            silent: true,
-        }).code === 0
-    )
-}
-
-function requiresMongodb(options) {
-    return !options.includes('-s')
-}
-
-function onlyPrintConf(options) {
-    return (
-        options.includes('-t') ||
-        options.includes('-c') ||
-        options.includes('-v')
-    )
-}
-
-function getInstalledVersion() {
-    const versionFile = path.join(cacheDir, 'installed_version')
-    if (fs.existsSync(versionFile)) {
-        return fs.readFileSync(versionFile, 'utf8').trim()
-    }
-    return null
-}
-
-function saveInstalledVersion(version) {
-    const versionFile = path.join(cacheDir, 'installed_version')
-    fs.writeFileSync(versionFile, version)
-}
-
-// Command implementations
-function install(version, forceInstall) {
-    const installedVersion = getInstalledVersion()
-
-    if (forceInstall || !installedVersion) {
-        if (!version) {
-            die(
-                'Error: RESTHeart version must be specified using -rv or --rh-version option for initial installation or forced reinstall.'
-            )
-        }
-
-        if (forceInstall) {
-            msg('Cleaning cache')
-            shell.rm('-rf', cacheDir)
-        }
-
-        if (!fs.existsSync(rhDir)) {
-            msg(`Installing RESTHeart version ${version}`)
-
-            shell.mkdir('-p', cacheDir)
-
-            const url = `https://github.com/SoftInstigate/restheart/releases/download/${version}/restheart.tar.gz`
-
-            if (
-                shell.exec(
-                    `curl -L ${url} --output ${path.join(cacheDir, 'restheart.tar.gz')}`
-                ).code !== 0
-            ) {
-                die(`Failed to download RESTHeart version ${version}`)
-            }
-
-            shell.exec(
-                `tar -xzf ${path.join(cacheDir, 'restheart.tar.gz')} -C ${cacheDir}`
-            )
-            shell.rm('-f', path.join(cacheDir, 'restheart.tar.gz'))
-
-            saveInstalledVersion(version)
-        }
-    } else if (version && version !== installedVersion) {
-        msg(
-            `Warning: Requested version ${version} differs from installed version ${installedVersion}. Use --install to force reinstallation.`
-        )
+// Function to check if a command exists
+function commandExists(command) {
+    if (!shell.which(command)) {
+        msg(`Error: ${command} is required but not installed.`, colors.red)
+        process.exit(1)
     }
 }
 
-function build() {
+// Function to kill RESTHeart
+function killRESTHeart() {
+    if (isRESTHeartRunning()) {
+        msg(`RESTHeart at localhost:${httpPort} killed`, colors.cyan)
+        shell.exec(`kill $(lsof -t -i:${httpPort})`)
+        shell.exec(`kill $(lsof -t -i:$((httpPort + 1000)))`)
+    } else {
+        msg(`RESTHeart is not running on port ${httpPort}`, colors.cyan)
+    }
+}
+
+// Function to check if RESTHeart is running
+function isRESTHeartRunning() {
+    return (
+        shell.exec(`curl -s -o /dev/null localhost:${httpPort}/ping`).code === 0
+    )
+}
+
+// Function to install RESTHeart
+function installRESTHeart(rhversion, forceInstall) {
+    if (forceInstall) {
+        msg('Cleaning cache', colors.cyan)
+        shell.rm('-rf', cacheDir)
+    }
+
+    if (!fs.existsSync(rhDir)) {
+        msg(`Installing RESTHeart version ${rhversion}`, colors.green)
+
+        if (!fs.existsSync(cacheDir)) {
+            shell.mkdir(cacheDir)
+        }
+
+        if (downloadRESTHeart(rhversion)) {
+            msg(`RESTHeart version ${rhversion} downloaded`, colors.green)
+        } else {
+            msg(`Failed to download RESTHeart version ${rhversion}`, colors.red)
+            process.exit(1)
+        }
+
+        shell.exec(`tar -xzf ${cacheDir}/restheart.tar.gz -C ${cacheDir}`)
+        shell.rm('-f', `${cacheDir}/restheart.tar.gz`)
+    } else {
+        msg(`RESTHeart version ${rhversion} already installed`, colors.cyan)
+    }
+}
+
+// Function to download RESTHeart
+function downloadRESTHeart(rhversion) {
+    commandExists('curl')
+    const url = `https://github.com/SoftInstigate/restheart/releases/download/${rhversion}/restheart.tar.gz`
+    return (
+        shell.exec(
+            `curl --fail -L ${url} --output ${cacheDir}/restheart.tar.gz`
+        ).code === 0
+    )
+}
+
+// Function to build the plugin
+function buildPlugin() {
     shell.rm('-rf', path.join(repoDir, 'target'))
-    const currentDir = process.cwd()
-    shell.cd(repoDir)
+    const currentDir = shell.pwd()
 
-    if (shell.exec('./mvnw -f pom.xml clean package').code !== 0) {
-        shell.cd(currentDir)
-        die('Failed to build RESTHeart')
+    shell.cd(repoDir)
+    let mvnCommand = './mvnw -f pom.xml clean package'
+    if (!fs.existsSync(path.join(repoDir, 'mvnw'))) {
+        msg('mvnw not found, using mvn instead', colors.yellow)
+        commandExists('mvn')
+        mvnCommand = 'mvn -f pom.xml clean package'
+    } else {
+        commandExists('./mvnw')
     }
 
+    if (shell.exec(mvnCommand).code !== 0) {
+        shell.cd(currentDir)
+        msg('Failed to build RESTHeart', colors.red)
+        process.exit(1)
+    }
     shell.cd(currentDir)
 }
 
-function deploy() {
+// Function to deploy the plugin
+function deployPlugin() {
     shell.cp(path.join(repoDir, 'target', '*.jar'), path.join(rhDir, 'plugins'))
     shell.cp(
         path.join(repoDir, 'target', 'lib', '*.jar'),
-        path.join(rhDir, 'plugins')
+        path.join(rhDir, 'plugins'),
+        { silent: true }
     )
-    msg('Plugin deployed')
+    msg('Plugin deployed', colors.green)
 }
 
-function kill() {
-    msg(`RESTHeart at localhost:${httpPort} killed`)
-    shell.exec(`kill $(lsof -t -i:${httpPort} | grep -o '^[0-9]*')`, {
-        silent: true,
-    })
-    shell.exec(`kill $(lsof -t -i:$((${httpPort}+1000)) | grep -o '^[0-9]*')`, {
-        silent: true,
-    })
-
-    // Wait for RESTHeart to stop
-    while (restheartRunning()) {
-        shell.exec('sleep 1')
-    }
-}
-
-function run(options) {
-    const rho = process.env.RHO || ''
-    const jdwpPort = httpPort + 1000
-
-    const command = onlyPrintConf(options)
-        ? `java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:${jdwpPort} -jar "${path.join(rhDir, 'restheart.jar')}" ${options}`
-        : `java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:${jdwpPort} -Dlogback.configurationFile=${path.join(repoDir, 'etc', 'logback.xml')} -jar "${path.join(rhDir, 'restheart.jar')}" ${options}`
-
-    const fullCommand = `RHO="${rho};/http-listner/port->${httpPort}" ${command}`
-
-    if (onlyPrintConf(options)) {
-        shell.exec(fullCommand)
-    } else {
+// Function to run RESTHeart
+function runRESTHeart(options) {
+    commandExists('java')
+    if (!isRESTHeartRunning()) {
+        msg('Starting RESTHeart', colors.yellow)
         shell.exec(
-            `${fullCommand} > ${path.join(repoDir, 'restheart.log')} 2>&1 &`
+            `nohup java -jar ${path.join(rhDir, 'restheart.jar')} ${options} > ${path.join(repoDir, 'restheart.log')} &`
         )
-        msg('RESTHeart starting')
-
-        let started = false
-        for (let i = 0; i < 5; i++) {
-            if (restheartRunning()) {
-                started = true
-                break
-            }
-            shell.exec('sleep 2')
-        }
-
-        if (started) {
-            msg(`RESTHeart started at localhost:${httpPort}`)
-            msg(`JDWP available for debuggers at localhost:${jdwpPort}`)
-        } else {
-            msg('Error starting RESTHeart, check restheart.log')
-        }
+        msg(`RESTHeart started at localhost:${httpPort}`, colors.green)
+    } else {
+        msg('RESTHeart is already running', colors.cyan)
     }
 }
 
-function watch() {
-    const watcher = chokidar.watch(path.join(repoDir, 'src', '**', '*.java'), {
+// Function to watch files using chokidar
+function watchFiles() {
+    const watcher = chokidar.watch(path.join(repoDir, 'src/**/*.java'), {
         ignored: /(^|[\/\\])\../, // ignore dotfiles
         persistent: true,
     })
 
-    msg('Watching for file changes...')
+    watcher.on('change', (filePath) => {
+        msg(`File changed: ${filePath}`, colors.yellow)
+        runCommand('run')
+    })
 
-    watcher
-        .on('change', (path) => {
-            msg(`File ${path} has been changed`)
-            if (restheartRunning()) kill()
-            build()
-            deploy()
-            run(program.opts().options)
-        })
-        .on('error', (error) => msg(`Watcher error: ${error}`))
-
-    msg(`RESTHeart started at localhost:${httpPort}`)
-    msg(`JDWP available for debuggers at localhost:${httpPort + 1000}`)
+    msg('Watching for file changes...', colors.cyan)
 }
 
-// Main program
-program
-    .version('1.0.0')
-    .option('-i, --install', 'Force reinstalling RESTHeart')
-    .option(
-        '-rv, --rh-version <version>',
-        'RESTHeart version to install (required for initial install or with --install)'
-    )
-    .option('-p, --port <port>', 'HTTP port to use', '8080')
-    .option('-o, --options <options>', 'Pass options to RESTHeart')
-    .option('--no-color', 'Disable colored output')
-
-program
-    .command('build')
-    .description('Build and deploy the plugin, restarting RESTHeart')
-    .action(() => {
-        if (restheartRunning()) kill()
-        install(program.opts().rhVersion, program.opts().install)
-        build()
-        deploy()
-    })
-
-program
-    .command('run')
-    .description('Start (or restart) RESTHeart')
-    .action(() => {
-        if (restheartRunning()) kill()
-        install(program.opts().rhVersion, program.opts().install)
-        build()
-        deploy()
-        if (requiresMongodb(program.opts().options)) {
-            if (!mongodbRunning()) {
-                die(
-                    'MongoDB is not running on port 27017. You can start it with: docker compose up -d'
+// Function to handle running commands
+function runCommand(command, options = {}) {
+    const { rhversion: rhversion, forceInstall, options: restheartOptions } = options
+    switch (command) {
+        case 'install':
+            if (rhversion) {
+                installRESTHeart(rhversion, forceInstall)
+            } else {
+                msg(
+                    'Error: Version is required for install command.',
+                    colors.red
                 )
+                yargs.showHelp()
             }
-        }
-        run(program.opts().options)
-    })
+            break
+        case 'build':
+            buildPlugin()
+            deployPlugin()
+            break
+        case 'run':
+            if (isRESTHeartRunning()) killRESTHeart()
+            buildPlugin()
+            deployPlugin()
+            runRESTHeart(restheartOptions)
+            break
+        case 'test':
+            if (isRESTHeartRunning()) killRESTHeart()
+            deployPlugin() // Skip build step for test
+            runRESTHeart(restheartOptions)
+            break
+        case 'kill':
+            killRESTHeart()
+            break
+        case 'watch':
+            watchFiles()
+            break
+        default:
+            yargs.showHelp()
+            break
+    }
+}
 
-program
-    .command('kill')
-    .description('Kill RESTHeart')
-    .action(() => {
-        if (restheartRunning()) {
-            kill()
-        } else {
-            msg(`RESTHeart is not running on port ${httpPort}`)
-        }
-    })
-
-program
-    .command('watch')
-    .description(
-        'Watch sources and build and deploy the plugin on changes, restarting RESTHeart'
+// Command line arguments setup with command and options handling
+const argv = yargs(hideBin(process.argv))
+    .usage('Usage: $0 [command] [options]')
+    .command(
+        'install <rhversion>',
+        'Install RESTHeart',
+        (yargs) => {
+            yargs.positional('rhversion', {
+                describe: 'RESTHeart version to install',
+                type: 'string',
+                demandOption: true,
+            })
+        },
+        (argv) =>
+            runCommand('install', {
+                rhversion: argv.rhversion,
+                forceInstall: argv.force,
+            })
     )
-    .action(() => {
-        watch()
+    .command(
+        'build',
+        'Build and deploy the plugin, restarting RESTHeart (default)',
+        {},
+        (argv) => runCommand('build', argv)
+    )
+    .command('run', 'Start or restart RESTHeart', {}, (argv) =>
+        runCommand('run', argv)
+    )
+    .command(
+        'test',
+        'Start or restart RESTHeart for integration tests (e.g., mvn verify)',
+        {},
+        (argv) => runCommand('test', argv)
+    )
+    .command('kill', 'Kill RESTHeart', {}, (argv) => runCommand('kill', argv))
+    .command(
+        'watch',
+        'Watch sources and build and deploy the plugin on changes, restarting RESTHeart',
+        {},
+        (argv) => runCommand('watch', argv)
+    )
+    .option('force', {
+        alias: 'f',
+        type: 'boolean',
+        description: 'Force reinstalling RESTHeart',
     })
+    .option('port', {
+        alias: 'p',
+        type: 'number',
+        description: 'HTTP port to use',
+        default: 8080,
+    })
+    .option('options', {
+        alias: 'o',
+        type: 'string',
+        description: 'Pass options to RESTHeart',
+    })
+    .option('no-color', {
+        type: 'boolean',
+        description: 'Disable colored output',
+    })
+    .help('h')
+    .alias('h', 'help')
+    .demandCommand(1, 'You need at least one command before moving on').argv
 
-program.parse(process.argv)
-
-// Set port from command line option
-httpPort = parseInt(program.opts().port)
+process.on('exit', cleanup)
