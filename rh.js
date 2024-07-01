@@ -60,37 +60,46 @@ function isRESTHeartRunning() {
 }
 
 // Function to install RESTHeart
-function installRESTHeart(rhversion, forceInstall) {
+function installRESTHeart(restheartVersion, forceInstall) {
     if (forceInstall) {
         msg('Cleaning cache', colors.cyan)
         shell.rm('-rf', cacheDir)
     }
 
     if (!fs.existsSync(rhDir)) {
-        msg(`Installing RESTHeart version ${rhversion}`, colors.green)
+        msg(`Installing RESTHeart version ${restheartVersion}`, colors.green)
 
         if (!fs.existsSync(cacheDir)) {
             shell.mkdir(cacheDir)
         }
 
-        if (downloadRESTHeart(rhversion)) {
-            msg(`RESTHeart version ${rhversion} downloaded`, colors.green)
+        if (downloadRESTHeart(restheartVersion)) {
+            msg(
+                `RESTHeart version ${restheartVersion} downloaded`,
+                colors.green
+            )
         } else {
-            msg(`Failed to download RESTHeart version ${rhversion}`, colors.red)
+            msg(
+                `Failed to download RESTHeart version ${restheartVersion}`,
+                colors.red
+            )
             process.exit(1)
         }
 
         shell.exec(`tar -xzf ${cacheDir}/restheart.tar.gz -C ${cacheDir}`)
         shell.rm('-f', `${cacheDir}/restheart.tar.gz`)
     } else {
-        msg(`RESTHeart version ${rhversion} already installed`, colors.cyan)
+        msg(
+            `RESTHeart version ${restheartVersion} already installed`,
+            colors.cyan
+        )
     }
 }
 
 // Function to download RESTHeart
-function downloadRESTHeart(rhversion) {
+function downloadRESTHeart(restheartVersion) {
     commandExists('curl')
-    const url = `https://github.com/SoftInstigate/restheart/releases/download/${rhversion}/restheart.tar.gz`
+    const url = `https://github.com/SoftInstigate/restheart/releases/download/${restheartVersion}/restheart.tar.gz`
     return (
         shell.exec(
             `curl --fail -L ${url} --output ${cacheDir}/restheart.tar.gz`
@@ -164,14 +173,14 @@ function watchFiles() {
 // Function to handle running commands
 function runCommand(command, options = {}) {
     const {
-        rhversion: rhversion,
+        restheartVersion: restheartVersion,
         forceInstall,
         options: restheartOptions,
     } = options
     switch (command) {
         case 'install':
-            if (rhversion) {
-                installRESTHeart(rhversion, forceInstall)
+            if (restheartVersion) {
+                installRESTHeart(restheartVersion, forceInstall)
             } else {
                 msg(
                     'Error: Version is required for install command.',
@@ -211,7 +220,7 @@ function runCommand(command, options = {}) {
 yargs(hideBin(process.argv))
     .usage('Usage: $0 [command] [options]')
     .command(
-        'install <restheart-version>',
+        ['install <restheart-version>', 'i'],
         'Install RESTHeart',
         (yargs) => {
             yargs.positional('restheart-version', {
@@ -222,28 +231,30 @@ yargs(hideBin(process.argv))
         },
         (argv) =>
             runCommand('install', {
-                rhversion: argv["restheart-version"],
+                restheartVersion: argv['restheart-version'],
                 forceInstall: argv.force,
             })
     )
     .command(
-        'build',
+        ['build', 'b'],
         'Build and deploy the plugin, restarting RESTHeart (default)',
         {},
         (argv) => runCommand('build', argv)
     )
-    .command('run', 'Start or restart RESTHeart', {}, (argv) =>
+    .command(['run', 'r'], 'Start or restart RESTHeart', {}, (argv) =>
         runCommand('run', argv)
     )
     .command(
-        'test',
+        ['test', 't'],
         'Start or restart RESTHeart for integration tests (e.g., mvn verify)',
         {},
         (argv) => runCommand('test', argv)
     )
-    .command('kill', 'Kill RESTHeart', {}, (argv) => runCommand('kill', argv))
+    .command(['kill', 'k'], 'Kill RESTHeart', {}, (argv) =>
+        runCommand('kill', argv)
+    )
     .command(
-        'watch',
+        ['watch','w'],
         'Watch sources and build and deploy the plugin on changes, restarting RESTHeart',
         {},
         (argv) => runCommand('watch', argv)
