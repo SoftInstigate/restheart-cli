@@ -272,7 +272,7 @@ yargs(hideBin(process.argv))
                 })
         },
         (argv) => {
-            const restheartOptions = argv['--'].join(' ') || ''
+            const restheartOptions = (argv['--'] && argv['--'].join(' ')) || ''
             runCommand('run', { build: argv.build, restheartOptions })
         }
     )
