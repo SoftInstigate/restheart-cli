@@ -146,9 +146,9 @@ function runRESTHeart(options) {
     commandExists('java')
     if (!isRESTHeartRunning()) {
         msg('Starting RESTHeart', colors.yellow)
-        shell.exec(
-            `nohup java -jar ${path.join(rhDir, 'restheart.jar')} ${options} > ${path.join(repoDir, 'restheart.log')} &`
-        )
+        const command = `nohup java -jar ${path.join(rhDir, 'restheart.jar')} ${options} > ${path.join(repoDir, 'restheart.log')} &`
+        msg(`Running command: ${command}`, colors.yellow)
+        shell.exec(command)
         msg(`RESTHeart started at localhost:${httpPort}`, colors.green)
     } else {
         msg('RESTHeart is already running', colors.cyan)
@@ -158,13 +158,13 @@ function runRESTHeart(options) {
 // Function to watch files using chokidar
 function watchFiles() {
     const watcher = chokidar.watch(path.join(repoDir, 'src/**/*.java'), {
-        ignored: /(^|[/\\])\../, // ignore dotfiles
+        ignored: /(^|[\\/])\../, // ignore dotfiles
         persistent: true,
     })
 
     watcher.on('change', (filePath) => {
         msg(`File changed: ${filePath}`, colors.yellow)
-        runCommand('run')
+        runCommand('run', { options: '' })
     })
 
     msg('Watching for file changes...', colors.cyan)
@@ -254,14 +254,23 @@ yargs(hideBin(process.argv))
         ['run', 'r'],
         'Start or restart RESTHeart',
         (yargs) => {
-            yargs.option('build', {
-                alias: 'b',
-                type: 'boolean',
-                description:
-                    'Build and deploy the plugin before running RESTHeart',
-            })
+            yargs
+                .option('build', {
+                    alias: 'b',
+                    type: 'boolean',
+                    description:
+                        'Build and deploy the plugin before running RESTHeart',
+                })
+                .option('options', {
+                    alias: 'o',
+                    type: 'string',
+                    description: 'Pass options to RESTHeart',
+                    default: '',
+                })
         },
-        (argv) => runCommand('run', argv)
+        (argv) => {
+            runCommand('run', { build: argv.build, options: argv.options })
+        }
     )
     .command(
         ['test', 't'],
@@ -283,11 +292,6 @@ yargs(hideBin(process.argv))
         type: 'number',
         description: 'HTTP port to use',
         default: 8080,
-    })
-    .option('options', {
-        alias: 'o',
-        type: 'string',
-        description: 'Pass options to RESTHeart',
     })
     .help('h')
     .alias('h', 'help')
