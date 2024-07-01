@@ -175,6 +175,7 @@ function runCommand(command, options = {}) {
     const {
         restheartVersion,
         forceInstall,
+        build,
         options: restheartOptions,
     } = options
     switch (command) {
@@ -195,8 +196,10 @@ function runCommand(command, options = {}) {
             break
         case 'run':
             if (isRESTHeartRunning()) killRESTHeart()
-            buildPlugin()
-            deployPlugin()
+            if (build) {
+                buildPlugin()
+                deployPlugin()
+            }
             runRESTHeart(restheartOptions)
             break
         case 'test':
@@ -220,11 +223,11 @@ function runCommand(command, options = {}) {
 yargs(hideBin(process.argv))
     .usage('Usage: $0 [command] [options]')
     .command(
-        ['install <restheart-version>', 'i'],
+        ['install <restheartVersion>', 'i'],
         'Install RESTHeart',
         (yargs) => {
             yargs
-                .positional('restheart-version', {
+                .positional('restheartVersion', {
                     describe: 'RESTHeart version to install',
                     type: 'string',
                     demandOption: true,
@@ -237,7 +240,7 @@ yargs(hideBin(process.argv))
         },
         (argv) =>
             runCommand('install', {
-                restheartVersion: argv['restheart-version'],
+                restheartVersion: argv.restheartVersion,
                 forceInstall: argv.force,
             })
     )
@@ -247,8 +250,18 @@ yargs(hideBin(process.argv))
         {},
         (argv) => runCommand('build', argv)
     )
-    .command(['run', 'r'], 'Start or restart RESTHeart', {}, (argv) =>
-        runCommand('run', argv)
+    .command(
+        ['run', 'r'],
+        'Start or restart RESTHeart',
+        (yargs) => {
+            yargs.option('build', {
+                alias: 'b',
+                type: 'boolean',
+                description:
+                    'Build and deploy the plugin before running RESTHeart',
+            })
+        },
+        (argv) => runCommand('run', argv)
     )
     .command(
         ['test', 't'],
