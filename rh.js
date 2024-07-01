@@ -253,12 +253,6 @@ yargs(hideBin(process.argv))
         'Start or restart RESTHeart',
         (yargs) => {
             yargs
-                .option('port', {
-                    alias: 'p',
-                    type: 'number',
-                    description: 'HTTP port to use',
-                    default: 8080,
-                })
                 .option('build', {
                     alias: 'b',
                     type: 'boolean',
