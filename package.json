@@ -26,8 +26,8 @@
     "description": "A tool to manage RESTHeart instances",
     "dependencies": {
         "chokidar": "^3.6.0",
-        "commander": "^12.1.0",
-        "shelljs": "^0.8.5"
+        "shelljs": "^0.8.5",
+        "yargs": "^17.7.2"
     },
     "devDependencies": {
         "@eslint/js": "^9.6.0",
