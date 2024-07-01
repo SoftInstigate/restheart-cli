@@ -142,11 +142,11 @@ function deployPlugin() {
 }
 
 // Function to run RESTHeart
-function runRESTHeart(options) {
+function runRESTHeart(restheartOptions) {
     commandExists('java')
     if (!isRESTHeartRunning()) {
         msg('Starting RESTHeart', colors.yellow)
-        const command = `nohup java -jar ${path.join(rhDir, 'restheart.jar')} ${options} > ${path.join(repoDir, 'restheart.log')} &`
+        const command = `nohup java -jar ${path.join(rhDir, 'restheart.jar')} ${restheartOptions} > ${path.join(repoDir, 'restheart.log')} &`
         msg(`Running command: ${command}`, colors.yellow)
         shell.exec(command)
         msg(`RESTHeart started at localhost:${httpPort}`, colors.green)
@@ -164,24 +164,19 @@ function watchFiles() {
 
     watcher.on('change', (filePath) => {
         msg(`File changed: ${filePath}`, colors.yellow)
-        runCommand('run', { options: '' })
+        runCommand('run', { restheartOptions: '' })
     })
 
     msg('Watching for file changes...', colors.cyan)
 }
 
 // Function to handle running commands
-function runCommand(command, options = {}) {
-    const {
-        restheartVersion,
-        forceInstall,
-        build,
-        options: restheartOptions,
-    } = options
+function runCommand(command, options) {
+    console.log('Options: ', options) // Log options to see what is passed
     switch (command) {
         case 'install':
-            if (restheartVersion) {
-                installRESTHeart(restheartVersion, forceInstall)
+            if (options.restheartVersion) {
+                installRESTHeart(options.restheartVersion, options.forceInstall)
             } else {
                 msg(
                     'Error: Version is required for install command.',
@@ -196,16 +191,16 @@ function runCommand(command, options = {}) {
             break
         case 'run':
             if (isRESTHeartRunning()) killRESTHeart()
-            if (build) {
+            if (options.build) {
                 buildPlugin()
                 deployPlugin()
             }
-            runRESTHeart(restheartOptions)
+            runRESTHeart(options.restheartOptions)
             break
         case 'test':
             if (isRESTHeartRunning()) killRESTHeart()
             deployPlugin() // Skip build step for test
-            runRESTHeart(restheartOptions)
+            runRESTHeart(options.restheartOptions)
             break
         case 'kill':
             killRESTHeart()
@@ -221,6 +216,9 @@ function runCommand(command, options = {}) {
 
 // Command line arguments setup with command and options handling
 yargs(hideBin(process.argv))
+    .parserConfiguration({
+        'populate--': true,
+    })
     .usage('Usage: $0 [command] [options]')
     .command(
         ['install <restheartVersion>', 'i'],
@@ -251,25 +249,31 @@ yargs(hideBin(process.argv))
         (argv) => runCommand('build', argv)
     )
     .command(
-        ['run', 'r'],
+        ['run [restheartOptions..]', 'r'],
         'Start or restart RESTHeart',
         (yargs) => {
             yargs
+                .option('port', {
+                    alias: 'p',
+                    type: 'number',
+                    description: 'HTTP port to use',
+                    default: 8080,
+                })
                 .option('build', {
                     alias: 'b',
                     type: 'boolean',
                     description:
                         'Build and deploy the plugin before running RESTHeart',
                 })
-                .option('options', {
-                    alias: 'o',
+                .positional('restheartOptions', {
+                    describe: 'Options to pass to RESTHeart',
                     type: 'string',
-                    description: 'Pass options to RESTHeart',
                     default: '',
                 })
         },
         (argv) => {
-            runCommand('run', { build: argv.build, options: argv.options })
+            const restheartOptions = argv['--'].join(' ') || ''
+            runCommand('run', { build: argv.build, restheartOptions })
         }
     )
     .command(
@@ -287,14 +291,9 @@ yargs(hideBin(process.argv))
         {},
         (argv) => runCommand('watch', argv)
     )
-    .option('port', {
-        alias: 'p',
-        type: 'number',
-        description: 'HTTP port to use',
-        default: 8080,
-    })
     .help('h')
     .alias('h', 'help')
-    .demandCommand(1, 'You need at least one command before moving on').argv
+    .demandCommand(1, 'You need at least one command before moving on')
+    .parseSync()
 
 process.on('exit', cleanup)
