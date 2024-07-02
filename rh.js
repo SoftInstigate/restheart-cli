@@ -147,10 +147,21 @@ function deploy() {
     msg('Plugin deployed', colors.green)
 }
 
+function onlyPrintConfig(restheartOptions) {
+    return /.*-t.*|.*-c.*|.*-v.*/.test(restheartOptions)
+}
+
 // Function to run RESTHeart
 function run(restheartOptions) {
     commandExists('java')
     if (!isRESTHeartRunning()) {
+        if (onlyPrintConfig(restheartOptions)) {
+            msg('Printing RESTHeart configuration', colors.yellow)
+            shell.exec(
+                `java -jar ${path.join(rhDir, 'restheart.jar')} ${restheartOptions}`
+            )
+            return
+        }
         msg('Starting RESTHeart', colors.yellow)
         const command = `nohup java -jar ${path.join(rhDir, 'restheart.jar')} ${restheartOptions} > ${path.join(repoDir, 'restheart.log')} &`
         msg(`Running command: ${command}`, colors.yellow)
