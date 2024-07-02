@@ -92,6 +92,8 @@ function install(restheartVersion, forceInstall) {
 
         shell.exec(`tar -xzf ${cacheDir}/restheart.tar.gz -C ${cacheDir}`)
         shell.rm('-f', `${cacheDir}/restheart.tar.gz`)
+
+        msg('RESTHeart installed', colors.green)
     } else {
         msg('RESTHeart already installed. Use the -f option to force a reinstall.', colors.cyan)
     }
