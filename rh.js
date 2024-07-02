@@ -60,14 +60,18 @@ function isRESTHeartRunning() {
 }
 
 // Function to install RESTHeart
-function installRESTHeart(restheartVersion, forceInstall) {
+function install(restheartVersion, forceInstall) {
     if (forceInstall) {
         msg('Cleaning cache', colors.cyan)
         shell.rm('-rf', cacheDir)
     }
 
+    if (!restheartVersion) {
+        restheartVersion = 'latest'
+    }
+
     if (!fs.existsSync(rhDir)) {
-        msg(`Installing RESTHeart version ${restheartVersion}`, colors.green)
+        msg(`Installing RESTHeart version "${restheartVersion}"`, colors.green)
 
         if (!fs.existsSync(cacheDir)) {
             shell.mkdir(cacheDir)
@@ -75,12 +79,12 @@ function installRESTHeart(restheartVersion, forceInstall) {
 
         if (downloadRESTHeart(restheartVersion)) {
             msg(
-                `RESTHeart version ${restheartVersion} downloaded`,
+                `RESTHeart version "${restheartVersion}" downloaded`,
                 colors.green
             )
         } else {
             msg(
-                `Failed to download RESTHeart version ${restheartVersion}`,
+                `Failed to download RESTHeart version "${restheartVersion}"`,
                 colors.red
             )
             process.exit(1)
@@ -89,17 +93,17 @@ function installRESTHeart(restheartVersion, forceInstall) {
         shell.exec(`tar -xzf ${cacheDir}/restheart.tar.gz -C ${cacheDir}`)
         shell.rm('-f', `${cacheDir}/restheart.tar.gz`)
     } else {
-        msg(
-            `RESTHeart version ${restheartVersion} already installed`,
-            colors.cyan
-        )
+        msg('RESTHeart already installed. Use the -f option to force a reinstall.', colors.cyan)
     }
 }
 
 // Function to download RESTHeart
 function downloadRESTHeart(restheartVersion) {
     commandExists('curl')
-    const url = `https://github.com/SoftInstigate/restheart/releases/download/${restheartVersion}/restheart.tar.gz`
+    const url =
+        restheartVersion === 'latest'
+            ? 'https://github.com/SoftInstigate/restheart/releases/latest/download/restheart.tar.gz'
+            : `https://github.com/SoftInstigate/restheart/releases/download/${restheartVersion}/restheart.tar.gz`
     return (
         shell.exec(
             `curl --fail -L ${url} --output ${cacheDir}/restheart.tar.gz`
@@ -108,7 +112,7 @@ function downloadRESTHeart(restheartVersion) {
 }
 
 // Function to build the plugin
-function buildPlugin() {
+function build() {
     shell.rm('-rf', path.join(repoDir, 'target'))
     const currentDir = shell.pwd()
 
@@ -131,7 +135,7 @@ function buildPlugin() {
 }
 
 // Function to deploy the plugin
-function deployPlugin() {
+function deploy() {
     shell.cp(path.join(repoDir, 'target', '*.jar'), path.join(rhDir, 'plugins'))
     shell.cp(
         path.join(repoDir, 'target', 'lib', '*.jar'),
@@ -142,7 +146,7 @@ function deployPlugin() {
 }
 
 // Function to run RESTHeart
-function runRESTHeart(restheartOptions) {
+function run(restheartOptions) {
     commandExists('java')
     if (!isRESTHeartRunning()) {
         msg('Starting RESTHeart', colors.yellow)
@@ -172,35 +176,26 @@ function watchFiles() {
 
 // Function to handle running commands
 function runCommand(command, options) {
-    console.log('Options: ', options) // Log options to see what is passed
     switch (command) {
         case 'install':
-            if (options.restheartVersion) {
-                installRESTHeart(options.restheartVersion, options.forceInstall)
-            } else {
-                msg(
-                    'Error: Version is required for install command.',
-                    colors.red
-                )
-                yargs.showHelp()
-            }
+            install(options.restheartVersion, options.forceInstall)
             break
         case 'build':
-            buildPlugin()
-            deployPlugin()
+            build()
+            deploy()
             break
         case 'run':
             if (isRESTHeartRunning()) killRESTHeart()
             if (options.build) {
-                buildPlugin()
-                deployPlugin()
+                build()
+                deploy()
             }
-            runRESTHeart(options.restheartOptions)
+            run(options.restheartOptions)
             break
         case 'test':
             if (isRESTHeartRunning()) killRESTHeart()
-            deployPlugin() // Skip build step for test
-            runRESTHeart(options.restheartOptions)
+            deploy() // Skip build step for test
+            run(options.restheartOptions)
             break
         case 'kill':
             killRESTHeart()
@@ -221,14 +216,14 @@ yargs(hideBin(process.argv))
     })
     .usage('Usage: $0 [command] [options]')
     .command(
-        ['install <restheartVersion>', 'i'],
+        ['install [restheartVersion]', 'i'],
         'Install RESTHeart',
         (yargs) => {
             yargs
                 .positional('restheartVersion', {
                     describe: 'RESTHeart version to install',
                     type: 'string',
-                    demandOption: true,
+                    default: 'latest',
                 })
                 .option('force', {
                     alias: 'f',
