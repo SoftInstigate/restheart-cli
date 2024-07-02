@@ -23,7 +23,7 @@
     ],
     "author": "Maurizio Turatti <maurizio@softinstigate.com>",
     "license": "MIT",
-    "description": "A tool to manage RESTHeart instances",
+    "description": "A command line interface to manage RESTHeart instances",
     "dependencies": {
         "chokidar": "^3.6.0",
         "shelljs": "^0.8.5",
