@@ -49,7 +49,8 @@ function killRESTHeart() {
 // Function to check if RESTHeart is running
 function isRESTHeartRunning() {
     return (
-        shell.exec(`curl -s -o /dev/null localhost:${httpPort}/ping`).code === 0
+        shell.exec(`lsof -i:${httpPort}`, { silent: true }).code === 0 ||
+        shell.exec(`lsof -i:$((httpPort + 1000))`, { silent: true }).code === 0
     )
 }
 
