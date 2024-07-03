@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
-const shell = require('shelljs')
-const path = require('path')
-const fs = require('fs')
-const yargs = require('yargs')
-const chokidar = require('chokidar')
-const { hideBin } = require('yargs/helpers')
+import shell from 'shelljs'
+import path from 'path'
+import fs from 'fs'
+import yargs from 'yargs'
+import chokidar from 'chokidar'
+import ora from 'ora'
+import { hideBin } from 'yargs/helpers'
+import chalk from 'chalk'
 
 // Directory setup
 const scriptDir = process.cwd() // Use the current working directory
@@ -14,18 +16,9 @@ const cacheDir = path.join(repoDir, '.cache')
 const rhDir = path.join(cacheDir, 'restheart')
 let httpPort = 8080
 
-// Color setup
-const colors = {
-    reset: '\x1b[0m',
-    red: '\x1b[31m',
-    green: '\x1b[32m',
-    yellow: '\x1b[33m',
-    cyan: '\x1b[36m',
-}
-
 // Function to display messages
-function msg(message, color = colors.reset) {
-    console.log(color + message + colors.reset)
+function msg(message, color = chalk.reset) {
+    console.log(color(message))
 }
 
 // Function to handle script cleanup
@@ -36,19 +29,20 @@ function cleanup() {
 // Function to check if a command exists
 function commandExists(command) {
     if (!shell.which(command)) {
-        msg(`Error: ${command} is required but not installed.`, colors.red)
-        process.exit(1)
+        msg(`Error: ${command} is required but not installed.`, chalk.red)
+        shell.exit(1)
     }
 }
 
 // Function to kill RESTHeart
 function killRESTHeart() {
     if (isRESTHeartRunning()) {
-        msg(`RESTHeart at localhost:${httpPort} killed`, colors.cyan)
-        shell.exec(`kill $(lsof -t -i:${httpPort})`)
-        shell.exec(`kill $(lsof -t -i:$((httpPort + 1000)))`)
+        msg(`Killing RESTHeart at localhost:${httpPort}`, chalk.yellow)
+        shell.exec(`kill $(lsof -t -i:${httpPort})`, { silent: true })
+        shell.exec(`kill $(lsof -t -i:$((httpPort + 1000)))`, { silent: true })
+        msg(`RESTHeart at localhost:${httpPort} killed`, chalk.green)
     } else {
-        msg(`RESTHeart is not running on port ${httpPort}`, colors.cyan)
+        msg(`RESTHeart is not running on port ${httpPort}`, chalk.cyan)
     }
 }
 
@@ -61,46 +55,48 @@ function isRESTHeartRunning() {
 
 // Function to install RESTHeart
 function install(restheartVersion, forceInstall) {
-    if (forceInstall) {
-        msg('Cleaning cache', colors.cyan)
-        shell.rm('-rf', cacheDir)
-    }
-
     if (!restheartVersion) {
         restheartVersion = 'latest'
     }
 
-    if (!fs.existsSync(rhDir)) {
-        msg(`Installing RESTHeart version "${restheartVersion}"`, colors.green)
+    msg(`Installing RESTHeart version "${restheartVersion}"`, chalk.yellow)
 
+    if (forceInstall) {
+        msg('Cleaning cache', chalk.cyan)
+        shell.rm('-rf', cacheDir)
+    }
+
+    if (!fs.existsSync(rhDir)) {
         if (!fs.existsSync(cacheDir)) {
             shell.mkdir(cacheDir)
         }
 
-        if (downloadRESTHeart(restheartVersion)) {
-            msg(
-                `RESTHeart version "${restheartVersion}" downloaded`,
-                colors.green
-            )
-        } else {
+        if (!downloadRESTHeart(restheartVersion)) {
             msg(
                 `Failed to download RESTHeart version "${restheartVersion}"`,
-                colors.red
+                chalk.red
             )
-            process.exit(1)
+            shell.exit(1)
         }
+
+        msg('Extracting RESTHeart...', chalk.cyan)
 
         shell.exec(`tar -xzf ${cacheDir}/restheart.tar.gz -C ${cacheDir}`)
         shell.rm('-f', `${cacheDir}/restheart.tar.gz`)
+        shell.exec(`java -jar ${path.join(rhDir, 'restheart.jar')} -v`)
 
-        msg('RESTHeart installed', colors.green)
+        msg('RESTHeart successfully installed', chalk.green)
     } else {
-        msg('RESTHeart already installed. Use the -f option to force a reinstall.', colors.cyan)
+        msg(
+            'RESTHeart already installed. Use the -f option to force a reinstall.',
+            chalk.cyan
+        )
     }
 }
 
 // Function to download RESTHeart
 function downloadRESTHeart(restheartVersion) {
+    msg('Downloading RESTHeart...', chalk.cyan)
     commandExists('curl')
     const url =
         restheartVersion === 'latest'
@@ -121,7 +117,7 @@ function build() {
     shell.cd(repoDir)
     let mvnCommand = './mvnw -f pom.xml clean package'
     if (!fs.existsSync(path.join(repoDir, 'mvnw'))) {
-        msg('mvnw not found, using mvn instead', colors.yellow)
+        msg('mvnw not found, using mvn instead', chalk.yellow)
         commandExists('mvn')
         mvnCommand = 'mvn -f pom.xml clean package'
     } else {
@@ -130,8 +126,8 @@ function build() {
 
     if (shell.exec(mvnCommand).code !== 0) {
         shell.cd(currentDir)
-        msg('Failed to build RESTHeart', colors.red)
-        process.exit(1)
+        msg('Failed to build RESTHeart', chalk.red)
+        shell.exit(1)
     }
     shell.cd(currentDir)
 }
@@ -144,7 +140,7 @@ function deploy() {
         path.join(rhDir, 'plugins'),
         { silent: true }
     )
-    msg('Plugin deployed', colors.green)
+    msg('Plugin deployed', chalk.green)
 }
 
 function onlyPrintConfig(restheartOptions) {
@@ -156,19 +152,28 @@ function run(restheartOptions) {
     commandExists('java')
     if (!isRESTHeartRunning()) {
         if (onlyPrintConfig(restheartOptions)) {
-            msg('Printing RESTHeart configuration', colors.yellow)
+            msg('Printing RESTHeart configuration', chalk.yellow)
             shell.exec(
                 `java -jar ${path.join(rhDir, 'restheart.jar')} ${restheartOptions}`
             )
             return
         }
-        msg('Starting RESTHeart', colors.yellow)
+        msg('Starting RESTHeart', chalk.yellow)
         const command = `nohup java -jar ${path.join(rhDir, 'restheart.jar')} ${restheartOptions} > ${path.join(repoDir, 'restheart.log')} &`
-        msg(`Running command: ${command}`, colors.yellow)
-        shell.exec(command)
-        msg(`RESTHeart started at localhost:${httpPort}`, colors.green)
+        msg(`Running command: ${command}`)
+        shell.exec(command, { async: true })
+        // Wait for RESTHeart to start
+        const spinner = ora('Starting RESTHeart...\n').start()
+        while (!isRESTHeartRunning()) {
+            spinner.render()
+            shell.exec('sleep 0.5')
+        }
+        spinner.succeed('RESTHeart started')
+        spinner.stop()
+        msg(`RESTHeart is running at localhost:${httpPort}`, chalk.green)
+        shell.exit(0)
     } else {
-        msg('RESTHeart is already running', colors.cyan)
+        msg('RESTHeart is already running', chalk.cyan)
     }
 }
 
@@ -180,11 +185,11 @@ function watchFiles() {
     })
 
     watcher.on('change', (filePath) => {
-        msg(`File changed: ${filePath}`, colors.yellow)
+        msg(`File changed: ${filePath}`, chalk.yellow)
         runCommand('run', { restheartOptions: '' })
     })
 
-    msg('Watching for file changes...', colors.cyan)
+    msg('Watching for file changes...', chalk.cyan)
 }
 
 // Function to handle running commands

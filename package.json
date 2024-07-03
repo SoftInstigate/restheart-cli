@@ -2,6 +2,7 @@
     "name": "rh",
     "version": "1.0.0",
     "main": "rh.js",
+    "type": "module",
     "bin": {
         "rh": "./rh.js"
     },
@@ -26,6 +27,7 @@
     "description": "A command line interface to manage RESTHeart instances",
     "dependencies": {
         "chokidar": "^3.6.0",
+        "ora": "^8.0.1",
         "shelljs": "^0.8.5",
         "yargs": "^17.7.2"
     },
