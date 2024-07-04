@@ -82,7 +82,7 @@ function install(restheartVersion, forceInstall) {
     } else {
         msg(
             'RESTHeart already installed. Use the -f option to force a reinstall.',
-            chalk.cyan
+            chalk.reset
         )
     }
 }
