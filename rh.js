@@ -8,6 +8,7 @@ import chokidar from 'chokidar'
 import ora from 'ora'
 import { hideBin } from 'yargs/helpers'
 import chalk from 'chalk'
+import https from 'https'
 
 // Directory setup
 const scriptDir = process.cwd() // Use the current working directory
@@ -72,21 +73,7 @@ function install(restheartVersion, forceInstall) {
             shell.mkdir(cacheDir)
         }
 
-        if (!downloadRESTHeart(restheartVersion)) {
-            msg(
-                `Failed to download RESTHeart version "${restheartVersion}"`,
-                chalk.red
-            )
-            shell.exit(1)
-        }
-
-        msg('Extracting RESTHeart...', chalk.cyan)
-
-        shell.exec(`tar -xzf ${cacheDir}/restheart.tar.gz -C ${cacheDir}`)
-        shell.rm('-f', `${cacheDir}/restheart.tar.gz`)
-        shell.exec(`java -jar ${path.join(rhDir, 'restheart.jar')} -v`)
-
-        msg('RESTHeart successfully installed', chalk.green)
+        downloadRESTHeart(restheartVersion)
     } else {
         msg(
             'RESTHeart already installed. Use the -f option to force a reinstall.',
@@ -97,17 +84,85 @@ function install(restheartVersion, forceInstall) {
 
 // Function to download RESTHeart
 function downloadRESTHeart(restheartVersion) {
-    msg('Downloading RESTHeart...', chalk.cyan)
-    commandExists('curl')
     const url =
         restheartVersion === 'latest'
             ? 'https://github.com/SoftInstigate/restheart/releases/latest/download/restheart.tar.gz'
             : `https://github.com/SoftInstigate/restheart/releases/download/${restheartVersion}/restheart.tar.gz`
-    return (
-        shell.exec(
-            `curl --fail -L ${url} --output ${cacheDir}/restheart.tar.gz`
-        ).code === 0
-    )
+    const file = fs.createWriteStream(`${cacheDir}/restheart.tar.gz`)
+
+    downloadAndExtractRESTHeart(url)
+
+    function downloadAndExtractRESTHeart(url) {
+        https
+            .get(url, (response) => {
+                if (response.statusCode === 200) {
+                    extractAndInstallRESTHeart(response)
+                } else if (response.statusCode === 302) {
+                    const redirectUrl = response.headers.location
+                    if (redirectUrl) {
+                        downloadAndExtractRESTHeart(redirectUrl) // Recursively follow redirects
+                    } else {
+                        msg('Error: Redirection URL not found', chalk.red)
+                        shell.exit(1)
+                    }
+                } else {
+                    msg(
+                        `Error downloading RESTHeart: Server responded with status code ${response.statusCode}`,
+                        chalk.red
+                    )
+                    shell.exit(1)
+                }
+            })
+            .on('error', (err) => {
+                fs.unlink(`${cacheDir}/restheart.tar.gz`, (unlinkErr) => {
+                    if (unlinkErr) {
+                        msg(
+                            `Error removing incomplete file: ${unlinkErr.message}`,
+                            chalk.red
+                        )
+                    }
+                    msg(
+                        `Error downloading RESTHeart: ${err.message}`,
+                        chalk.red
+                    )
+                    shell.exit(1)
+                })
+            })
+    }
+
+    function extractAndInstallRESTHeart(response) {
+        const spinner = ora('Downloading RESTHeart...').start()
+
+        response.pipe(file)
+        
+        const fileSize = response.headers['content-length']
+        let downloaded = 0
+
+        response.on('data', (chunk) => {
+            downloaded += chunk.length
+            spinner.text = `Downloading RESTHeart... ${Math.round((downloaded / fileSize) * 100)}%`
+        })
+
+        file.on('finish', () => {
+            file.close(() => {
+                spinner.succeed('RESTHeart downloaded')
+                msg('Extracting RESTHeart...', chalk.cyan)
+
+                shell.exec(
+                    `tar -xzf ${cacheDir}/restheart.tar.gz -C ${cacheDir}`
+                )
+
+                shell.rm('-f', `${cacheDir}/restheart.tar.gz`)
+                shell.exec(`java -jar ${path.join(rhDir, 'restheart.jar')} -v`)
+
+                msg('RESTHeart successfully installed', chalk.green)
+                shell.exit(0)
+            })
+        }).on('error', (writeErr) => {
+            msg(`Error writing file: ${writeErr.message}`, chalk.red)
+            shell.exit(1)
+        })
+    }
 }
 
 // Function to build the plugin
