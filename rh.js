@@ -196,14 +196,13 @@ function build(mvnParams = '') {
 
 // Function to deploy the plugin
 function deploy() {
-    msg('Deploying plugins...', chalk.yellow)
+    const spinner = ora('Deploying plugins...').start()
     shell.cp(path.join(repoDir, 'target', '*.jar'), path.join(rhDir, 'plugins'))
     shell.cp(
         path.join(repoDir, 'target', 'lib', '*.jar'),
-        path.join(rhDir, 'plugins'),
-        { silent: false }
+        path.join(rhDir, 'plugins')
     )
-    msg('Plugins deployed', chalk.green)
+    spinner.succeed('Plugins deployed')
 }
 
 function onlyPrintConfig(restheartOptions) {
