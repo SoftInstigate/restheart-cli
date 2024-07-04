@@ -246,7 +246,7 @@ function run(restheartOptions) {
 
 // Function to watch files using chokidar
 function watchFiles(restheartOptions) {
-    const watcher = chokidar.watch(path.join(repoDir, 'src/**/*.java'), {
+    const watcher = chokidar.watch(path.join(repoDir, 'src/main/**/*.java'), {
         ignored: /(^|[\\/])\../, // ignore dotfiles
         persistent: true,
     })
