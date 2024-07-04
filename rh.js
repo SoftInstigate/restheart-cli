@@ -268,6 +268,9 @@ function watchFiles(restheartOptions) {
 
 // Function to handle running commands
 function runCommand(command, options) {
+    if (options.port) {
+        httpPort = options.port
+    }
     switch (command) {
         case 'install':
             install(options.restheartVersion, options.forceInstall)
@@ -362,6 +365,12 @@ yargs(hideBin(process.argv))
                     description:
                         'Build and deploy the plugin before running RESTHeart',
                 })
+                .option('port', {
+                    alias: 'p',
+                    type: 'number',
+                    description: 'HTTP port',
+                    default: 8080,
+                })
                 .positional('restheartOptions', {
                     describe: 'Options to pass to RESTHeart',
                     type: 'string',
@@ -379,19 +388,36 @@ yargs(hideBin(process.argv))
         {},
         (argv) => runCommand('test', argv)
     )
-    .command(['kill', 'k'], 'Kill RESTHeart', {}, (argv) =>
-        runCommand('kill', argv)
+    .command(
+        ['kill', 'k'],
+        'Kill RESTHeart',
+        (yargs) => {
+            yargs.option('port', {
+                alias: 'p',
+                type: 'number',
+                description: 'HTTP port',
+                default: 8080,
+            })
+        },
+        (argv) => runCommand('kill', argv)
     )
     .command(
         ['watch', 'w'],
         'Watch sources and build and deploy plugins on changes, restarting RESTHeart',
         (yargs) => {
-            yargs.option('build', {
-                alias: 'b',
-                type: 'boolean',
-                description:
-                    'Build and deploy the plugin before running RESTHeart',
-            })
+            yargs
+                .option('build', {
+                    alias: 'b',
+                    type: 'boolean',
+                    description:
+                        'Build and deploy the plugin before running RESTHeart',
+                })
+                .option('port', {
+                    alias: 'p',
+                    type: 'number',
+                    description: 'HTTP port',
+                    default: 8080,
+                })
         },
         (argv) => {
             const restheartOptions = (argv['--'] && argv['--'].join(' ')) || ''
