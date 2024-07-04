@@ -24,7 +24,7 @@ function msg(message, color = chalk.reset) {
 
 // Function to handle script cleanup
 function cleanup() {
-    // Cleanup code here
+    msg('Bye.', chalk.green)
 }
 
 // Function to check if a command exists
@@ -38,10 +38,15 @@ function commandExists(command) {
 // Function to kill RESTHeart
 function killRESTHeart() {
     if (isRESTHeartRunning()) {
-        msg(`Killing RESTHeart at localhost:${httpPort}`, chalk.yellow)
+        const spinner = ora(
+            `Killing RESTHeart at localhost:${httpPort}`
+        ).start()
         shell.exec(`kill $(lsof -t -i:${httpPort})`, { silent: true })
+        spinner.render()
         shell.exec(`kill $(lsof -t -i:$((httpPort + 1000)))`, { silent: true })
-        msg(`RESTHeart at localhost:${httpPort} killed`, chalk.green)
+        spinner.render()
+        spinner.succeed(`RESTHeart at localhost:${httpPort} killed`)
+        spinner.stop()
     } else {
         msg(`RESTHeart is not running on port ${httpPort}`, chalk.cyan)
     }
@@ -134,7 +139,7 @@ function downloadRESTHeart(restheartVersion) {
         const spinner = ora('Downloading RESTHeart...').start()
 
         response.pipe(file)
-        
+
         const fileSize = response.headers['content-length']
         let downloaded = 0
 
@@ -156,7 +161,6 @@ function downloadRESTHeart(restheartVersion) {
                 shell.exec(`java -jar ${path.join(rhDir, 'restheart.jar')} -v`)
 
                 msg('RESTHeart successfully installed', chalk.green)
-                shell.exit(0)
             })
         }).on('error', (writeErr) => {
             msg(`Error writing file: ${writeErr.message}`, chalk.red)
@@ -166,16 +170,18 @@ function downloadRESTHeart(restheartVersion) {
 }
 
 // Function to build the plugin
-function build() {
+function build(mvnParams = '') {
+    msg('Building RESTHeart...', chalk.yellow)
+
     shell.rm('-rf', path.join(repoDir, 'target'))
     const currentDir = shell.pwd()
 
     shell.cd(repoDir)
-    let mvnCommand = './mvnw -f pom.xml clean package'
+    let mvnCommand = `./mvnw -f pom.xml ${mvnParams}`
     if (!fs.existsSync(path.join(repoDir, 'mvnw'))) {
         msg('mvnw not found, using mvn instead', chalk.yellow)
         commandExists('mvn')
-        mvnCommand = 'mvn -f pom.xml clean package'
+        mvnCommand = `mvn -f pom.xml ${mvnParams}`
     } else {
         commandExists('./mvnw')
     }
@@ -190,13 +196,14 @@ function build() {
 
 // Function to deploy the plugin
 function deploy() {
+    msg('Deploying plugins...', chalk.yellow)
     shell.cp(path.join(repoDir, 'target', '*.jar'), path.join(rhDir, 'plugins'))
     shell.cp(
         path.join(repoDir, 'target', 'lib', '*.jar'),
         path.join(rhDir, 'plugins'),
-        { silent: true }
+        { silent: false }
     )
-    msg('Plugin deployed', chalk.green)
+    msg('Plugins deployed', chalk.green)
 }
 
 function onlyPrintConfig(restheartOptions) {
@@ -215,26 +222,30 @@ function run(restheartOptions) {
             return
         }
         msg('Starting RESTHeart', chalk.yellow)
-        const command = `nohup java -jar ${path.join(rhDir, 'restheart.jar')} ${restheartOptions} > ${path.join(repoDir, 'restheart.log')} &`
+        const command = `nohup java -jar ${path.join(rhDir, 'restheart.jar')} ${restheartOptions} &> ${path.join(repoDir, 'restheart.log')} &`
         msg(`Running command: ${command}`)
         shell.exec(command, { async: true })
         // Wait for RESTHeart to start
-        const spinner = ora('Starting RESTHeart...\n').start()
+        const spinner = ora('RESTHeart is starting...\n').start()
+        let timeout = 30
         while (!isRESTHeartRunning()) {
             spinner.render()
-            shell.exec('sleep 0.5')
+            shell.exec('sleep 0.2')
+            if (timeout-- <= 0) {
+                spinner.fail('Failed to start RESTHeart')
+                spinner.stop()
+                shell.exit(1)
+            }
         }
-        spinner.succeed('RESTHeart started')
+        spinner.succeed(`RESTHeart is running at localhost:${httpPort}`)
         spinner.stop()
-        msg(`RESTHeart is running at localhost:${httpPort}`, chalk.green)
-        shell.exit(0)
     } else {
         msg('RESTHeart is already running', chalk.cyan)
     }
 }
 
 // Function to watch files using chokidar
-function watchFiles() {
+function watchFiles(restheartOptions) {
     const watcher = chokidar.watch(path.join(repoDir, 'src/**/*.java'), {
         ignored: /(^|[\\/])\../, // ignore dotfiles
         persistent: true,
@@ -242,7 +253,11 @@ function watchFiles() {
 
     watcher.on('change', (filePath) => {
         msg(`File changed: ${filePath}`, chalk.yellow)
-        runCommand('run', { restheartOptions: '' })
+        if (isRESTHeartRunning()) killRESTHeart()
+        build('package -DskipTests=true')
+        deploy()
+        run(restheartOptions)
+        msg('Watching for file changes...', chalk.cyan)
     })
 
     msg('Watching for file changes...', chalk.cyan)
@@ -255,33 +270,49 @@ function runCommand(command, options) {
             install(options.restheartVersion, options.forceInstall)
             break
         case 'build':
-            build()
+            build('clean package')
             deploy()
             break
         case 'run':
             if (isRESTHeartRunning()) killRESTHeart()
             if (options.build) {
-                build()
+                build('clean package -DskipTests=true')
                 deploy()
             }
             run(options.restheartOptions)
             break
         case 'test':
             if (isRESTHeartRunning()) killRESTHeart()
-            deploy() // Skip build step for test
+            build('clean package -DskipTests=true')
+            deploy()
             run(options.restheartOptions)
             break
         case 'kill':
             killRESTHeart()
             break
         case 'watch':
-            watchFiles()
+            if (isRESTHeartRunning()) killRESTHeart()
+            if (options.build) {
+                build('clean package -DskipTests=true')
+                deploy()
+            }
+            run(options.restheartOptions)
+            watchFiles(options.restheartOptions)
             break
         default:
             yargs.showHelp()
             break
     }
 }
+
+// Intercept CTRL-C and kill RESTHeart before exiting
+process.on('SIGINT', function () {
+    if (isRESTHeartRunning()) killRESTHeart()
+    process.exit()
+})
+
+// Register cleanup function to run on exit
+process.on('exit', cleanup)
 
 // Command line arguments setup with command and options handling
 yargs(hideBin(process.argv))
@@ -350,13 +381,21 @@ yargs(hideBin(process.argv))
     )
     .command(
         ['watch', 'w'],
-        'Watch sources and build and deploy the plugin on changes, restarting RESTHeart',
-        {},
-        (argv) => runCommand('watch', argv)
+        'Watch sources and build and deploy plugins on changes, restarting RESTHeart',
+        (yargs) => {
+            yargs.option('build', {
+                alias: 'b',
+                type: 'boolean',
+                description:
+                    'Build and deploy the plugin before running RESTHeart',
+            })
+        },
+        (argv) => {
+            const restheartOptions = (argv['--'] && argv['--'].join(' ')) || ''
+            runCommand('watch', { build: argv.build, restheartOptions })
+        }
     )
     .help('h')
     .alias('h', 'help')
     .demandCommand(1, 'You need at least one command before moving on')
     .parseSync()
-
-process.on('exit', cleanup)
