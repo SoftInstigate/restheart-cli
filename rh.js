@@ -160,7 +160,11 @@ function downloadRESTHeart(restheartVersion) {
                 shell.rm('-f', `${cacheDir}/restheart.tar.gz`)
                 shell.exec(`java -jar ${path.join(rhDir, 'restheart.jar')} -v`)
 
+                deploy()
+
                 msg('RESTHeart successfully installed', chalk.green)
+
+                shell.exit(0)
             })
         }).on('error', (writeErr) => {
             msg(`Error writing file: ${writeErr.message}`, chalk.red)
