@@ -322,6 +322,7 @@ process.on('exit', cleanup)
 
 // Command line arguments setup with command and options handling
 yargs(hideBin(process.argv))
+    .strict()
     .parserConfiguration({
         'populate--': true,
     })
