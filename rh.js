@@ -189,7 +189,9 @@ function downloadRESTHeart(restheartVersion) {
                 )
 
                 shell.rm('-f', `${cacheDir}/restheart.tar.gz`)
-                shell.exec(`java -jar ${path.join(rhDir, 'restheart.jar')} -v`)
+                shell
+                    .exec(`java -jar ${path.join(rhDir, 'restheart.jar')} -v`)
+                    .to(path.join(cacheDir, 'restheart_version.txt'))
 
                 deploy()
 
