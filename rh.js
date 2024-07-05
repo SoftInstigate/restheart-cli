@@ -74,7 +74,6 @@ function main() {
                         alias: 'p',
                         type: 'number',
                         description: 'HTTP port',
-                        default: 8080,
                     })
                     .positional('restheartOptions', {
                         describe: 'Options to pass to RESTHeart',
@@ -84,7 +83,7 @@ function main() {
             },
             (argv) => {
                 const restheartOptions = (argv['--'] && argv['--'].join(' ')) || ''
-                runCommand('run', { build: argv.build, restheartOptions })
+                runCommand('run', { build: argv.build, port: argv.port, restheartOptions })
             }
         )
         .command(
@@ -101,7 +100,6 @@ function main() {
                     alias: 'p',
                     type: 'number',
                     description: 'HTTP port',
-                    default: 8080,
                 })
             },
             (argv) => runCommand('kill', argv)
@@ -120,7 +118,6 @@ function main() {
                         alias: 'p',
                         type: 'number',
                         description: 'HTTP port',
-                        default: 8080,
                     })
             },
             (argv) => {
@@ -157,7 +154,7 @@ function main() {
                 rh.deploy()
                 break
             case 'run':
-                if (await rh.isRunning()) await rh.kill()
+                await checkAndKill()
                 if (options.build) {
                     rh.build('clean package -DskipTests=true')
                     rh.deploy()
@@ -165,7 +162,7 @@ function main() {
                 await rh.run(options.restheartOptions)
                 break
             case 'test':
-                if (await rh.isRunning()) await rh.kill()
+                await checkAndKill()
                 rh.build('clean package -DskipTests=true')
                 rh.deploy()
                 await rh.run(options.restheartOptions)
@@ -174,7 +171,7 @@ function main() {
                 await rh.kill()
                 break
             case 'watch':
-                if (await rh.isRunning()) await rh.kill()
+                await checkAndKill()
                 if (options.build) {
                     rh.build('clean package -DskipTests=true')
                     rh.deploy()
@@ -185,6 +182,13 @@ function main() {
             default:
                 yargs.showHelp()
                 break
+        }
+    }
+
+    async function checkAndKill() {
+        if (await rh.isRunning()) {
+            msg('RESTHeart is already running', chalk.red)
+            await rh.kill()
         }
     }
 }
