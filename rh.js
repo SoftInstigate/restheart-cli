@@ -9,13 +9,17 @@ import ora from 'ora'
 import { hideBin } from 'yargs/helpers'
 import chalk from 'chalk'
 import https from 'https'
+import net from 'net'
+import find from 'find-process'
 
 // Directory setup
 const scriptDir = process.cwd() // Use the current working directory
 const repoDir = scriptDir
 const cacheDir = path.join(repoDir, '.cache')
 const rhDir = path.join(cacheDir, 'restheart')
+
 let httpPort = 8080
+let debugMode = false
 
 // Function to display messages
 function msg(message, color = chalk.reset) {
@@ -24,7 +28,7 @@ function msg(message, color = chalk.reset) {
 
 // Function to handle script cleanup
 function cleanup() {
-    msg('Bye.', chalk.green)
+    msg('\nDone.\n', chalk.green)
 }
 
 // Function to check if a command exists
@@ -35,29 +39,56 @@ function commandExists(command) {
     }
 }
 
-// Function to kill RESTHeart
-function killRESTHeart() {
-    if (isRESTHeartRunning()) {
-        const spinner = ora(
-            `Killing RESTHeart at localhost:${httpPort}`
-        ).start()
-        shell.exec(`kill $(lsof -t -i:${httpPort})`, { silent: true })
-        spinner.render()
-        shell.exec(`kill $(lsof -t -i:$((httpPort + 1000)))`, { silent: true })
-        spinner.render()
-        spinner.succeed(`RESTHeart at localhost:${httpPort} killed`)
-        spinner.stop()
-    } else {
-        msg(`RESTHeart is not running on port ${httpPort}`, chalk.cyan)
+// Function to kill a process on a given port
+async function killProcessOnPort(port) {
+    const processes = await find('port', port)
+    if (processes.length === 0) {
+        msg(`No process found on port ${port}`, chalk.cyan)
+        return
     }
+    processes.forEach((proc) => {
+        try {
+            process.kill(proc.pid, 'SIGTERM')
+            msg(`Process on port ${port} killed`, chalk.cyan)
+        } catch (err) {
+            msg(`Failed to kill process ${proc.pid}: ${err}`, chalk.red)
+        }
+    })
+}
+
+// Function to kill RESTHeart
+async function killRESTHeart() {
+    msg(`Killing RESTHeart at localhost:${httpPort}`, chalk.yellow)
+
+    await Promise.all([
+        killProcessOnPort(httpPort),
+        killProcessOnPort(httpPort + 1000),
+    ])
+}
+
+function checkPort(port) {
+    return new Promise((resolve) => {
+        const client = net.createConnection({ port }, () => {
+            client.end()
+            resolve(true)
+        })
+        client.on('error', () => {
+            resolve(false)
+        })
+    })
 }
 
 // Function to check if RESTHeart is running
-function isRESTHeartRunning() {
-    return (
-        shell.exec(`lsof -i:${httpPort}`, { silent: true }).code === 0 ||
-        shell.exec(`lsof -i:$((httpPort + 1000))`, { silent: true }).code === 0
-    )
+async function isRESTHeartRunning() {
+    const isRunningOnHttpPort = await checkPort(httpPort)
+    const isRunningOnHttpPortPlus1000 = await checkPort(httpPort + 1000)
+
+    if (debugMode) {
+        msg(`isRunningOnHttpPort: ${isRunningOnHttpPort}`)
+        msg(`isRunningOnHttpPortPlus1000: ${isRunningOnHttpPortPlus1000}\n`)
+    }
+
+    return isRunningOnHttpPort || isRunningOnHttpPortPlus1000
 }
 
 // Function to install RESTHeart
@@ -207,6 +238,15 @@ function deploy() {
         path.join(rhDir, 'plugins')
     )
     spinner.succeed('Plugins deployed')
+
+    if (debugMode) {
+        let count = 1
+        console.log('\n')
+        shell.ls(path.join(rhDir, 'plugins')).forEach((file) => {
+            msg(`${count++}\t${file}`)
+        })
+        console.log('\n')
+    }
 }
 
 function onlyPrintConfig(restheartOptions) {
@@ -214,9 +254,9 @@ function onlyPrintConfig(restheartOptions) {
 }
 
 // Function to run RESTHeart
-function run(restheartOptions) {
+async function run(restheartOptions) {
     commandExists('java')
-    if (!isRESTHeartRunning()) {
+    if (!(await isRESTHeartRunning())) {
         if (onlyPrintConfig(restheartOptions)) {
             msg('Printing RESTHeart configuration', chalk.yellow)
             shell.exec(
@@ -231,7 +271,7 @@ function run(restheartOptions) {
         // Wait for RESTHeart to start
         const spinner = ora('RESTHeart is starting...\n').start()
         let timeout = 30
-        while (!isRESTHeartRunning()) {
+        while (!(await isRESTHeartRunning())) {
             spinner.render()
             shell.exec('sleep 0.2')
             if (timeout-- <= 0) {
@@ -249,27 +289,30 @@ function run(restheartOptions) {
 
 // Function to watch files using chokidar
 function watchFiles(restheartOptions) {
+    msg('Watching for file changes...', chalk.cyan)
+
     const watcher = chokidar.watch(path.join(repoDir, 'src/main/**/*.java'), {
         ignored: /(^|[\\/])\../, // ignore dotfiles
         persistent: true,
     })
 
-    watcher.on('change', (filePath) => {
+    watcher.on('change', async (filePath) => {
         msg(`File changed: ${filePath}`, chalk.yellow)
-        if (isRESTHeartRunning()) killRESTHeart()
+        if (await isRESTHeartRunning()) await killRESTHeart()
         build('package -DskipTests=true')
         deploy()
         run(restheartOptions)
         msg('Watching for file changes...', chalk.cyan)
     })
-
-    msg('Watching for file changes...', chalk.cyan)
 }
 
 // Function to handle running commands
-function runCommand(command, options) {
+async function runCommand(command, options) {
     if (options.port) {
         httpPort = options.port
+    }
+    if (options.debug) {
+        debugMode = true
     }
     switch (command) {
         case 'install':
@@ -280,7 +323,7 @@ function runCommand(command, options) {
             deploy()
             break
         case 'run':
-            if (isRESTHeartRunning()) killRESTHeart()
+            if (await isRESTHeartRunning()) await killRESTHeart()
             if (options.build) {
                 build('clean package -DskipTests=true')
                 deploy()
@@ -288,16 +331,16 @@ function runCommand(command, options) {
             run(options.restheartOptions)
             break
         case 'test':
-            if (isRESTHeartRunning()) killRESTHeart()
+            if (await isRESTHeartRunning()) await killRESTHeart()
             build('clean package -DskipTests=true')
             deploy()
             run(options.restheartOptions)
             break
         case 'kill':
-            killRESTHeart()
+            await killRESTHeart()
             break
         case 'watch':
-            if (isRESTHeartRunning()) killRESTHeart()
+            if (await isRESTHeartRunning()) await killRESTHeart()
             if (options.build) {
                 build('clean package -DskipTests=true')
                 deploy()
@@ -312,13 +355,19 @@ function runCommand(command, options) {
 }
 
 // Intercept CTRL-C and kill RESTHeart before exiting
-process.on('SIGINT', function () {
-    if (isRESTHeartRunning()) killRESTHeart()
+process.on('SIGINT', async function () {
+    console.log('\n')
+    if (await isRESTHeartRunning()) await killRESTHeart()
     process.exit()
 })
 
 // Register cleanup function to run on exit
 process.on('exit', cleanup)
+
+console.log('\n')
+msg('============================', chalk.green)
+msg('  Welcome to RESTHeart CLI')
+msg('============================\n', chalk.green)
 
 // Command line arguments setup with command and options handling
 yargs(hideBin(process.argv))
@@ -425,7 +474,13 @@ yargs(hideBin(process.argv))
             runCommand('watch', { build: argv.build, restheartOptions })
         }
     )
+    .option('debug', {
+        alias: 'd',
+        type: 'boolean',
+        description: 'Run in debug mode',
+        default: false,
+    })
     .help('h')
     .alias('h', 'help')
     .demandCommand(1, 'You need at least one command before moving on')
-    .parseSync()
+    .parse()
