@@ -121,7 +121,8 @@ function main() {
                     })
             },
             (argv) => {
-                const restheartOptions = (argv['--'] && argv['--'].join(' ')) || ''
+                const restheartOptions =
+                    (argv['--'] && argv['--'].join(' ')) || '-o etc/dev.yml'
                 runCommand('watch', { build: argv.build, restheartOptions })
             }
         )
