@@ -82,6 +82,10 @@ function main() {
                         type: 'string',
                         default: '',
                     })
+                    .example(
+                        'rh run -- -o etc/localhost.yml',
+                        'Start or restart RESTHeart with custom options'
+                    )
             },
             (argv) => {
                 const restheartOptions = (argv['--'] && argv['--'].join(' ')) || ''
