@@ -25,8 +25,6 @@ function main() {
     msg('  Welcome to RESTHeart CLI')
     msg(chalk.green('============================\n'))
 
-    rh.printConfiguration()
-
     // Command line arguments setup with command and options handling
     yargs(hideBin(process.argv))
         .strict()
@@ -154,6 +152,8 @@ function main() {
         if (options.debug) {
             rh.setDebugMode(options.debug)
         }
+
+        rh.printConfiguration()
 
         switch (command) {
             case 'install':
