@@ -17,13 +17,15 @@ function main() {
 
     // Register cleanup function to run on exit
     process.on('exit', () => {
-        msg('\nDone.\n', chalk.green)
+        msg(chalk.green('\nDone.\n'))
     })
 
     console.log('\n')
-    msg('============================', chalk.green)
+    msg(chalk.green('============================'))
     msg('  Welcome to RESTHeart CLI')
-    msg('============================\n', chalk.green)
+    msg(chalk.green('============================\n'))
+
+    rh.printConfiguration()
 
     // Command line arguments setup with command and options handling
     yargs(hideBin(process.argv))
@@ -118,7 +120,10 @@ function main() {
                         alias: 'p',
                         type: 'number',
                         description: 'HTTP port',
-                    })
+                    }).example(
+                        'rh watch -- -o etc/dev.yml',
+                        'Watch sources and build and deploy plugins on changes, restarting RESTHeart with custom options'
+                    )
             },
             (argv) => {
                 const restheartOptions =
@@ -188,7 +193,7 @@ function main() {
 
     async function checkAndKill() {
         if (await rh.isRunning()) {
-            msg('RESTHeart is already running', chalk.red)
+            msg(chalk.red('RESTHeart is already running'))
             await rh.kill()
         }
     }
