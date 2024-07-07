@@ -1,4 +1,3 @@
-
 # RESTHeart CLI Tool
 
 ## Introduction
@@ -9,10 +8,10 @@ The RESTHeart CLI tool, named `rh`, is designed to assist developers in implemen
 
 Before using the CLI tool, ensure that you have the following installed:
 
-- Node.js (version 12.x or higher)
-- npm (version 6.x or higher)
-- Maven (`mvn`)
-- Java Development Kit (JDK)
+-   Node.js (version 12.x or higher)
+-   npm (version 6.x or higher)
+-   Maven (`mvn`)
+-   Java Development Kit (JDK)
 
 Additionally, the CLI tool must be run within a Maven project as it relies on Maven for building and deploying the plugins.
 
@@ -36,131 +35,131 @@ The CLI tool supports multiple commands. Below is the list of available commands
 
 1. **install [restheartVersion]**
 
-   Install a specific version of RESTHeart.
+    Install a specific version of RESTHeart.
 
-   ```sh
-   Usage: rn install [restheartVersion]
-   
-   Options:
-     --force, -f  Force reinstalling RESTHeart
-   ```
+    ```sh
+    Usage: rn install [restheartVersion]
+
+    Options:
+      --force, -f  Force reinstalling RESTHeart
+    ```
 
 2. **build**
 
-   Build and deploy the plugin, restarting RESTHeart (default).
+    Build and deploy the plugin, restarting RESTHeart (default).
 
-   ```sh
-   Usage: rn build
-   ```
+    ```sh
+    Usage: rn build
+    ```
 
 3. **run [restheartOptions..]**
 
-   Start or restart RESTHeart with optional build and additional options.
+    Start or restart RESTHeart with optional build and additional options.
 
-   ```sh
-   Usage: rn run -- [restheartOptions..]
-   
-   Options:
-     --build, -b  Build and deploy the plugin before running RESTHeart
-     --port, -p   HTTP port
-   ```
+    ```sh
+    Usage: rn run -- [restheartOptions..]
+
+    Options:
+      --build, -b  Build and deploy the plugin before running RESTHeart
+      --port, -p   HTTP port
+    ```
 
 4. **test**
 
-   Start or restart RESTHeart for integration tests (e.g., `mvn verify`).
+    Start or restart RESTHeart for integration tests (e.g., `mvn verify`).
 
-   ```sh
-   Usage: rn test
-   ```
+    ```sh
+    Usage: rn test
+    ```
 
 5. **kill**
 
-   Kill RESTHeart.
+    Kill RESTHeart.
 
-   ```sh
-   Usage: rn kill
-   
-   Options:
-     --port, -p  HTTP port
-   ```
+    ```sh
+    Usage: rn kill
+
+    Options:
+      --port, -p  HTTP port
+    ```
 
 6. **watch**
 
-   Watch sources and build and deploy plugins on changes, restarting RESTHeart.
+    Watch sources and build and deploy plugins on changes, restarting RESTHeart.
 
-   ```sh
-   Usage: rn watch
-   
-   Options:
-     --build, -b  Build and deploy the plugin before running RESTHeart
-     --port, -p   HTTP port
-   ```
+    ```sh
+    Usage: rn watch
+
+    Options:
+      --build, -b  Build and deploy the plugin before running RESTHeart
+      --port, -p   HTTP port
+    ```
 
 ### Global Options
 
-- **--debug, -d**
+-   **--debug, -d**
 
-  Run in debug mode.
+    Run in debug mode.
 
-- **--help, -h**
+-   **--help, -h**
 
-  Display help for commands.
+    Display help for commands.
 
 ### Examples
 
-- Install the latest version of RESTHeart:
+-   Install the latest version of RESTHeart:
 
-  ```sh
-  rn install
-  ```
+    ```sh
+    rn install
+    ```
 
-- Install a specific version of RESTHeart:
+-   Install a specific version of RESTHeart:
 
-  ```sh
-  rn install 8.0.3
-  ```
+    ```sh
+    rn install 8.0.3
+    ```
 
-- Force reinstall RESTHeart:
+-   Force reinstall RESTHeart:
 
-  ```sh
-  rn install --force
-  ```
+    ```sh
+    rn install --force
+    ```
 
-- Print the installed RESTHeart version and exit:
+-   Print the installed RESTHeart version and exit:
 
-  ```sh
-  rh run -- "-v"
-  ```
+    ```sh
+    rh run -- "-v"
+    ```
 
-- Build and deploy the plugin:
+-   Build and deploy the plugin:
 
-  ```sh
-  rn build
-  ```
+    ```sh
+    rn build
+    ```
 
-- Run RESTHeart on a specific port (default is 8080). By default it looks for a `etc/dev.yml` [override file](https://restheart.org/docs/configuration#modify-the-configuration-with-an-override-file). Any parameter after the `--` separator is passed as is to restheart.jar.
+-   Run RESTHeart on a specific port (default is 8080). By default it looks for a `etc/dev.yml` [override file](https://restheart.org/docs/configuration#modify-the-configuration-with-an-override-file). Any parameter after the `--` separator is passed as is to restheart.jar.
 
-  ```sh
-  rh run --port 8080 -- "-o etc/localhost.yml"
-  ```
+    ```sh
+    rh run --port 8080 -- "-o etc/localhost.yml"
+    ```
 
-- Run RESTHeart with build:
+-   Run RESTHeart with build:
 
-  ```sh
-  rn run --build
-  ```
+    ```sh
+    rn run --build
+    ```
 
-- Kill RESTHeart:
+-   Kill RESTHeart:
 
-  ```sh
-  rn kill
-  ```
+    ```sh
+    rn kill
+    ```
 
-- Watch for changes and restart RESTHeart. By default it looks for a `etc/dev.yml` [override file](https://restheart.org/docs/configuration#modify-the-configuration-with-an-override-file). Any parameter after the `--` separator is passed as is to restheart.jar.
+-   Watch for changes and restart RESTHeart. By default it looks for a `etc/dev.yml` [override file](https://restheart.org/docs/configuration#modify-the-configuration-with-an-override-file). Any parameter after the `--` separator is passed as is to restheart.jar.
 
-  ```sh
-  rn watch -- "-o etc/localhost.yml"
-  ```
+    ```sh
+    rn watch -- "-o etc/localhost.yml"
+    ```
 
 ## Contribution
 
@@ -178,7 +177,7 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-For any issues or questions, please open an issue on the [GitHub repository](<repository-url>).
+For any issues or questions, please open an issue on the [GitHub repository](repository-url).
 
 ---
 
