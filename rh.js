@@ -120,14 +120,14 @@ function main() {
                         alias: 'p',
                         type: 'number',
                         description: 'HTTP port',
-                    }).example(
-                        'rh watch -- -o etc/dev.yml',
+                    })
+                    .example(
+                        'rh watch -- -o etc/localhost.yml',
                         'Watch sources and build and deploy plugins on changes, restarting RESTHeart with custom options'
                     )
             },
             (argv) => {
-                const restheartOptions =
-                    (argv['--'] && argv['--'].join(' ')) || '-o etc/dev.yml'
+                const restheartOptions = (argv['--'] && argv['--'].join(' ')) || '-o etc/dev.yml'
                 runCommand('watch', { build: argv.build, restheartOptions })
             }
         )
