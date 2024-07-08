@@ -3,10 +3,10 @@
 import chalk from 'chalk'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
-import { RESTHeart, msg } from './lib/restheart.js'
+import { RESTHeartManager, msg } from './lib/restheart.js'
 
 function main() {
-    const rh = new RESTHeart()
+    const rh = new RESTHeartManager()
 
     // Intercept CTRL-C and kill RESTHeart before exiting
     process.on('SIGINT', async () => {
@@ -197,7 +197,7 @@ function main() {
 
     async function checkAndKill() {
         if (await rh.isRunning()) {
-            msg(chalk.red('RESTHeart is already running'))
+            msg(chalk.cyan('RESTHeart is already running'))
             await rh.kill()
         }
     }
