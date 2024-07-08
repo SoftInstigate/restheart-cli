@@ -2,20 +2,20 @@
 
 ## Introduction
 
-The RESTHeart CLI tool, named `rh`, is designed to assist developers in implementing plugins for RESTHeart. It provides various commands to manage the lifecycle of RESTHeart, including installing, building, running, testing, and watching for changes.
+The RESTHeart CLI tool, named `rh`, is designed to assist developers in implementing [plugins for RESTHeart](https://restheart.org/docs/plugins/overview). It provides various commands to manage the lifecycle of RESTHeart, including installing, building, running, testing, and watching for changes.
 
 ### Prerequisites
 
 Before using the CLI tool, ensure that you have the following installed:
 
--   Node.js (version 12.x or higher)
--   npm (version 6.x or higher)
+-   Node.js (version 16.x or higher)
+-   npm
 -   Maven (`mvn`)
--   Java Development Kit (JDK)
+-   Java Development Kit (JDK) 17 or higher
 
-Additionally, the CLI tool must be run within a Maven project as it relies on Maven for building and deploying the plugins.
+The CLI tool must be run within a Maven project as it relies on Maven for building and deploying the plugins.
 
-**Note**: you could install and manage both `mvn` and `java` with [sdkman](https://sdkman.io/).
+> You could install and manage both `mvn` and `java` with [sdkman](https://sdkman.io/).
 
 ## Installation
 
