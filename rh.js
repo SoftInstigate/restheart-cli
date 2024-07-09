@@ -20,10 +20,11 @@ function main() {
         msg(chalk.green('\nDone.\n'))
     })
 
+    // Print welcome message
     console.log('\n')
-    msg(chalk.green('============================'))
-    msg('  Welcome to RESTHeart CLI')
-    msg(chalk.green('============================\n'))
+    msg(chalk.green(' ============================'))
+    msg('   Welcome to RESTHeart CLI')
+    msg(chalk.green(' ============================\n'))
 
     // Command line arguments setup with command and options handling
     yargs(hideBin(process.argv))
@@ -33,11 +34,11 @@ function main() {
         })
         .usage('Usage: $0 [command] [options]')
         .command(
-            ['install [restheartVersion]', 'i'],
+            ['install [restheart-version]', 'i'],
             'Install RESTHeart',
             (yargs) => {
                 yargs
-                    .positional('restheartVersion', {
+                    .positional('restheart-version', {
                         describe: 'RESTHeart version to install',
                         type: 'string',
                         default: 'latest',
@@ -48,11 +49,7 @@ function main() {
                         description: 'Force reinstalling RESTHeart',
                     })
             },
-            (argv) =>
-                runCommand('install', {
-                    restheartVersion: argv.restheartVersion,
-                    forceInstall: argv.force,
-                })
+            (argv) => runCommand('install', argv)
         )
         .command(
             ['build', 'b'],
@@ -61,7 +58,7 @@ function main() {
             (argv) => runCommand('build', argv)
         )
         .command(
-            ['run [restheartOptions..]', 'r'],
+            ['run [restheart-options..]', 'r'],
             'Start or restart RESTHeart',
             (yargs) => {
                 yargs
@@ -75,7 +72,7 @@ function main() {
                         type: 'number',
                         description: 'HTTP port',
                     })
-                    .positional('restheartOptions', {
+                    .positional('restheart-options', {
                         describe: 'Options to pass to RESTHeart',
                         type: 'string',
                         default: '',
@@ -86,8 +83,7 @@ function main() {
                     )
             },
             (argv) => {
-                const restheartOptions = (argv['--'] && argv['--'].join(' ')) || ''
-                runCommand('run', { build: argv.build, port: argv.port, restheartOptions })
+                runCommand('run', argv)
             }
         )
         .command(
@@ -129,15 +125,13 @@ function main() {
                     )
             },
             (argv) => {
-                const restheartOptions = (argv['--'] && argv['--'].join(' ')) || '-o etc/dev.yml'
-                runCommand('watch', { build: argv.build, restheartOptions })
+                runCommand('watch', argv)
             }
         )
         .option('debug', {
             alias: 'd',
             type: 'boolean',
             description: 'Run in debug mode',
-            default: false,
         })
         .help('h')
         .alias('h', 'help')
@@ -145,60 +139,60 @@ function main() {
         .parse()
 
     // Function to handle running commands
-    async function runCommand(command, options) {
-        if (options.port) {
-            rh.setHttpPort(options.port)
-        }
-        if (options.debug) {
-            rh.setDebugMode(options.debug)
-        }
+    async function runCommand(command, argv) {
+        const restheartOptions = (argv['--'] && argv['--'].join(' ')) || '-o etc/dev.yml'
 
-        rh.printConfiguration()
+        if (argv.port) {
+            rh.setHttpPort(argv.port)
+        }
+        if (argv.debug) {
+            msg(
+                chalk.cyan('Running command: ') +
+                    command +
+                    chalk.cyan(' with options:\n') +
+                    JSON.stringify(argv, null, 2)
+            )
+            rh.setDebugMode(argv.debug)
+            rh.printConfiguration()
+        }
 
         switch (command) {
             case 'install':
-                rh.install(options.restheartVersion, options.forceInstall)
+                rh.install(argv.restheartVersion, argv.force)
                 break
             case 'build':
                 rh.build('clean package')
                 rh.deploy()
                 break
             case 'run':
-                await checkAndKill()
-                if (options.build) {
+                await rh.checkAndKill()
+                if (argv.build) {
                     rh.build('clean package -DskipTests=true')
                     rh.deploy()
                 }
-                await rh.run(options.restheartOptions)
+                await rh.run(restheartOptions)
                 break
             case 'test':
-                await checkAndKill()
+                await rh.checkAndKill()
                 rh.build('clean package -DskipTests=true')
                 rh.deploy()
-                await rh.run(options.restheartOptions)
+                await rh.run(restheartOptions)
                 break
             case 'kill':
-                await rh.kill()
+                await rh.checkAndKill()
                 break
             case 'watch':
-                await checkAndKill()
-                if (options.build) {
+                await rh.checkAndKill()
+                if (argv.build) {
                     rh.build('clean package -DskipTests=true')
                     rh.deploy()
                 }
-                await rh.run(options.restheartOptions)
-                rh.watchFiles(options.restheartOptions)
+                await rh.run(restheartOptions)
+                rh.watchFiles(restheartOptions)
                 break
             default:
                 yargs.showHelp()
                 break
-        }
-    }
-
-    async function checkAndKill() {
-        if (await rh.isRunning()) {
-            msg(chalk.cyan('RESTHeart is already running'))
-            await rh.kill()
         }
     }
 }
