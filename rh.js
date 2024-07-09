@@ -177,10 +177,12 @@ function main() {
                 rh.deploy()
                 break
             case 'run':
-                await rh.checkAndKill()
-                if (argv.build) {
-                    rh.build('clean package -DskipTests=true')
-                    rh.deploy()
+                if (!rh.onlyPrintConfig(restheartOptions)) {
+                    await rh.checkAndKill()
+                    if (argv.build) {
+                        rh.build('clean package -DskipTests=true')
+                        rh.deploy()
+                    }
                 }
                 await rh.run(restheartOptions)
                 break
