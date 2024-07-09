@@ -128,6 +128,18 @@ function main() {
                 runCommand('watch', argv)
             }
         )
+        .command(
+            ['status', 's'],
+            'Show the status of RESTHeart',
+            (yargs) => {
+                yargs.option('port', {
+                    alias: 'p',
+                    type: 'number',
+                    description: 'HTTP port',
+                })
+            },
+            (argv) => runCommand('status', argv)
+        )
         .option('debug', {
             alias: 'd',
             type: 'boolean',
@@ -189,6 +201,9 @@ function main() {
                 }
                 await rh.run(restheartOptions)
                 rh.watchFiles(restheartOptions)
+                break
+            case 'status':
+                rh.status()
                 break
             default:
                 yargs.showHelp()
