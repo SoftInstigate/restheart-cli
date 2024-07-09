@@ -38,7 +38,7 @@ The CLI tool supports multiple commands. Below is the list of available commands
     Install a specific version of RESTHeart.
 
     ```sh
-    Usage: rn install [restheartVersion]
+    Usage: rh install [restheartVersion]
 
     Options:
       --force, -f  Force reinstalling RESTHeart
@@ -49,7 +49,7 @@ The CLI tool supports multiple commands. Below is the list of available commands
     Build and deploy the plugin, restarting RESTHeart (default).
 
     ```sh
-    Usage: rn build
+    Usage: rh build
     ```
 
 3. **run [restheartOptions..]**
@@ -57,7 +57,7 @@ The CLI tool supports multiple commands. Below is the list of available commands
     Start or restart RESTHeart with optional build and additional options.
 
     ```sh
-    Usage: rn run -- [restheartOptions..]
+    Usage: rh run -- [restheartOptions..]
 
     Options:
       --build, -b  Build and deploy the plugin before running RESTHeart
@@ -69,7 +69,7 @@ The CLI tool supports multiple commands. Below is the list of available commands
     Start or restart RESTHeart for integration tests (e.g., `mvn verify`).
 
     ```sh
-    Usage: rn test
+    Usage: rh test
     ```
 
 5. **kill**
@@ -77,7 +77,7 @@ The CLI tool supports multiple commands. Below is the list of available commands
     Kill RESTHeart.
 
     ```sh
-    Usage: rn kill
+    Usage: rh kill
 
     Options:
       --port, -p  HTTP port
@@ -88,12 +88,22 @@ The CLI tool supports multiple commands. Below is the list of available commands
     Watch sources and build and deploy plugins on changes, restarting RESTHeart.
 
     ```sh
-    Usage: rn watch
+    Usage: rh watch
 
     Options:
       --build, -b  Build and deploy the plugin before running RESTHeart
       --port, -p   HTTP port
     ```
+
+7. **status**
+
+   Shows the status of RESTHeart. This command can be invoked with the '-p' or '--port' option to specify the HTTP port.
+
+   ```sh
+   Usage: rh status
+
+   Options:
+    --port, -p   HTTP port
 
 ### Global Options
 
@@ -110,19 +120,19 @@ The CLI tool supports multiple commands. Below is the list of available commands
 -   Install the latest version of RESTHeart:
 
     ```sh
-    rn install
+    rh install
     ```
 
 -   Install a specific version of RESTHeart:
 
     ```sh
-    rn install 8.0.3
+    rh install 8.0.3
     ```
 
 -   Force reinstall RESTHeart:
 
     ```sh
-    rn install --force
+    rh install --force
     ```
 
 -   Print the installed RESTHeart version and exit:
@@ -134,7 +144,7 @@ The CLI tool supports multiple commands. Below is the list of available commands
 -   Build and deploy the plugin:
 
     ```sh
-    rn build
+    rh build
     ```
 
 -   Run RESTHeart on a specific port (default is 8080). By default it looks for a `etc/dev.yml` [override file](https://restheart.org/docs/configuration#modify-the-configuration-with-an-override-file). Any parameter after the `--` separator is passed as is to restheart.jar.
@@ -146,19 +156,19 @@ The CLI tool supports multiple commands. Below is the list of available commands
 -   Run RESTHeart with build:
 
     ```sh
-    rn run --build
+    rh run --build
     ```
 
 -   Kill RESTHeart:
 
     ```sh
-    rn kill
+    rh kill
     ```
 
 -   Watch for changes and restart RESTHeart. By default it looks for a `etc/dev.yml` [override file](https://restheart.org/docs/configuration#modify-the-configuration-with-an-override-file). Any parameter after the `--` separator is passed as is to restheart.jar.
 
     ```sh
-    rn watch -- "-o etc/localhost.yml"
+    rh watch -- "-o etc/localhost.yml"
     ```
 
 ## Contribution
