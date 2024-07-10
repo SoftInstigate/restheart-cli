@@ -87,12 +87,6 @@ function main() {
             }
         )
         .command(
-            ['test', 't'],
-            'Start or restart RESTHeart for integration tests (e.g., mvn verify)',
-            {},
-            (argv) => runCommand('test', argv)
-        )
-        .command(
             ['kill', 'k'],
             'Kill RESTHeart',
             (yargs) => {
@@ -184,12 +178,6 @@ function main() {
                         rh.deploy()
                     }
                 }
-                await rh.run(restheartOptions)
-                break
-            case 'test':
-                await rh.checkAndKill()
-                rh.build('clean package -DskipTests=true')
-                rh.deploy()
                 await rh.run(restheartOptions)
                 break
             case 'kill':
