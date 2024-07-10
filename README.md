@@ -64,15 +64,7 @@ The CLI tool supports multiple commands. Below is the list of available commands
       --port, -p   HTTP port
     ```
 
-4. **test**
-
-    Start or restart RESTHeart for integration tests (e.g., `mvn verify`).
-
-    ```sh
-    Usage: rh test
-    ```
-
-5. **kill**
+4. **kill**
 
     Kill RESTHeart.
 
@@ -83,7 +75,7 @@ The CLI tool supports multiple commands. Below is the list of available commands
       --port, -p  HTTP port
     ```
 
-6. **watch**
+5. **watch**
 
     Watch sources and build and deploy plugins on changes, restarting RESTHeart.
 
@@ -95,7 +87,7 @@ The CLI tool supports multiple commands. Below is the list of available commands
       --port, -p   HTTP port
     ```
 
-7. **status**
+6. **status**
 
    Shows the status of RESTHeart. This command can be invoked with the '-p' or '--port' option to specify the HTTP port.
 
@@ -141,6 +133,19 @@ The CLI tool supports multiple commands. Below is the list of available commands
     rh run -- "-v"
     ```
 
+-   Build and run RESTHeart overriding the default configuration with an [override file](https://restheart.org/docs/configuration#modify-the-configuration-with-an-override-file):
+
+    ```sh
+    rh run --build -- "-o overrides.conf"
+    ```
+
+-   Run RESTHeart by overriding the default configuration with the [`RHO` environment variable](https://restheart.org/docs/configuration#modify-the-configuration-with-the-rho-env-var):
+
+    ```sh
+    RHO='/mclient/connection-string->"mongodb://127.0.0.1";/mongo/mongo-mounts[1]->{"where: "/api", "what": "mydb"}' rh run
+    ```
+
+
 -   Build and deploy the plugin:
 
     ```sh
@@ -151,12 +156,6 @@ The CLI tool supports multiple commands. Below is the list of available commands
 
     ```sh
     rh run --port 8080 -- "-o etc/localhost.yml"
-    ```
-
--   Run RESTHeart with build:
-
-    ```sh
-    rh run --build
     ```
 
 -   Kill RESTHeart:
