@@ -146,7 +146,7 @@ function main() {
 
     // Function to handle running commands
     async function runCommand(command, argv) {
-        const restheartOptions = (argv['--'] && argv['--'].join(' ')) || '-o etc/dev.yml'
+        const restheartOptions = (argv['--'] && argv['--'].join(' ')) || ''
 
         if (argv.port) {
             rh.setHttpPort(argv.port)
