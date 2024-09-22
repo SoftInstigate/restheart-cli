@@ -30,8 +30,8 @@
     "description": "A command line interface to manage RESTHeart instances",
     "dependencies": {
         "chokidar": "^3.6.0",
-        "find-process": "^1.4.7",
         "ora": "^8.0.1",
+        "ps-list": "^8.1.1",
         "shelljs": "^0.8.5",
         "yargs": "^17.7.2"
     },
