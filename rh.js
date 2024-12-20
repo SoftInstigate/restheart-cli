@@ -174,7 +174,7 @@ function main() {
                 if (!rh.onlyPrintConfig(restheartOptions)) {
                     await rh.checkAndKill()
                     if (argv.build) {
-                        rh.build('clean package -DskipTests=true')
+                        rh.build('clean package', true)
                         rh.deploy()
                     }
                 }
@@ -186,7 +186,7 @@ function main() {
             case 'watch':
                 await rh.checkAndKill()
                 if (argv.build) {
-                    rh.build('clean package -DskipTests=true')
+                    rh.build('clean package', true)
                     rh.deploy()
                 }
                 await rh.run(restheartOptions)
