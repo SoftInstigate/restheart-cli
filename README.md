@@ -2,16 +2,18 @@
 
 A command-line interface for managing [RESTHeart](https://restheart.org) instances, simplifying development, installation, and operation workflows.
 
-RESTHeart simplifies backend development by eliminating the need to write boilerplate CRUD operations and authentication code, allowing developers to focus on building their applications.
+ > RESTHeart simplifies backend development by eliminating the need to write boilerplate CRUD operations and authentication code, allowing developers to focus on building their applications.
 
 ## Overview
 
-RESTHeart CLI (`rh`) is a powerful tool designed to streamline the **development** and **management** of **RESTHeart applications**. It provides a convenient interface for common tasks such as:
+RESTHeart CLI (`rh`) is a powerful tool designed to streamline the development and management of RESTHeart Java applications. It provides a convenient interface for common tasks such as:
 
-- Installing and updating RESTHeart
-- Building and deploying plugins
-- Starting and stopping RESTHeart instances
-- Watching for code changes and automatically rebuilding/redeploying
+- **Installing** and **updating** RESTHeart
+- **Building** and **deploying** Java plugins
+- **Starting** and **stopping** RESTHeart instances
+- **Watching** for code changes and automatically rebuilding/redeploying
+
+> Typically, you will begin with a Maven project. Refer to the [official documentation](https://restheart.org/docs/plugins/overview) for detailed instructions on implementing custom plugins.
 
 ## Installation
 
@@ -23,7 +25,7 @@ RESTHeart CLI (`rh`) is a powerful tool designed to streamline the **development
 
 ### Install from npm
 
-TODO -> this is not a published npm package yet.
+⚠️ TODO -> this is not a published npm package yet.
 
 ### Install from source
 
@@ -185,6 +187,8 @@ A typical development workflow with RESTHeart CLI:
 4. RESTHeart CLI automatically detects changes, rebuilds and restarts
 5. Check status: `rh status`
 6. When done, stop RESTHeart: `rh kill`
+
+👉 Look at the [Usage Guide](/usage-guide.md) for more practical examples for common workflows.
 
 ## Troubleshooting
 
