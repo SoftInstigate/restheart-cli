@@ -4,11 +4,75 @@ This guide provides practical examples for common workflows with the RESTHeart C
 
 ## Table of Contents
 
-1. [Installation](#installation)
-2. [Development Workflow](#development-workflow)
-3. [Build and Deployment](#build-and-deployment)
-4. [Process Management](#process-management)
-5. [Advanced Usage](#advanced-usage)
+1. [Quickstart](#quickstart)
+2. [Installation](#installation)
+3. [Development Workflow](#development-workflow)
+4. [Build and Deployment](#build-and-deployment)
+5. [Process Management](#process-management)
+6. [Advanced Usage](#advanced-usage)
+7. [Troubleshooting](#troubleshooting)
+
+## Quickstart
+
+RESTHeart CLI makes it easy to develop and test plugins for RESTHeart. Here's how to get started:
+
+### Creating a New Plugin Project
+
+To create a new RESTHeart plugin project:
+
+1. **Clone the plugin skeleton repository**:
+   ```bash
+   git clone https://github.com/SoftInstigate/restheart-plugin-skeleton my-plugin
+   cd my-plugin
+   ```
+
+2. **Customize the project** (optional):
+   - Open the `pom.xml` file
+   - Update the `groupId` from `org.restheart` to your organization
+   - Update the `artifactId` from `restheart-plugin-skeleton` to your project name
+
+### Initial Setup
+
+ The `-s` option (standalone mode) disables MongoDB-dependent plugins. Use this option if you do not intend to connect to a MongoDB instance during runtime.
+
+ ⚠️ If you don't pass the `-s` option RESTHeart tries to connect to a MongoDB instace running at `localhost:27017`. If that is not present then RESTHeart fails to start.
+
+Once you have your plugin project set up:
+
+```bash
+# Install RESTHeart (if you haven't already)
+rh install
+
+# Build your plugin
+rh build
+
+# Run RESTHeart with your plugin (passing the -s standalone flag, to avoid connecting to MongoDB)
+rh run -- -s
+
+# For active development, use watch mode (passing the -s standalone flag, to avoid connecting to MongoDB)
+# the optional --build flag forces an initial rebuild of the project
+rh watch --build -- -s
+```
+
+The watch mode will automatically **rebuild** and **restart** RESTHeart whenever you make changes to your code, making the development process much smoother.
+
+### Development by connecting to a specific MongoDB instance
+
+💡 You can use the `rh` command with the `run` or `watch` option passing the `/mclient/connecartion-string` via the `RHO` environmemt variable, to connect to a specific MongoDB instance. This way, you can develop locally but using a remote database.
+
+Example:
+
+```bash
+RHO='/mclient/connection-string->"mongodb://192.168.1.100:27017"' rh watch
+```
+
+### Next Steps
+
+After setting up your plugin project, you can:
+
+1. Explore the sample code in the `src` directory
+2. Modify the plugin code to implement your desired functionality
+3. Refer to the [RESTHeart documentation](https://restheart.org/docs/plugins/overview) for detailed information on plugin development
 
 ## Installation
 
@@ -52,6 +116,8 @@ rh watch
 # Start with file watching using a custom config file
 rh watch -- -o etc/dev-config.yml
 ```
+
+💡 Have a look at the [configuration section](https://restheart.org/docs/configuration) in the official documentation for the available configuration options.
 
 ### Development with Custom Settings
 
@@ -112,6 +178,8 @@ rh run --build
 ```
 
 ### Running with Custom Config
+
+💡 Have a look at the [configuration section](https://restheart.org/docs/configuration) in the official documentation for the available configuration options.
 
 ```bash
 # Run with a custom configuration file
