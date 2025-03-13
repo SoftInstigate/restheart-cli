@@ -52,6 +52,8 @@ rh run
 rh watch
 ```
 
+👉 Look at the [Usage Guide](/usage-guide.md) for more practical examples for common workflows.
+
 ## Commands
 
 ### Install RESTHeart
