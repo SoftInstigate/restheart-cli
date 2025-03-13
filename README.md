@@ -160,10 +160,12 @@ Options:
 
 These options can be used with any command:
 
+- `--version`: Display the version number of RESTHeart CLI
 - `--debug`, `-d`: Run in debug mode with additional diagnostic information
 - `--verbose`, `-v`: Show verbose output including debug messages
 - `--quiet`, `-q`: Show only error messages and suppress other output
 - `--timestamps`, `-t`: Add timestamps to log messages for better traceability
+- `--help`, `-h`: Show help information
 
 ## Configuration
 
