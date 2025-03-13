@@ -224,4 +224,4 @@ MIT
 
 ## Contributors
 
-- Maurizio Turatti <maurizio@softinstigate.com>
+- SoftInstigate <info@softinstigate.com>
