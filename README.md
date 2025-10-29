@@ -56,7 +56,7 @@ rh run
 rh watch
 ```
 
-👉 Look at the [Usage Guide](/usage-guide.md) for more practical examples for common workflows.
+👉 Look at the [Usage Guide](https://github.com/SoftInstigate/restheart-cli/blob/master/usage-guide.md) for more practical examples for common workflows.
 
 ## Commands
 
