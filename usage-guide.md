@@ -92,7 +92,7 @@ This will:
 ### Installing a Specific Version
 
 ```bash
-rh install 8.3.4
+rh install 8.10.1
 ```
 
 ### Updating or Reinstalling

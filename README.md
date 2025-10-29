@@ -65,7 +65,7 @@ rh install [restheart-version] [--force]
 ```
 
 Options:
-- `restheart-version`: Version to install (e.g., "latest", "8.3.4") (default: "latest")
+- `restheart-version`: Version to install (e.g., "latest", "8.10.1") (default: "latest")
 - `--force`, `-f`: Force reinstallation even if already installed
 
 Examples:
@@ -74,7 +74,7 @@ Examples:
 rh install
 
 # Install a specific version
-rh install 8.3.4
+rh install 8.10.1
 
 # Force reinstallation
 rh install --force
