@@ -21,6 +21,7 @@ RESTHeart CLI makes it easy to develop and test plugins for RESTHeart. Here's ho
 To create a new RESTHeart plugin project:
 
 1. **Clone the plugin skeleton repository**:
+
    ```bash
    git clone https://github.com/SoftInstigate/restheart-plugin-skeleton my-plugin
    cd my-plugin
@@ -85,6 +86,7 @@ rh install
 ```
 
 This will:
+
 - Download the latest RESTHeart release
 - Extract it to the `.cache/restheart` directory
 - Set up the required directory structure
@@ -283,6 +285,7 @@ Error: Port 8080 is already in use
 ```
 
 Resolution:
+
 ```bash
 # Kill any instances using that port
 rh kill --port 8080
@@ -298,6 +301,7 @@ Error: Maven build failed
 ```
 
 Resolution:
+
 ```bash
 # Check the Maven build directly
 ./mvnw clean package
@@ -313,6 +317,7 @@ Error: RESTHeart failed to start
 ```
 
 Resolution:
+
 ```bash
 # Check the log file
 cat restheart.log

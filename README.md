@@ -65,10 +65,12 @@ rh install [restheart-version] [--force]
 ```
 
 Options:
+
 - `restheart-version`: Version to install (e.g., "latest", "8.10.1") (default: "latest")
 - `--force`, `-f`: Force reinstallation even if already installed
 
 Examples:
+
 ```bash
 # Install the latest version
 rh install
@@ -89,6 +91,7 @@ rh build
 ```
 
 This command:
+
 1. Builds the project using Maven
 2. Deploys the built JARs to the RESTHeart plugins directory
 
@@ -101,11 +104,13 @@ rh run [restheart-options..] [--build] [--port PORT]
 ```
 
 Options:
+
 - `restheart-options`: Options to pass directly to RESTHeart (after -- separator)
 - `--build`, `-b`: Build and deploy the plugin before running RESTHeart
 - `--port`, `-p`: HTTP port for RESTHeart to listen on
 
 Examples:
+
 ```bash
 # Run with default settings
 rh run
@@ -126,6 +131,7 @@ rh kill [--port PORT]
 ```
 
 Options:
+
 - `--port`, `-p`: HTTP port of the RESTHeart instance to kill
 
 ### Watch for Changes
@@ -137,11 +143,13 @@ rh watch [--build] [--port PORT] [--debounce-time MS]
 ```
 
 Options:
+
 - `--build`, `-b`: Build and deploy the plugin before starting the watch process
 - `--port`, `-p`: HTTP port for RESTHeart to listen on
 - `--debounce-time`: Time in milliseconds to wait after the last file change before rebuilding (default: 1000)
 
 Example:
+
 ```bash
 # Watch source files with custom configuration
 rh watch -- -o etc/localhost.yml
@@ -156,6 +164,7 @@ rh status [--port PORT]
 ```
 
 Options:
+
 - `--port`, `-p`: HTTP port of the RESTHeart instance to check
 
 ## Global Options
