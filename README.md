@@ -23,9 +23,13 @@ RESTHeart CLI (`rh`) is a powerful tool designed to streamline the development a
 - Java JDK (v21 or later)
 - Maven (3.8 or later, if not using the included Maven wrapper)
 
-### Install from npm
+### Install from npm (recommended)
 
-⚠️ TODO -> this is not a published npm package yet.
+```bash
+npm install -g @softinstigate/rh
+# or use npx without global install:
+npx @softinstigate/rh --help
+```
 
 ### Install from source
 
