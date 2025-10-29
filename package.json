@@ -1,5 +1,5 @@
 {
-    "name": "rh",
+    "name": "@softinstigate/rh",
     "version": "0.2.4",
     "engines": {
         "node": ">=18.0.0"
