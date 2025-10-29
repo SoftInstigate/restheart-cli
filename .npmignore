@@ -1,0 +1,35 @@
+# Ignore test/dev/CI/editor files and docs not needed in npm package
+# Node/npm
+node_modules/
+.nyc_output/
+coverage/
+.DS_Store
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+
+# GitHub/CI
+.github/
+.gitignore
+
+# Docs and guides
+usage-guide.md
+README.md
+
+# Config and meta
+.prettierrc
+.prettierignore
+.eslintrc*
+eslint.config.mjs
+
+# Local/test scripts
+lib/test-pslist.js
+
+# Misc
+*.log
+*.tgz
+
+.github/
+.cache/
