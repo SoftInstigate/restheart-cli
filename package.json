@@ -7,7 +7,7 @@
     "main": "rh.js",
     "type": "module",
     "bin": {
-        "rh": "./rh.js"
+        "rh": "rh.js"
     },
     "scripts": {
         "start": "node rh.js",
