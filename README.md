@@ -231,6 +231,52 @@ For more detailed information, enable debug mode:
 rh --debug [command]
 ```
 
+## Publishing to npm
+
+For maintainers who need to publish a new version to npmjs.com:
+
+### Publishing Prerequisites
+
+- You must be logged in to npm: `npm login`
+- You must have publish permissions for the `@softinstigate/rh` package
+
+### Release Process
+
+1. **Update the version** in `package.json`:
+
+   ```bash
+   npm version patch  # for bug fixes
+   npm version minor  # for new features
+   npm version major  # for breaking changes
+   ```
+
+2. **Run quality checks**:
+
+   ```bash
+   npm run lint:check
+   npm run format:check
+   ```
+
+3. **Publish to npm**:
+
+   ```bash
+   npm publish --access public
+   ```
+
+4. **Push the version tag to GitHub**:
+
+   ```bash
+   git push && git push --tags
+   ```
+
+### Verify Publication
+
+After publishing, verify the package is available:
+
+```bash
+npm view @softinstigate/rh
+```
+
 ## License
 
 MIT
