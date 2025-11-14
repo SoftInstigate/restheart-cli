@@ -2,7 +2,7 @@
 
 A command-line interface for managing [RESTHeart](https://restheart.org) instances, simplifying development, installation, and operation workflows.
 
- > RESTHeart simplifies backend development by eliminating the need to write boilerplate CRUD operations and authentication code, allowing developers to focus on building their applications.
+> RESTHeart simplifies backend development by eliminating the need to write boilerplate CRUD operations and authentication code, allowing developers to focus on building their applications.
 
 ## Overview
 
@@ -244,30 +244,30 @@ For maintainers who need to publish a new version to npmjs.com:
 
 1. **Update the version** in `package.json`:
 
-   ```bash
-   npm version patch  # for bug fixes
-   npm version minor  # for new features
-   npm version major  # for breaking changes
-   ```
+    ```bash
+    npm version patch  # for bug fixes
+    npm version minor  # for new features
+    npm version major  # for breaking changes
+    ```
 
 2. **Run quality checks**:
 
-   ```bash
-   npm run lint:check
-   npm run format:check
-   ```
+    ```bash
+    npm run lint:check
+    npm run format:check
+    ```
 
 3. **Publish to npm**:
 
-   ```bash
-   npm publish --access public
-   ```
+    ```bash
+    npm publish --access public
+    ```
 
 4. **Push the version tag to GitHub**:
 
-   ```bash
-   git push && git push --tags
-   ```
+    ```bash
+    git push && git push --tags
+    ```
 
 ### Verify Publication
 

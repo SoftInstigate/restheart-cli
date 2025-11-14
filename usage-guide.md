@@ -22,21 +22,21 @@ To create a new RESTHeart plugin project:
 
 1. **Clone the plugin skeleton repository**:
 
-   ```bash
-   git clone https://github.com/SoftInstigate/restheart-plugin-skeleton my-plugin
-   cd my-plugin
-   ```
+    ```bash
+    git clone https://github.com/SoftInstigate/restheart-plugin-skeleton my-plugin
+    cd my-plugin
+    ```
 
 2. **Customize the project** (optional):
-   - Open the `pom.xml` file
-   - Update the `groupId` from `org.restheart` to your organization
-   - Update the `artifactId` from `restheart-plugin-skeleton` to your project name
+    - Open the `pom.xml` file
+    - Update the `groupId` from `org.restheart` to your organization
+    - Update the `artifactId` from `restheart-plugin-skeleton` to your project name
 
 ### Initial Setup
 
- The `-s` option (standalone mode) disables MongoDB-dependent plugins. Use this option if you do not intend to connect to a MongoDB instance during runtime.
+The `-s` option (standalone mode) disables MongoDB-dependent plugins. Use this option if you do not intend to connect to a MongoDB instance during runtime.
 
- ⚠️ If you don't pass the `-s` option RESTHeart tries to connect to a MongoDB instace running at `localhost:27017`. If that is not present then RESTHeart fails to start.
+⚠️ If you don't pass the `-s` option RESTHeart tries to connect to a MongoDB instace running at `localhost:27017`. If that is not present then RESTHeart fails to start.
 
 Once you have your plugin project set up:
 
