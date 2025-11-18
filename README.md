@@ -62,28 +62,52 @@ rh watch
 
 ### Install RESTHeart
 
-Install or update RESTHeart to a specific version:
+Install or update RESTHeart to a specific version, or from a local build:
 
 ```bash
-rh install [restheart-version] [--force]
+rh install [version|path] [--force]
 ```
 
 Options:
 
-- `restheart-version`: Version to install (e.g., "latest", "8.10.1") (default: "latest")
+- `version|path`: RESTHeart version (e.g., "latest", "8.10.1") or path to core/target directory (default: "latest")
 - `--force`, `-f`: Force reinstallation even if already installed
 
 Examples:
 
 ```bash
-# Install the latest version
+# Install the latest version from GitHub releases
 rh install
 
-# Install a specific version
+# Install a specific version from GitHub releases
 rh install 8.10.1
 
-# Force reinstallation
-rh install --force
+# Install from local RESTHeart build (after mvn package)
+rh install ~/restheart/core/target
+
+# Install from local build (relative path)
+rh install ../restheart/core/target
+
+# Force reinstall from local build
+rh install ~/restheart/core/target --force
+```
+
+**Working with RESTHeart SNAPSHOT builds:**
+
+To work with a locally built SNAPSHOT version of RESTHeart:
+
+```bash
+# 1. Build RESTHeart core
+cd ~/restheart
+mvn clean package  # builds to core/target/
+
+# 2. Install from local build in your plugin project
+cd ~/my-restheart-plugin
+rh install ~/restheart/core/target
+
+# 3. Run and develop as usual
+rh run
+rh watch
 ```
 
 ### Build and Deploy
