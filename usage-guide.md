@@ -59,7 +59,7 @@ The watch mode will automatically **rebuild** and **restart** RESTHeart whenever
 
 ### Development by connecting to a specific MongoDB instance
 
-💡 You can use the `rh` command with the `run` or `watch` option passing the `/mclient/connecartion-string` via the `RHO` environmemt variable, to connect to a specific MongoDB instance. This way, you can develop locally but using a remote database.
+💡 You can use the `rh` command with the `run` or `watch` option passing the `/mclient/connection-string` via the `RHO` environmemt variable, to connect to a specific MongoDB instance. This way, you can develop locally but using a remote database.
 
 Example:
 
