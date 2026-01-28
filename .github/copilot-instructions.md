@@ -2,6 +2,7 @@
 
 This guide provides focused, actionable knowledge for AI coding agents to be productive in this repository.
 
+
 ### Architecture Overview
 
 - **Entry Point & CLI**: `rh.js` launches the CLI by calling `initCLI()` in `lib/cli.js`. All commands are registered in `lib/cli.js` using yargs, with `populate--: true` to forward extra args to RESTHeart.
@@ -10,7 +11,11 @@ This guide provides focused, actionable knowledge for AI coding agents to be pro
     - `lib/builder.js`: Handles Maven builds, prefers `./mvnw` (makes executable if needed), falls back to `mvn` with warning.
     - `lib/installer.js`: Downloads/extracts RESTHeart from GitHub, checks Java availability.
     - `lib/process-manager.js`: Starts/kills RESTHeart via `java -jar`, finds processes with `ps-list`, checks ports.
-    - `lib/watcher.js`: Watches `src/main/**/*.java` (chokidar), triggers rebuild/kill/restart on changes.
+    - `lib/watcher.js`: Watches for changes in:
+            - Java sources: `src/main/**/*.java`
+            - RESTHeart config files passed via `-o` (e.g., `etc/localhost.yml`)
+            - Maven POM files: any `pom.xml` in the project (single or multi-module)
+        Any change triggers rebuild/kill/restart.
     - `lib/config.js`: Manages config state (port, debug, paths) scoped to `process.cwd()`.
 
 ### Key Patterns & Conventions
