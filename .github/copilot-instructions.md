@@ -1,208 +1,79 @@
-## RESTHeart CLI — quick onboarding for AI coding agents
+## RESTHeart CLI — AI Agent Onboarding Guide
 
-This file contains focused, actionable knowledge for an AI assistant to be productive in this repository.
+This guide provides focused, actionable knowledge for AI coding agents to be productive in this repository.
 
-### High-level architecture
+### Architecture Overview
 
-**Entry & CLI layer**
+- **Entry Point & CLI**: `rh.js` launches the CLI by calling `initCLI()` in `lib/cli.js`. All commands are registered in `lib/cli.js` using yargs, with `populate--: true` to forward extra args to RESTHeart.
+- **Manager Pattern**: A single `RESTHeartManager` (in `lib/restheart.js`) orchestrates all operations, delegating to subsystems: `Builder`, `Installer`, `ProcessManager`, `Watcher`, and `ConfigManager`.
+- **Subsystems**:
+    - `lib/builder.js`: Handles Maven builds, prefers `./mvnw` (makes executable if needed), falls back to `mvn` with warning.
+    - `lib/installer.js`: Downloads/extracts RESTHeart from GitHub, checks Java availability.
+    - `lib/process-manager.js`: Starts/kills RESTHeart via `java -jar`, finds processes with `ps-list`, checks ports.
+    - `lib/watcher.js`: Watches `src/main/**/*.java` (chokidar), triggers rebuild/kill/restart on changes.
+    - `lib/config.js`: Manages config state (port, debug, paths) scoped to `process.cwd()`.
 
--   Entry: `rh.js` — minimal ES module that calls `initCLI()` in `lib/cli.js`
--   CLI: `lib/cli.js` — yargs-based command registration with `populate--: true` to pass through RESTHeart options after `--`
--   Single-instance pattern: Creates one `RESTHeartManager` at startup and reuses it for all commands
--   Signal handling: SIGINT (CTRL-C) kills RESTHeart before exit; exit handler prints "Done." message
+### Key Patterns & Conventions
 
-**Orchestration layer**
+- **Config**: All state is repo-scoped via `ConfigManager` (creates `.cache/` in repo root). Default HTTP port is 8080. Config is mutable at runtime.
+- **Error Handling**: Centralized in `lib/error-handler.js` via `ErrorHandler.handleError()`. Always check external command presence with `utils.commandExists()`.
+- **Logging**: `lib/logger.js` provides leveled logging (DEBUG, INFO, etc.), mapped to CLI flags (`--debug`, `--verbose`, `--quiet`). Timestamps optional via `--timestamps`.
+- **Shell Execution**: All shell commands use `shelljs`. Builder always tries `./mvnw` first, warns if falling back to `mvn`.
+- **Process Lifecycle**: RESTHeart runs as a child process. Kill via `ps-list` filtering for "restheart" in command, SIGTERM. Port checks use `checkPort()` util.
 
--   `lib/restheart.js` — `RESTHeartManager` composes subsystems: `Builder`, `Installer`, `ProcessManager`, `Watcher`, `ConfigManager`
--   Each subsystem receives `ConfigManager` in constructor to share state (http port, paths, debug mode)
--   Manager methods are thin wrappers that delegate to subsystem methods
+### Developer Workflows
 
-**Worker subsystems**
+- **Setup**:
+    ```bash
+    npm install
+    npm link  # creates `rh` bin in PATH
+    ```
+- **Common CLI Commands** (see `lib/cli.js`):
+    - `rh install [version]` — Download/extract RESTHeart
+    - `rh build` — Run Maven build, deploy JARs
+    - `rh run [--build] [--port PORT] [-- restheart-opts]` — Build (optional), start RESTHeart
+    - `rh watch [--debounce-time MS]` — Watch Java sources, auto-rebuild/restart
+    - `rh kill [--port PORT]` — Stop RESTHeart
+    - `rh status [--port PORT]` — Check if RESTHeart is running
+- **Pass-through Options**: Use `--` to forward args to RESTHeart, e.g. `rh run -- -o etc/localhost.yml`
+- **Lint/Format**: `npm run lint:check` / `lint:fix` (ESLint), `npm run format:check` / `format:write` (Prettier)
+- **No tests**: No test framework or test files present.
 
--   `lib/builder.js` — Maven wrapper that prefers `./mvnw`, falls back to `mvn` with warnings. Cleans `target/`, builds, then calls `deploy()` to copy JARs
--   `lib/installer.js` — downloads RESTHeart tarballs from GitHub releases, extracts to `.cache/restheart`, verifies Java availability
--   `lib/process-manager.js` — starts RESTHeart via `java -jar`, kills via `ps-list` + SIGTERM, checks running state via port probing (http port and http port + 1000)
--   `lib/watcher.js` — chokidar-based file watcher with debounce (default 1s). Watches `src/main/**/*.java`, triggers rebuild → kill → restart cycle
+### Integration Points & External Dependencies
 
-### Key patterns and conventions
+- **Java**: Required for running RESTHeart. Checked by installer.
+- **Maven**: `./mvnw` preferred, `mvn` fallback. Builder logs warning if wrapper missing.
+- **GitHub**: RESTHeart tarballs downloaded from GitHub releases.
+- **Process List**: Uses `ps-list` to find/kill Java processes by command line.
 
-**Configuration & state**
+### File/Directory Reference
 
--   Repository-scoped: `ConfigManager` uses `process.cwd()` as repo root (`.cache/` and `.cache/restheart/` created there)
--   Default HTTP port: 8080 (used for both port checking and as RESTHeart's `-p` argument)
--   Config is mutable: `setHttpPort()` and `setDebugMode()` methods allow runtime changes
--   Validation: `ConfigManager` validates paths exist, port is 1-65535, debug mode is boolean
+- Entry/CLI: `rh.js`, `lib/cli.js`, `lib/help.js`
+- Core logic: `lib/restheart.js`
+- Build: `lib/builder.js`
+- Install: `lib/installer.js`
+- Process mgmt: `lib/process-manager.js`
+- Watch: `lib/watcher.js`
+- Config: `lib/config.js`
+- Logging: `lib/logger.js`
+- Error handling: `lib/error-handler.js`
+- Utilities: `lib/utils.js`
+- Lint: `eslint.config.mjs`
 
-**Error handling**
+### Project-Specific Notes
 
--   Centralized: `lib/error-handler.js` — all errors go through `ErrorHandler.handleError()` with options for exit behavior and stack traces
--   Unhandled exceptions: CLI registers `uncaughtException` and `unhandledRejection` handlers that exit with stack traces
--   Command presence: Always check with `utils.commandExists(cmd)` before shelling out (throws if missing)
+- **Working Directory**: All paths/configs are relative to the repo root (`process.cwd()`).
+- **Side Effects**: Code frequently calls `process.exit()`, writes files, and spawns processes.
+- **Process Discovery**: Only finds RESTHeart if "restheart" is in the process command. Checks both http port and debug port (port+1000).
+- **Maven Wrapper**: Builder ensures `./mvnw` is executable, falls back to `mvn` if missing, logs warning but does not fail.
 
-**Logging**
-
--   Leveled logger: `lib/logger.js` exports `Logger` class with `LogLevel` enum (DEBUG=0, INFO=1, SUCCESS=2, WARNING=3, ERROR=4)
--   CLI flag mapping: `--debug` → DEBUG, `--verbose` → INFO, default → INFO, `--quiet` → WARNING
--   Timestamps: Optional via `--timestamps` flag (adds ISO timestamp prefix)
--   Chalk colors: debug=gray, info=cyan, success=green, warning=yellow, error=red
-
-**Shell execution**
-
--   Library: `shelljs` for all external commands (non-blocking by default)
--   Critical commands: `./mvnw` / `mvn`, `java -jar`, `tar`, file copies
--   Maven wrapper handling: Builder tries `./mvnw`, checks if executable (`chmod 0o755`), falls back to `mvn` with warning if unavailable
-
-**Process lifecycle**
-
--   RESTHeart runs as child process spawned by `shell.exec()`
--   Kill strategy: Find Java processes via `ps-list` where `cmd` includes "restheart", send SIGTERM
--   Port checking: Uses `checkPort()` util to detect running instances (both http port and debug port +1000)
-
-### Developer workflows
-
-**Setup from source**
-
-```bash
-npm install
-npm link  # creates `rh` bin in PATH from rh.js
-```
-
-**Common commands** (see `lib/cli.js` for full list)
-
--   `rh install [version]` — downloads RESTHeart tarball from GitHub, extracts to `.cache/restheart/`
--   `rh build` — runs `mvn clean package`, copies JARs to `.cache/restheart/plugins/`
--   `rh run [--build] [--port PORT] [-- restheart-options]` — optionally builds, then starts RESTHeart
--   `rh watch [--debounce-time MS]` — starts RESTHeart, watches `src/main/**/*.java`, rebuilds on change
--   `rh kill [--port PORT]` — stops running RESTHeart processes
--   `rh status [--port PORT]` — checks if RESTHeart is running
-
-**Passing RESTHeart options**
-
-```bash
-rh run -- -o etc/localhost.yml  # the -- separator passes remaining args to RESTHeart
-rh watch -- -o etc/dev.yml
-```
-
-**Code quality tooling**
-
--   Linting: `npm run lint:check` / `lint:fix` (ESLint 9 with flat config in `eslint.config.mjs`)
--   Formatting: `npm run format:check` / `format:write` (Prettier)
--   No test framework configured (no `*.test.js` or `*.spec.js` files exist)
-
-### Integration points
-
-**External dependencies**
-
--   Java: Required for `java -jar restheart.jar`. Installer verifies availability via `commandExists('java')`
--   Maven: `./mvnw` (preferred) or `mvn` (fallback). Builder warns if wrapper missing
--   GitHub API: Downloads releases from `github.com/SoftInstigate/restheart/releases/download/`
--   Process list: `ps-list` package to find running Java processes by command line pattern
-
-**File system layout**
-
-```
-repo-root/               # process.cwd()
-├── .cache/              # created by ConfigManager
-│   └── restheart/       # RESTHeart installation
-│       └── plugins/     # deployed JARs
-├── target/              # Maven build output
-├── src/main/**/*.java   # watched by default
-└── pom.xml              # Maven project file
-```
-
-### Practical examples for code changes
-
-**Adding a new CLI command**
+### Example: Adding a CLI Command
 
 1. Register in `lib/cli.js` with yargs `.command()`
-2. Add corresponding method to `RESTHeartManager` in `lib/restheart.js`
-3. Delegate to appropriate subsystem (builder, installer, etc.)
-4. Update `lib/help.js` with command description and examples
+2. Add method to `RESTHeartManager` in `lib/restheart.js`
+3. Delegate to subsystem (builder, installer, etc.)
+4. Update `lib/help.js` for help text
 
-**Modifying build behavior**
-
--   Change `lib/builder.js` → it owns all Maven execution
--   Don't add Maven calls elsewhere; keep centralized
--   Use `logger.info()` to show commands before execution
-
-**Adding external command dependency**
-
-1. Add `commandExists('mycmd')` check in appropriate subsystem
-2. Use `ErrorHandler.commandNotFound('mycmd')` if missing
-3. Execute via `shell.exec()` in shelljs
-
-**Error handling pattern**
-
-```javascript
-try {
-    // operation
-} catch (error) {
-    ErrorHandler.handleError(error, {
-        exitProcess: true,
-        exitCode: 1,
-        showStack: debugMode,
-    })
-}
-```
-
-### Project-specific gotchas
-
-**Testing & side effects**
-
--   No unit tests exist currently
--   Code has many side effects: `process.exit()`, `shell.exec()`, file writes
--   To add tests: mock shelljs, trap `process.exit()`, isolate ConfigManager's `process.cwd()` dependency
-
-**Working directory assumptions**
-
--   `ConfigManager` assumes `process.cwd()` is the user's plugin repo (not the CLI's install location)
--   Builder calls `shell.cd(repoDir)` before Maven commands
--   Installer and watcher also rely on this repo-centric model
-
-**Process discovery limitations**
-
--   `ps-list` filtering relies on process command containing "restheart" string
--   Won't find RESTHeart if renamed or run from unusual path
--   Checks both http port and http port + 1000 (for debug mode)
-
-**Maven wrapper behavior**
-
--   Builder makes `./mvnw` executable with `chmod 0o755`
--   Falls back to `mvn` if wrapper missing or not executable
--   Warning logged but doesn't fail — prefers graceful degradation
-
-### Quick file reference
-
-| Purpose        | Files                                 |
-| -------------- | ------------------------------------- |
-| Entry & CLI    | `rh.js`, `lib/cli.js`, `lib/help.js`  |
-| Core logic     | `lib/restheart.js` (RESTHeartManager) |
-| Build/deploy   | `lib/builder.js`                      |
-| Installation   | `lib/installer.js`                    |
-| Process mgmt   | `lib/process-manager.js`              |
-| File watching  | `lib/watcher.js`                      |
-| Config         | `lib/config.js`                       |
-| Logging        | `lib/logger.js`                       |
-| Error handling | `lib/error-handler.js`                |
-| Utilities      | `lib/utils.js`                        |
-| Linting        | `eslint.config.mjs`                   |
-
-### Validation workflow
-
-**Local testing**
-
-```bash
-npm install
-npm link                    # adds `rh` to PATH
-rh install                  # test installer (needs Java, network)
-cd /path/to/test-plugin     # go to Maven project
-rh build                    # test builder (needs Maven)
-rh run                      # test process manager
-```
-
-**Watch for common issues**
-
--   Maven wrapper warnings (missing `./mvnw`)
--   Port conflicts (default 8080)
--   Missing Java installation
--   Process kill failures (check `ps-list` output)
+---
+For unclear or incomplete sections, please provide feedback to improve these instructions.
+**Passing RESTHeart options**
