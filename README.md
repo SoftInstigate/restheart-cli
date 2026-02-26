@@ -20,7 +20,7 @@ RESTHeart CLI (`rh`) is a powerful tool designed to streamline the development a
 ### Prerequisites
 
 - Node.js (v18 or later)
-- Java JDK (v21 or later)
+- Java JDK (v25 or later)
 - Maven (3.8 or later, if not using the included Maven wrapper)
 
 ### Install from npm (recommended)
