@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import path from 'path'
-import os from 'os'
+import path from 'node:path'
+import os from 'node:os'
 import { parseConfigFiles } from '../lib/watcher.js'
 
 describe('parseConfigFiles', () => {

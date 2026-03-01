@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import path from 'path'
-import os from 'os'
+import path from 'node:path'
+import os from 'node:os'
 
 // We run ConfigManager against the real tmpdir to avoid mocking fs
 describe('ConfigManager', () => {
