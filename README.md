@@ -8,10 +8,10 @@ A command-line interface for managing [RESTHeart](https://restheart.org) instanc
 
 RESTHeart CLI (`rh`) is a powerful tool designed to streamline the development and management of RESTHeart Java applications. It provides a convenient interface for common tasks such as:
 
-- **Installing** and **updating** RESTHeart
-- **Building** and **deploying** Java plugins
-- **Starting** and **stopping** RESTHeart instances
-- **Watching** for code changes and automatically rebuilding/redeploying
+-   **Installing** and **updating** RESTHeart
+-   **Building** and **deploying** Java plugins
+-   **Starting** and **stopping** RESTHeart instances
+-   **Watching** for code changes and automatically rebuilding/redeploying
 
 > Typically, you will begin with a Maven project. Refer to the [official documentation](https://restheart.org/docs/plugins/overview) for detailed instructions on implementing custom plugins.
 
@@ -19,9 +19,9 @@ RESTHeart CLI (`rh`) is a powerful tool designed to streamline the development a
 
 ### Prerequisites
 
-- Node.js (v18 or later)
-- Java JDK (v25 or later)
-- Maven (3.8 or later, if not using the included Maven wrapper)
+-   Node.js (v18 or later)
+-   Java JDK (v21 or later)
+-   Maven (3.8 or later, if not using the included Maven wrapper)
 
 ### Install from npm (recommended)
 
@@ -70,8 +70,8 @@ rh install [version|path] [--force]
 
 Options:
 
-- `version|path`: RESTHeart version (e.g., "latest", "8.10.1") or path to core/target directory (default: "latest")
-- `--force`, `-f`: Force reinstallation even if already installed
+-   `version|path`: RESTHeart version (e.g., "latest", "8.10.1") or path to core/target directory (default: "latest")
+-   `--force`, `-f`: Force reinstallation even if already installed
 
 Examples:
 
@@ -133,9 +133,9 @@ rh run [restheart-options..] [--build] [--port PORT]
 
 Options:
 
-- `restheart-options`: Options to pass directly to RESTHeart (after -- separator)
-- `--build`, `-b`: Build and deploy the plugin before running RESTHeart
-- `--port`, `-p`: HTTP port for RESTHeart to listen on
+-   `restheart-options`: Options to pass directly to RESTHeart (after -- separator)
+-   `--build`, `-b`: Build and deploy the plugin before running RESTHeart
+-   `--port`, `-p`: HTTP port for RESTHeart to listen on
 
 Examples:
 
@@ -160,7 +160,7 @@ rh kill [--port PORT]
 
 Options:
 
-- `--port`, `-p`: HTTP port of the RESTHeart instance to kill
+-   `--port`, `-p`: HTTP port of the RESTHeart instance to kill
 
 ### Watch for Changes
 
@@ -172,9 +172,9 @@ rh watch [--build] [--port PORT] [--debounce-time MS]
 
 Options:
 
-- `--build`, `-b`: Build and deploy the plugin before starting the watch process
-- `--port`, `-p`: HTTP port for RESTHeart to listen on
-- `--debounce-time`: Time in milliseconds to wait after the last file change before rebuilding (default: 1000)
+-   `--build`, `-b`: Build and deploy the plugin before starting the watch process
+-   `--port`, `-p`: HTTP port for RESTHeart to listen on
+-   `--debounce-time`: Time in milliseconds to wait after the last file change before rebuilding (default: 1000)
 
 Example:
 
@@ -193,28 +193,28 @@ rh status [--port PORT]
 
 Options:
 
-- `--port`, `-p`: HTTP port of the RESTHeart instance to check
+-   `--port`, `-p`: HTTP port of the RESTHeart instance to check
 
 ## Global Options
 
 These options can be used with any command:
 
-- `--version`: Display the version number of RESTHeart CLI
-- `--debug`, `-d`: Run in debug mode with additional diagnostic information
-- `--verbose`, `-v`: Show verbose output including debug messages
-- `--quiet`, `-q`: Show only error messages and suppress other output
-- `--timestamps`, `-t`: Add timestamps to log messages for better traceability
-- `--help`, `-h`: Show help information
+-   `--version`: Display the version number of RESTHeart CLI
+-   `--debug`, `-d`: Run in debug mode with additional diagnostic information
+-   `--verbose`, `-v`: Show verbose output including debug messages
+-   `--quiet`, `-q`: Show only error messages and suppress other output
+-   `--timestamps`, `-t`: Add timestamps to log messages for better traceability
+-   `--help`, `-h`: Show help information
 
 ## Configuration
 
 RESTHeart CLI uses a configuration system that manages:
 
-- Repository directory (current working directory)
-- Cache directory (`.cache` in the repository directory)
-- RESTHeart directory (`.cache/restheart` in the repository directory)
-- HTTP port (default: 8080)
-- Debug mode (default: false)
+-   Repository directory (current working directory)
+-   Cache directory (`.cache` in the repository directory)
+-   RESTHeart directory (`.cache/restheart` in the repository directory)
+-   HTTP port (default: 8080)
+-   Debug mode (default: false)
 
 These settings can be modified through command-line options or directly in the code.
 
@@ -261,8 +261,8 @@ For maintainers who need to publish a new version to npmjs.com:
 
 ### Publishing Prerequisites
 
-- You must be logged in to npm: `npm login`
-- You must have publish permissions for the `@softinstigate/rh` package
+-   You must be logged in to npm: `npm login`
+-   You must have publish permissions for the `@softinstigate/rh` package
 
 ### Release Process
 
@@ -307,4 +307,4 @@ MIT
 
 ## Contributors
 
-- SoftInstigate <info@softinstigate.com>
+-   SoftInstigate <info@softinstigate.com>

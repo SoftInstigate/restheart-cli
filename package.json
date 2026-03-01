@@ -14,7 +14,8 @@
         "format:check": "prettier --check .",
         "format:write": "prettier --write .",
         "lint:check": "eslint .",
-        "lint:fix": "eslint --fix ."
+        "lint:fix": "eslint --fix .",
+        "test": "vitest run"
     },
     "keywords": [
         "restheart",
@@ -41,6 +42,7 @@
         "eslint": "^9.6.0",
         "eslint-config-prettier": "^9.1.0",
         "globals": "^15.7.0",
-        "prettier": "3.3.2"
+        "prettier": "3.3.2",
+        "vitest": "^4.0.18"
     }
 }

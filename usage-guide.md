@@ -87,9 +87,9 @@ rh install
 
 This will:
 
-- Download the latest RESTHeart release
-- Extract it to the `.cache/restheart` directory
-- Set up the required directory structure
+-   Download the latest RESTHeart release
+-   Extract it to the `.cache/restheart` directory
+-   Set up the required directory structure
 
 ### Installing a Specific Version
 
@@ -256,8 +256,8 @@ rh --timestamps run
 
 ### Understanding Debug vs Verbose
 
-- `--debug`: Enables debug mode in the RESTHeart application itself, showing internal configuration details.
-- `--verbose`: Increases the CLI tool's log level to show more detailed information.
+-   `--debug`: Enables debug mode in the RESTHeart application itself, showing internal configuration details.
+-   `--verbose`: Increases the CLI tool's log level to show more detailed information.
 
 ```bash
 # For complete diagnostic information, use both:
