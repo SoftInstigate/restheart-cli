@@ -5,6 +5,7 @@ describe('runCommand routing', () => {
     function createRh() {
         return {
             setHttpPort: vi.fn(),
+            setBuildSystem: vi.fn(),
             printConfiguration: vi.fn(),
             install: vi.fn(),
             build: vi.fn(),
@@ -64,5 +65,21 @@ describe('runCommand routing', () => {
 
         expect(rh.setHttpPort).toHaveBeenCalledWith(9090)
         expect(rh.install).toHaveBeenCalledWith('8.10.1', true)
+    })
+
+    it('applies build-system configuration when provided', async () => {
+        const rh = createRh()
+
+        await runCommand(
+            'build',
+            {
+                buildSystem: 'gradle',
+            },
+            rh
+        )
+
+        expect(rh.setBuildSystem).toHaveBeenCalledWith('gradle')
+        expect(rh.build).toHaveBeenCalledWith('clean package')
+        expect(rh.deploy).toHaveBeenCalledTimes(1)
     })
 })

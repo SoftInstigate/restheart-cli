@@ -104,6 +104,14 @@ describe('Watcher processFileUpdate', () => {
         expect(processManager.run).toHaveBeenCalledWith('')
     })
 
+    it('build.gradle change triggers build, deploy and restart', async () => {
+        await watcher.processFileUpdate('/repo/build.gradle', '', [])
+
+        expect(builder.build).toHaveBeenCalledWith('package', true)
+        expect(builder.deploy).toHaveBeenCalledTimes(1)
+        expect(processManager.run).toHaveBeenCalledWith('')
+    })
+
     it('config file change restarts without build/deploy', async () => {
         await watcher.processFileUpdate('/repo/etc/localhost.yml', '-- -o etc/localhost.yml', [
             '/repo/etc/localhost.yml',

@@ -166,7 +166,7 @@ describe('Builder', () => {
         expect(() => builder.build('clean package', true)).toThrow('processError called')
         expect(errorHandlerMocks.ErrorHandler.processError).toHaveBeenCalled()
         expect(errorHandlerMocks.ErrorHandler.processError.mock.calls[0][0]).toContain(
-            'Maven build failed with exit code 1'
+            'maven build failed with exit code 1'
         )
     })
 

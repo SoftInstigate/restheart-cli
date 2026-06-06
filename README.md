@@ -7,7 +7,7 @@ A command-line interface for RESTHeart plugin developers to automate the local i
 Developing RESTHeart plugins often means repeating the same manual loop:
 
 - install or update RESTHeart locally
-- build plugin JARs with Maven
+- build plugin JARs with Maven or Gradle
 - copy and deploy artifacts
 - restart the server and verify status
 
@@ -31,13 +31,15 @@ RESTHeart CLI (`rh`) streamlines development and management of RESTHeart Java ap
 
 > Typically, you will begin with a Maven project. Refer to the [official documentation](https://restheart.org/docs/plugins/overview) for detailed instructions on implementing custom plugins.
 
+You can use Maven or Gradle projects. By default, `rh` auto-detects the build system from project files.
+
 ## Installation
 
 ### Prerequisites
 
 -   Node.js (v18 or later)
 -   Java JDK (v21 or later)
--   Maven (3.8 or later, if not using the included Maven wrapper)
+-   Maven (3.8 or later) or Gradle (7 or later), if not using the corresponding wrapper
 
 ### Install from npm (recommended)
 
@@ -75,7 +77,7 @@ rh watch
 Expected outcomes:
 
 1. `rh install` downloads and installs RESTHeart into `.cache/restheart` in your project directory.
-2. `rh build` runs Maven and deploys generated plugin JARs into RESTHeart's plugins directory.
+2. `rh build` runs the auto-detected build system (Maven or Gradle) and deploys generated plugin JARs into RESTHeart's plugins directory.
 3. `rh run` starts RESTHeart (default HTTP port: 8080).
 4. `rh watch` monitors source/config changes and automatically rebuilds/restarts RESTHeart.
 
@@ -143,7 +145,7 @@ rh build
 
 This command:
 
-1. Builds the project using Maven
+1. Builds the project using the selected build system (auto-detected Maven or Gradle)
 2. Deploys the built JARs to the RESTHeart plugins directory
 
 ### Run RESTHeart
@@ -227,6 +229,7 @@ These options can be used with any command:
 -   `--verbose`, `-v`: Show verbose output including debug messages
 -   `--quiet`, `-q`: Show only error messages and suppress other output
 -   `--timestamps`, `-t`: Add timestamps to log messages for better traceability
+-   `--build-system`: Build system preference (`auto`, `maven`, `gradle`) used by build/deploy workflows
 -   `--help`, `-h`: Show help information
 
 ## Configuration
@@ -238,6 +241,7 @@ RESTHeart CLI uses a configuration system that manages:
 -   RESTHeart directory (`.cache/restheart` in the repository directory)
 -   HTTP port (default: 8080)
 -   Debug mode (default: false)
+-   Build system preference (default: `auto`)
 
 These settings can be modified through command-line options or directly in the code.
 
@@ -264,7 +268,7 @@ Check the log file in the repository directory (`restheart.log`) for error detai
 
 #### Build fails
 
-Ensure Maven is correctly installed and the project structure is valid.
+Ensure your selected build tool (Maven or Gradle) is correctly installed and the project structure is valid.
 
 #### Port already in use
 
