@@ -91,7 +91,8 @@ describe('Builder', () => {
 
         expect(utilsMocks.commandExists).toHaveBeenCalledWith('./mvnw')
         expect(shellMocks.exec).toHaveBeenCalledWith(
-            './mvnw -f pom.xml clean package -DskipTests=true'
+            './mvnw -f pom.xml clean package -DskipTests=true',
+            { silent: true }
         )
     })
 
@@ -103,7 +104,9 @@ describe('Builder', () => {
         builder.build('package', false)
 
         expect(utilsMocks.commandExists).toHaveBeenCalledWith('mvn')
-        expect(shellMocks.exec).toHaveBeenCalledWith('mvn -f pom.xml package -DskipTests=false')
+        expect(shellMocks.exec).toHaveBeenCalledWith('mvn -f pom.xml package -DskipTests=false', {
+            silent: true,
+        })
     })
 
     it('falls back to mvn when ./mvnw is not executable', () => {
@@ -120,7 +123,9 @@ describe('Builder', () => {
 
         expect(utilsMocks.commandExists).toHaveBeenCalledWith('./mvnw')
         expect(utilsMocks.commandExists).toHaveBeenCalledWith('mvn')
-        expect(shellMocks.exec).toHaveBeenCalledWith('mvn -f pom.xml package -DskipTests=true')
+        expect(shellMocks.exec).toHaveBeenCalledWith('mvn -f pom.xml package -DskipTests=true', {
+            silent: true,
+        })
     })
 
     it('deploys both main and lib jars from target', () => {
@@ -214,7 +219,9 @@ describe('Builder', () => {
         builder.build('clean package', true)
 
         expect(utilsMocks.commandExists).toHaveBeenCalledWith('./gradlew')
-        expect(shellMocks.exec).toHaveBeenCalledWith('./gradlew clean build -x test')
+        expect(shellMocks.exec).toHaveBeenCalledWith('./gradlew clean build -x test', {
+            silent: true,
+        })
     })
 
     it('keeps maven precedence when both maven and gradle files exist', () => {
@@ -228,7 +235,9 @@ describe('Builder', () => {
         builder.build('package', false)
 
         expect(utilsMocks.commandExists).toHaveBeenCalledWith('./mvnw')
-        expect(shellMocks.exec).toHaveBeenCalledWith('./mvnw -f pom.xml package -DskipTests=false')
+        expect(shellMocks.exec).toHaveBeenCalledWith('./mvnw -f pom.xml package -DskipTests=false', {
+            silent: true,
+        })
     })
 
     it('deploys gradle jars from build/libs in gradle-only repositories', () => {
