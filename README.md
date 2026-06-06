@@ -130,8 +130,12 @@ mvn clean package  # builds to core/target/
 cd ~/my-restheart-plugin
 rh install ~/restheart/core/target
 
-# 3. Run and develop as usual
+# 3. Start development (choose one mode)
+
+# Option A: run once
 rh run
+
+# Option B: watch mode (auto-rebuild/restart on changes)
 rh watch
 ```
 
