@@ -29,7 +29,7 @@ RESTHeart CLI (`rh`) streamlines development and management of RESTHeart Java ap
 -   **Safer local operations**: explicit process and port management commands
 -   **Better version flexibility**: install from GitHub releases or local SNAPSHOT builds
 
-> Typically, you will begin with a Maven project. Refer to the [official documentation](https://restheart.org/docs/plugins/overview) for detailed instructions on implementing custom plugins.
+> You will typically begin with a Maven or Gradle project. Refer to the [official documentation](https://restheart.org/docs/plugins/overview) for detailed instructions on implementing custom plugins.
 
 You can use Maven or Gradle projects. By default, `rh` auto-detects the build system from project files.
 

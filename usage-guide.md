@@ -5,18 +5,20 @@ This guide provides practical examples for common workflows with the RESTHeart C
 ## Table of Contents
 
 1. [Quickstart](#quickstart)
-2. [Installation](#installation)
-3. [Development Workflow](#development-workflow)
-4. [Build and Deployment](#build-and-deployment)
-5. [Process Management](#process-management)
-6. [Advanced Usage](#advanced-usage)
-7. [Troubleshooting](#troubleshooting)
+2. [Build System Selection](#build-system-selection)
+3. [Installation](#installation)
+4. [Development Workflow](#development-workflow)
+5. [Build and Deployment](#build-and-deployment)
+6. [Process Management](#process-management)
+7. [Advanced Usage](#advanced-usage)
+8. [Troubleshooting](#troubleshooting)
 
 ## Build System Selection
 
 RESTHeart CLI supports Maven and Gradle projects.
 
 - Default behavior: `auto` (detect from project files)
+- Default behavior: `auto` (use the auto-detected build system: Maven or Gradle)
 - Explicit override: `--build-system maven` or `--build-system gradle`
 
 Examples:
@@ -114,7 +116,7 @@ This will:
 ### Installing a Specific Version
 
 ```bash
-rh install 8.10.1
+rh install 9.4.0
 ```
 
 ### Updating or Reinstalling
