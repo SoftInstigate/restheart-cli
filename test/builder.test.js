@@ -67,12 +67,19 @@ describe('Builder', () => {
                 repoDir: '/repo',
                 rhDir: '/repo/.cache/restheart',
                 debugMode: false,
+                buildSystem: 'auto',
             }),
         })
 
     beforeEach(async () => {
         vi.resetModules()
         vi.clearAllMocks()
+
+        shellMocks.exec.mockReturnValue({ code: 0 })
+        shellMocks.find.mockImplementation(() => [])
+        shellMocks.cp.mockReturnValue({ code: 0, stderr: '' })
+        utilsMocks.commandExists.mockImplementation(() => undefined)
+
         ;({ Builder } = await import('../lib/builder.js'))
     })
 
@@ -90,7 +97,9 @@ describe('Builder', () => {
     })
 
     it('falls back to mvn when mvnw is missing', () => {
-        fsMocks.existsSync.mockImplementation((p) => p === '/repo/target')
+        fsMocks.existsSync.mockImplementation(
+            (p) => p === '/repo/target' || p === '/repo/pom.xml'
+        )
 
         const builder = createBuilder()
 
@@ -147,7 +156,9 @@ describe('Builder', () => {
     })
 
     it('reports build failure when shell command exits non-zero', () => {
-        fsMocks.existsSync.mockImplementation((p) => p === '/repo/target')
+        fsMocks.existsSync.mockImplementation(
+            (p) => p === '/repo/target' || p === '/repo/pom.xml'
+        )
         shellMocks.exec.mockReturnValue({ code: 1 })
 
         const builder = createBuilder()
@@ -194,6 +205,62 @@ describe('Builder', () => {
         expect(errorHandlerMocks.ErrorHandler.fileSystemError).toHaveBeenCalled()
         expect(errorHandlerMocks.ErrorHandler.fileSystemError.mock.calls[0][0]).toContain(
             'No JAR files found to deploy'
+        )
+    })
+
+    it('auto-detects gradle for gradle-only repositories', () => {
+        fsMocks.existsSync.mockImplementation((p) => {
+            const gradleFiles = ['/repo/gradlew', '/repo/build.gradle', '/repo/build']
+            return gradleFiles.includes(p)
+        })
+
+        const builder = createBuilder()
+
+        builder.build('clean package', true)
+
+        expect(utilsMocks.commandExists).toHaveBeenCalledWith('./gradlew')
+        expect(shellMocks.exec).toHaveBeenCalledWith('./gradlew clean build -x test')
+    })
+
+    it('keeps maven precedence when both maven and gradle files exist', () => {
+        fsMocks.existsSync.mockImplementation((p) => {
+            const bothFiles = ['/repo/pom.xml', '/repo/mvnw', '/repo/gradlew', '/repo/target']
+            return bothFiles.includes(p)
+        })
+
+        const builder = createBuilder()
+
+        builder.build('package', false)
+
+        expect(utilsMocks.commandExists).toHaveBeenCalledWith('./mvnw')
+        expect(shellMocks.exec).toHaveBeenCalledWith('./mvnw -f pom.xml package -DskipTests=false')
+    })
+
+    it('deploys gradle jars from build/libs in gradle-only repositories', () => {
+        fsMocks.existsSync.mockImplementation((p) => {
+            const gradleFiles = ['/repo/build.gradle', '/repo/build']
+            return gradleFiles.includes(p)
+        })
+
+        shellMocks.find.mockImplementation((p) => {
+            if (p === '/repo/build/libs') {
+                return ['/repo/build/libs/plugin.jar']
+            }
+
+            if (p === '/repo/build/libs/lib') {
+                return []
+            }
+
+            return []
+        })
+
+        const builder = createBuilder()
+
+        builder.deploy()
+
+        expect(shellMocks.cp).toHaveBeenCalledWith(
+            ['/repo/build/libs/plugin.jar'],
+            '/repo/.cache/restheart/plugins'
         )
     })
 })
