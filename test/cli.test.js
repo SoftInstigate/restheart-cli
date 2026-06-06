@@ -23,6 +23,7 @@ describe('runCommand routing', () => {
 
         await runCommand('build', {}, rh)
 
+        expect(rh.setBuildSystem).not.toHaveBeenCalled()
         expect(rh.build).toHaveBeenCalledWith('clean package')
         expect(rh.deploy).toHaveBeenCalledTimes(1)
     })
