@@ -6,10 +6,10 @@ A command-line interface for RESTHeart plugin developers to automate the local i
 
 Developing RESTHeart plugins often means repeating the same manual loop:
 
-- install or update RESTHeart locally
-- build plugin JARs with Maven or Gradle
-- copy and deploy artifacts
-- restart the server and verify status
+-   install or update RESTHeart locally
+-   build plugin JARs with Maven or Gradle
+-   copy and deploy artifacts
+-   restart the server and verify status
 
 RESTHeart CLI (`rh`) removes this friction by turning that loop into a small set of predictable commands. It is focused on faster feedback during local development and less operational overhead while iterating.
 

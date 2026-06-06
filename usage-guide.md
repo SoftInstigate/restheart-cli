@@ -17,9 +17,9 @@ This guide provides practical examples for common workflows with the RESTHeart C
 
 RESTHeart CLI supports Maven and Gradle projects.
 
-- Default behavior: `auto` (detect from project files)
-- Default behavior: `auto` (use the auto-detected build system: Maven or Gradle)
-- Explicit override: `--build-system maven` or `--build-system gradle`
+-   Default behavior: `auto` (detect from project files)
+-   Default behavior: `auto` (use the auto-detected build system: Maven or Gradle)
+-   Explicit override: `--build-system maven` or `--build-system gradle`
 
 Examples:
 

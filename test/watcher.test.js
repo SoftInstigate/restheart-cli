@@ -88,7 +88,11 @@ describe('Watcher processFileUpdate', () => {
     })
 
     it('java source change triggers build, deploy and restart', async () => {
-        await watcher.processFileUpdate('/repo/src/main/java/Foo.java', '-- -o etc/localhost.yml', [])
+        await watcher.processFileUpdate(
+            '/repo/src/main/java/Foo.java',
+            '-- -o etc/localhost.yml',
+            []
+        )
 
         expect(processManager.kill).toHaveBeenCalledTimes(1)
         expect(builder.build).toHaveBeenCalledWith('package', true)

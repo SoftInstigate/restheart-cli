@@ -79,7 +79,6 @@ describe('Builder', () => {
         shellMocks.find.mockImplementation(() => [])
         shellMocks.cp.mockReturnValue({ code: 0, stderr: '' })
         utilsMocks.commandExists.mockImplementation(() => undefined)
-
         ;({ Builder } = await import('../lib/builder.js'))
     })
 
@@ -97,9 +96,7 @@ describe('Builder', () => {
     })
 
     it('falls back to mvn when mvnw is missing', () => {
-        fsMocks.existsSync.mockImplementation(
-            (p) => p === '/repo/target' || p === '/repo/pom.xml'
-        )
+        fsMocks.existsSync.mockImplementation((p) => p === '/repo/target' || p === '/repo/pom.xml')
 
         const builder = createBuilder()
 
@@ -156,9 +153,7 @@ describe('Builder', () => {
     })
 
     it('reports build failure when shell command exits non-zero', () => {
-        fsMocks.existsSync.mockImplementation(
-            (p) => p === '/repo/target' || p === '/repo/pom.xml'
-        )
+        fsMocks.existsSync.mockImplementation((p) => p === '/repo/target' || p === '/repo/pom.xml')
         shellMocks.exec.mockReturnValue({ code: 1 })
 
         const builder = createBuilder()
