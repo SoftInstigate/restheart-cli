@@ -1,23 +1,23 @@
 import { describe, expect, it, vi } from 'vitest'
 import { runCommand } from '../lib/cli.js'
 
-describe('runCommand routing', () => {
-    function createRh() {
-        return {
-            setHttpPort: vi.fn(),
-            setBuildSystem: vi.fn(),
-            printConfiguration: vi.fn(),
-            install: vi.fn(),
-            build: vi.fn(),
-            deploy: vi.fn(),
-            run: vi.fn().mockResolvedValue(undefined),
-            onlyPrintConfig: vi.fn().mockReturnValue(false),
-            checkAndKill: vi.fn().mockResolvedValue(undefined),
-            watchFiles: vi.fn(),
-            status: vi.fn().mockResolvedValue(undefined),
-        }
+function createRh() {
+    return {
+        setHttpPort: vi.fn(),
+        setBuildSystem: vi.fn(),
+        printConfiguration: vi.fn(),
+        install: vi.fn(),
+        build: vi.fn(),
+        deploy: vi.fn(),
+        run: vi.fn().mockResolvedValue(undefined),
+        onlyPrintConfig: vi.fn().mockReturnValue(false),
+        checkAndKill: vi.fn().mockResolvedValue(undefined),
+        watchFiles: vi.fn(),
+        status: vi.fn().mockResolvedValue(undefined),
     }
+}
 
+describe('runCommand routing', () => {
     it('routes build command to build and deploy', async () => {
         const rh = createRh()
 
