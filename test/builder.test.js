@@ -61,6 +61,15 @@ vi.mock('../lib/error-handler.js', () => errorHandlerMocks)
 describe('Builder', () => {
     let Builder
 
+    const createBuilder = () =>
+        new Builder({
+            getAll: () => ({
+                repoDir: '/repo',
+                rhDir: '/repo/.cache/restheart',
+                debugMode: false,
+            }),
+        })
+
     beforeEach(async () => {
         vi.resetModules()
         vi.clearAllMocks()
@@ -70,13 +79,7 @@ describe('Builder', () => {
     it('uses mvnw when available', () => {
         fsMocks.existsSync.mockImplementation((p) => p === '/repo/mvnw' || p === '/repo/target')
 
-        const builder = new Builder({
-            getAll: () => ({
-                repoDir: '/repo',
-                rhDir: '/repo/.cache/restheart',
-                debugMode: false,
-            }),
-        })
+        const builder = createBuilder()
 
         builder.build('clean package', true)
 
@@ -89,13 +92,7 @@ describe('Builder', () => {
     it('falls back to mvn when mvnw is missing', () => {
         fsMocks.existsSync.mockImplementation((p) => p === '/repo/target')
 
-        const builder = new Builder({
-            getAll: () => ({
-                repoDir: '/repo',
-                rhDir: '/repo/.cache/restheart',
-                debugMode: false,
-            }),
-        })
+        const builder = createBuilder()
 
         builder.build('package', false)
 
@@ -111,13 +108,7 @@ describe('Builder', () => {
             }
         })
 
-        const builder = new Builder({
-            getAll: () => ({
-                repoDir: '/repo',
-                rhDir: '/repo/.cache/restheart',
-                debugMode: false,
-            }),
-        })
+        const builder = createBuilder()
 
         builder.build('package', true)
 
@@ -140,13 +131,7 @@ describe('Builder', () => {
             return []
         })
 
-        const builder = new Builder({
-            getAll: () => ({
-                repoDir: '/repo',
-                rhDir: '/repo/.cache/restheart',
-                debugMode: false,
-            }),
-        })
+        const builder = createBuilder()
 
         builder.deploy()
 
@@ -158,6 +143,57 @@ describe('Builder', () => {
         expect(shellMocks.cp).toHaveBeenCalledWith(
             ['/repo/target/lib/dep.jar'],
             '/repo/.cache/restheart/plugins'
+        )
+    })
+
+    it('reports build failure when shell command exits non-zero', () => {
+        fsMocks.existsSync.mockImplementation((p) => p === '/repo/target')
+        shellMocks.exec.mockReturnValue({ code: 1 })
+
+        const builder = createBuilder()
+
+        expect(() => builder.build('clean package', true)).toThrow('processError called')
+        expect(errorHandlerMocks.ErrorHandler.processError).toHaveBeenCalled()
+        expect(errorHandlerMocks.ErrorHandler.processError.mock.calls[0][0]).toContain(
+            'Maven build failed with exit code 1'
+        )
+    })
+
+    it('reports build failure when target directory is missing after successful build', () => {
+        fsMocks.existsSync.mockReturnValue(false)
+        shellMocks.exec.mockReturnValue({ code: 0 })
+
+        const builder = createBuilder()
+
+        expect(() => builder.build('clean package', true)).toThrow('processError called')
+        expect(errorHandlerMocks.ErrorHandler.processError).toHaveBeenCalled()
+        expect(errorHandlerMocks.ErrorHandler.processError.mock.calls[0][0]).toContain(
+            'Build completed but target directory not found'
+        )
+    })
+
+    it('fails deploy when target directory does not exist', () => {
+        fsMocks.existsSync.mockReturnValue(false)
+
+        const builder = createBuilder()
+
+        expect(() => builder.deploy()).toThrow('fileSystemError called')
+        expect(errorHandlerMocks.ErrorHandler.fileSystemError).toHaveBeenCalled()
+        expect(errorHandlerMocks.ErrorHandler.fileSystemError.mock.calls[0][0]).toContain(
+            'Target directory not found'
+        )
+    })
+
+    it('fails deploy when no jars are found', () => {
+        fsMocks.existsSync.mockReturnValue(true)
+        shellMocks.find.mockReturnValue([])
+
+        const builder = createBuilder()
+
+        expect(() => builder.deploy()).toThrow('fileSystemError called')
+        expect(errorHandlerMocks.ErrorHandler.fileSystemError).toHaveBeenCalled()
+        expect(errorHandlerMocks.ErrorHandler.fileSystemError.mock.calls[0][0]).toContain(
+            'No JAR files found to deploy'
         )
     })
 })
