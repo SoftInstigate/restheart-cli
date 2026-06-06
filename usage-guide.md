@@ -58,7 +58,7 @@ To create a new RESTHeart plugin project:
 
 The `-s` option (standalone mode) disables MongoDB-dependent plugins. Use this option if you do not intend to connect to a MongoDB instance during runtime.
 
-⚠️ If you don't pass the `-s` option RESTHeart tries to connect to a MongoDB instace running at `localhost:27017`. If that is not present then RESTHeart fails to start.
+⚠️ If you don't pass the `-s` option RESTHeart tries to connect to a MongoDB instance running at `localhost:27017`. If that is not present then RESTHeart fails to start.
 
 Once you have your plugin project set up:
 
@@ -81,7 +81,7 @@ The watch mode will automatically **rebuild** and **restart** RESTHeart whenever
 
 ### Development by connecting to a specific MongoDB instance
 
-💡 You can use the `rh` command with the `run` or `watch` option passing the `/mclient/connection-string` via the `RHO` environmemt variable, to connect to a specific MongoDB instance. This way, you can develop locally but using a remote database.
+💡 You can use the `rh` command with the `run` or `watch` option passing the `/mclient/connection-string` via the `RHO` environment variable, to connect to a specific MongoDB instance. This way, you can develop locally but using a remote database.
 
 Example:
 
