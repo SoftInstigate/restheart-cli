@@ -235,9 +235,12 @@ describe('Builder', () => {
         builder.build('package', false)
 
         expect(utilsMocks.commandExists).toHaveBeenCalledWith('./mvnw')
-        expect(shellMocks.exec).toHaveBeenCalledWith('./mvnw -f pom.xml package -DskipTests=false', {
-            silent: true,
-        })
+        expect(shellMocks.exec).toHaveBeenCalledWith(
+            './mvnw -f pom.xml package -DskipTests=false',
+            {
+                silent: true,
+            }
+        )
     })
 
     it('deploys gradle jars from build/libs in gradle-only repositories', () => {
