@@ -1,17 +1,33 @@
 # RESTHeart CLI
 
-A command-line interface for managing [RESTHeart](https://restheart.org) instances, simplifying development, installation, and operation workflows.
+A command-line interface for RESTHeart plugin developers to automate the local install, build, run, and restart workflow.
 
-> RESTHeart simplifies backend development by eliminating the need to write boilerplate CRUD operations and authentication code, allowing developers to focus on building their applications.
+## Why this CLI exists
+
+Developing RESTHeart plugins often means repeating the same manual loop:
+
+- install or update RESTHeart locally
+- build plugin JARs with Maven
+- copy and deploy artifacts
+- restart the server and verify status
+
+RESTHeart CLI (`rh`) removes this friction by turning that loop into a small set of predictable commands. It is focused on faster feedback during local development and less operational overhead while iterating.
 
 ## Overview
 
-RESTHeart CLI (`rh`) is a powerful tool designed to streamline the development and management of RESTHeart Java applications. It provides a convenient interface for common tasks such as:
+RESTHeart CLI (`rh`) streamlines development and management of RESTHeart Java applications. It provides a single interface for common tasks such as:
 
 -   **Installing** and **updating** RESTHeart
 -   **Building** and **deploying** Java plugins
 -   **Starting** and **stopping** RESTHeart instances
 -   **Watching** for code changes and automatically rebuilding/redeploying
+
+### Developer Value
+
+-   **Faster development loop**: rebuild and restart automatically while coding
+-   **Fewer manual steps**: one CLI for build, deploy, run, status, and kill
+-   **Safer local operations**: explicit process and port management commands
+-   **Better version flexibility**: install from GitHub releases or local SNAPSHOT builds
 
 > Typically, you will begin with a Maven project. Refer to the [official documentation](https://restheart.org/docs/plugins/overview) for detailed instructions on implementing custom plugins.
 
@@ -55,6 +71,13 @@ rh run
 # Enable file watching (auto-rebuild on changes)
 rh watch
 ```
+
+Expected outcomes:
+
+1. `rh install` downloads and installs RESTHeart into `.cache/restheart` in your project directory.
+2. `rh build` runs Maven and deploys generated plugin JARs into RESTHeart's plugins directory.
+3. `rh run` starts RESTHeart (default HTTP port: 8080).
+4. `rh watch` monitors source/config changes and automatically rebuilds/restarts RESTHeart.
 
 👉 Look at the [Usage Guide](https://github.com/SoftInstigate/restheart-cli/blob/master/usage-guide.md) for more practical examples for common workflows.
 
