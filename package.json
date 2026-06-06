@@ -34,7 +34,7 @@
         "js-yaml": "^4.1.1",
         "ora": "^8.0.1",
         "ps-list": "^8.1.1",
-        "shelljs": "^0.8.5",
+        "shelljs": "^0.10.0",
         "yargs": "^17.7.2"
     },
     "devDependencies": {
