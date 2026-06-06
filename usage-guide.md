@@ -12,6 +12,26 @@ This guide provides practical examples for common workflows with the RESTHeart C
 6. [Advanced Usage](#advanced-usage)
 7. [Troubleshooting](#troubleshooting)
 
+## Build System Selection
+
+RESTHeart CLI supports Maven and Gradle projects.
+
+- Default behavior: `auto` (detect from project files)
+- Explicit override: `--build-system maven` or `--build-system gradle`
+
+Examples:
+
+```bash
+# Auto-detect (default)
+rh build
+
+# Force Gradle for this command
+rh build --build-system gradle
+
+# Force Maven for this command
+rh run --build --build-system maven
+```
+
 ## Quickstart
 
 RESTHeart CLI makes it easy to develop and test plugins for RESTHeart. Here's how to get started:
@@ -170,6 +190,13 @@ Build and deploy plugins in the current directory:
 rh build
 ```
 
+Build and deploy with an explicit build system:
+
+```bash
+rh build --build-system gradle
+rh build --build-system maven
+```
+
 ### Running with Built-in Build
 
 Run RESTHeart with an automatic build before starting:
@@ -177,6 +204,9 @@ Run RESTHeart with an automatic build before starting:
 ```bash
 # Build and run in a single command
 rh run --build
+
+# Build with Gradle, then run
+rh run --build --build-system gradle
 ```
 
 ### Running with Custom Config
@@ -297,14 +327,24 @@ rh run --port 9090
 ### Common Error: Build Failure
 
 ```
-Error: Maven build failed
+Error: maven build failed
+# or
+Error: gradle build failed
 ```
 
 Resolution:
 
 ```bash
-# Check the Maven build directly
+# Check the build directly
+# Maven project:
 ./mvnw clean package
+
+# Gradle project:
+./gradlew clean build
+
+# Force a specific build system from the CLI
+rh --verbose build --build-system maven
+rh --verbose build --build-system gradle
 
 # Try with verbose output
 rh --verbose build

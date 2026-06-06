@@ -82,4 +82,20 @@ describe('runCommand routing', () => {
         expect(rh.build).toHaveBeenCalledWith('clean package')
         expect(rh.deploy).toHaveBeenCalledTimes(1)
     })
+
+    it('applies build-system configuration from hyphenated argv key', async () => {
+        const rh = createRh()
+
+        await runCommand(
+            'build',
+            {
+                'build-system': 'maven',
+            },
+            rh
+        )
+
+        expect(rh.setBuildSystem).toHaveBeenCalledWith('maven')
+        expect(rh.build).toHaveBeenCalledWith('clean package')
+        expect(rh.deploy).toHaveBeenCalledTimes(1)
+    })
 })
