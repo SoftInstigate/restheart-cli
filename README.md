@@ -93,7 +93,7 @@ rh install [version|path] [--force]
 
 Options:
 
--   `version|path`: RESTHeart version (e.g., "latest", "8.10.1") or path to core/target directory (default: "latest")
+-   `version|path`: RESTHeart version (e.g., "latest", "9.4.0") or path to core/target directory (default: "latest")
 -   `--force`, `-f`: Force reinstallation even if already installed
 
 Examples:
@@ -103,7 +103,7 @@ Examples:
 rh install
 
 # Install a specific version from GitHub releases
-rh install 8.10.1
+rh install 9.4.0
 
 # Install from local RESTHeart build (after mvn package)
 rh install ~/restheart/core/target
