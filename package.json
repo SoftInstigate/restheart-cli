@@ -11,8 +11,8 @@
     },
     "scripts": {
         "start": "node rh.js",
-        "format:check": "prettier --check .",
-        "format:write": "prettier --write .",
+        "format:check": "prettier --check \"**/*.{js,mjs,cjs}\"",
+        "format:write": "prettier --write \"**/*.{js,mjs,cjs}\"",
         "lint:check": "eslint .",
         "lint:fix": "eslint --fix .",
         "test": "vitest run"
