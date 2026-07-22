@@ -83,6 +83,18 @@ Expected outcomes:
 
 👉 Look at the [Usage Guide](https://github.com/SoftInstigate/restheart-cli/blob/master/usage-guide.md) for more practical examples for common workflows.
 
+## Documentation
+
+The project now includes a structured documentation set in `openwiki/`.
+
+-   [OpenWiki Quickstart](openwiki/quickstart.md)
+-   [OpenWiki Index](openwiki/index.md)
+-   [Architecture](openwiki/architecture/index.md)
+-   [Domain Concepts](openwiki/domain/index.md)
+-   [Operations Runbook](openwiki/operations/index.md)
+-   [Testing Guidance](openwiki/testing/index.md)
+-   [Development Workflows](openwiki/workflows/index.md)
+
 ## Commands
 
 ### Install RESTHeart
@@ -105,7 +117,7 @@ Examples:
 rh install
 
 # Install a specific version from GitHub releases
-rh install 9.4.0
+rh install 9.5.2
 
 # Install from local RESTHeart build (after mvn package)
 rh install ~/restheart/core/target
