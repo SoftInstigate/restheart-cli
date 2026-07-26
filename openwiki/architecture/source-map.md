@@ -38,7 +38,8 @@ restheart-cli/
 │   ├── utils.test.js
 │   └── watcher.test.js
 ├── .github/workflows/      # CI/CD configuration
-│   └── ci.yml              # GitHub Actions workflow
+│   ├── ci.yml              # CI pipeline (test, lint, format)
+│   └── openwiki-update.yml # Scheduled OpenWiki documentation refresh
 ├── rh.js                   # Executable entry point
 ├── package.json            # Project configuration
 ├── README.md               # Main documentation
@@ -316,11 +317,20 @@ npx vitest run --coverage
 ### `.github/workflows/ci.yml`
 
 **CI Pipeline**:
-- Runs on push and pull request
+- Runs on push and pull request (ignores changes to `openwiki/**`, `AGENTS.md`, `CLAUDE.md`)
 - Tests Node.js 22.x and 24.x
 - Steps: checkout, setup node, install, format check, lint, test
 
 **When to modify**: When changing CI requirements or adding new checks.
+
+### `.github/workflows/openwiki-update.yml`
+
+**OpenWiki Update Workflow**:
+- Runs on schedule (daily at 04:15 UTC) and manual dispatch
+- Installs OpenWiki globally, runs `openwiki code --update --print`
+- Creates a pull request via `peter-evans/create-pull-request` with branch `openwiki/update`
+
+**When to modify**: When changing the documentation update schedule or OpenWiki configuration.
 
 ## Key Code Patterns
 
