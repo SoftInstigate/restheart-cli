@@ -4,6 +4,13 @@ title: RESTHeart CLI Domain Concepts
 description: Core terminology, concepts, and domain knowledge for understanding RESTHeart CLI and the RESTHeart ecosystem
 tags: [domain, concepts, terminology, restheart, plugins]
 timestamp: 2026-03-15T10:30:00Z
+openwiki:
+  roles: [domain]
+  change_kinds: [lifecycle]
+  source_paths: [lib/config.js, lib/watcher.js, lib/process-manager.js]
+  symbols: [ConfigManager, Watcher, ProcessManager]
+  test_paths: [test/config.test.js, test/watcher.test.js, test/process-manager.test.js]
+  validation_commands: [npm test]
 ---
 
 # RESTHeart CLI Domain Concepts
@@ -253,6 +260,7 @@ RHO='/mclient/connection-string->"mongodb://host:port" /http-listener/port->9090
 - `**/build.gradle` - Gradle configuration
 - `**/build.gradle.kts` - Gradle Kotlin DSL
 - `**/settings.gradle` - Gradle settings
+- `**/settings.gradle.kts` - Gradle Kotlin DSL settings
 - RESTHeart config files (from `-o` option)
 
 **Path Patterns**:

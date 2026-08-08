@@ -4,6 +4,13 @@ title: RESTHeart CLI Source Map
 description: Codebase navigation guide with file organization, entry points, and key source locations
 tags: [source-map, navigation, codebase, files]
 timestamp: 2026-03-15T10:30:00Z
+openwiki:
+  roles: [repository]
+  change_kinds: [lifecycle]
+  source_paths: [lib/cli.js, lib/restheart.js, lib/config.js, lib/builder.js, lib/installer.js, lib/process-manager.js, lib/watcher.js, lib/logger.js, lib/error-handler.js, lib/utils.js, lib/help.js, lib/build-systems/index.js, lib/build-systems/maven.js, lib/build-systems/gradle.js]
+  symbols: [initCLI, runCommand, RESTHeartManager, ConfigManager, Builder, Installer, ProcessManager, Watcher, Logger, ErrorHandler, resolveBuildSystem]
+  test_paths: [test/cli.test.js, test/builder.test.js, test/config.test.js, test/watcher.test.js, test/process-manager.test.js, test/utils.test.js, test/logger.test.js, test/error-handler.test.js, test/build-system-resolver.test.js]
+  validation_commands: [npm test]
 ---
 
 # RESTHeart CLI Source Map
@@ -177,6 +184,7 @@ yargs(hideBin(process.argv))
 - `src/main/**/*.java`: Java source files
 - `**/pom.xml`: Maven configuration
 - `**/build.gradle`, `**/build.gradle.kts`: Gradle configuration
+- `**/settings.gradle`, `**/settings.gradle.kts`: Gradle settings
 - RESTHeart config files (from `-o` option)
 
 **When to modify**: When changing watch behavior, adding new file types, or modifying rebuild logic.
@@ -326,7 +334,7 @@ npx vitest run --coverage
 ### `.github/workflows/openwiki-update.yml`
 
 **OpenWiki Update Workflow**:
-- Runs on schedule (daily at 04:15 UTC) and manual dispatch
+- Runs on schedule (Saturdays at 04:13 UTC) and manual dispatch
 - Installs OpenWiki globally, runs `openwiki code --update --print`
 - Creates a pull request via `peter-evans/create-pull-request` with branch `openwiki/update`
 

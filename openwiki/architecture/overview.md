@@ -4,6 +4,13 @@ title: RESTHeart CLI Architecture Overview
 description: Technical architecture, component relationships, and design decisions of the RESTHeart CLI tool
 tags: [architecture, design, components, patterns]
 timestamp: 2026-03-15T10:30:00Z
+openwiki:
+  roles: [architecture]
+  change_kinds: [lifecycle, public-api]
+  source_paths: [lib/cli.js, lib/restheart.js, lib/config.js, lib/builder.js, lib/installer.js, lib/process-manager.js, lib/watcher.js]
+  symbols: [initCLI, RESTHeartManager, ConfigManager, Builder, Installer, ProcessManager, Watcher]
+  test_paths: [test/cli.test.js, test/builder.test.js, test/config.test.js, test/watcher.test.js, test/process-manager.test.js]
+  validation_commands: [npm test]
 ---
 
 # RESTHeart CLI Architecture Overview
@@ -13,6 +20,28 @@ This document describes the technical architecture of RESTHeart CLI, explaining 
 ## High-Level Architecture
 
 RESTHeart CLI follows a layered architecture with clear separation of concerns:
+
+```mermaid
+flowchart TD
+    A["rh.js entry point"] --> B["cli.js - initCLI, runCommand"]
+    B --> C["restheart.js - RESTHeartManager"]
+    C --> D["config.js - ConfigManager"]
+    C --> E["builder.js - Builder"]
+    C --> F["installer.js - Installer"]
+    C --> G["process-manager.js - ProcessManager"]
+    C --> H["watcher.js - Watcher"]
+    E --> I["build-systems/index.js - resolveBuildSystem"]
+    I --> J["maven.js - MavenBuildSystem"]
+    I --> K["gradle.js - GradleBuildSystem"]
+    E --> L["utils.js"]
+    F --> L
+    G --> L
+    H --> L
+    B --> M["logger.js - Logger"]
+    B --> N["error-handler.js - ErrorHandler"]
+```
+
+*Component dependency graph showing how the CLI entry point flows through the orchestration layer to individual components.*
 
 ```
 ┌─────────────────────────────────────────┐
@@ -166,6 +195,7 @@ Monitors file changes and triggers rebuilds. Responsibilities:
 - `**/build.gradle` - Gradle configuration
 - `**/build.gradle.kts` - Gradle Kotlin DSL
 - `**/settings.gradle` - Gradle settings
+- `**/settings.gradle.kts` - Gradle Kotlin DSL settings
 - RESTHeart config files (parsed from `-o` option)
 
 **Key Design Decisions**:
@@ -218,39 +248,62 @@ Abstracts build system differences. Responsibilities:
 
 ### Build and Deploy Flow
 
-```
-CLI Command → RESTHeartManager.build()
-    → Builder.build()
-        → BuildSystem.resolveBuildCommand()
-        → shell.exec(buildCommand)
-        → Builder.deploy()
-            → Copy JARs to plugins directory
+```mermaid
+sequenceDiagram
+    participant CLI as cli.js
+    participant RH as RESTHeartManager
+    participant B as Builder
+    participant BS as BuildSystem
+
+    CLI->>RH: build(mvnParams, skipTests)
+    RH->>B: build(mvnParams, skipTests)
+    B->>BS: resolveBuildCommand(repoDir, buildParams, skipTests)
+    BS-->>B: buildCommand
+    B->>B: shell.exec(buildCommand)
+    B->>B: deploy()
 ```
 
 ### Watch and Rebuild Flow
 
-```
-CLI Command → RESTHeartManager.watchFiles()
-    → Watcher.watchFiles()
-        → chokidar.watch(paths)
-        → File change detected
-        → Debounce timeout
-        → processFileUpdate()
-            → Builder.build()
-            → Builder.deploy()
-            → ProcessManager.kill()
-            → ProcessManager.run()
+```mermaid
+sequenceDiagram
+    participant CLI as cli.js
+    participant RH as RESTHeartManager
+    participant W as Watcher
+    participant B as Builder
+    participant PM as ProcessManager
+    participant CH as chokidar
+
+    CLI->>RH: watchFiles(restheartOptions, watchOptions)
+    RH->>W: watchFiles(restheartOptions, watchOptions)
+    W->>CH: watch(paths, options)
+    CH-->>W: change event (filePath)
+    W->>W: debounce timeout
+    W->>B: build()
+    B->>B: resolveBuildCommand()
+    B->>B: shell.exec(buildCommand)
+    B->>B: deploy()
+    W->>PM: kill()
+    W->>PM: run(restheartOptions)
 ```
 
 ### Installation Flow
 
-```
-CLI Command → RESTHeartManager.install()
-    → Installer.install()
-        → Check Java installation
-        → Determine strategy (local/remote)
-        → Download or copy RESTHeart
-        → Verify installation
+```mermaid
+sequenceDiagram
+    participant CLI as cli.js
+    participant RH as RESTHeartManager
+    participant I as Installer
+
+    CLI->>RH: install(version, force)
+    RH->>I: install(restheartVersion, forceInstall)
+    I->>I: commandExists("java")
+    alt isLocalPath
+        I->>I: installFromLocal(restheartVersion)
+    else remote version
+        I->>I: downloadRESTHeart(version)
+    end
+    I->>I: Verify installation
 ```
 
 ## Error Handling Strategy

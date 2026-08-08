@@ -4,6 +4,13 @@ title: RESTHeart CLI Development Workflows
 description: Common development patterns, step-by-step guides, and practical workflows for RESTHeart plugin development
 tags: [workflows, development, patterns, guides]
 timestamp: 2026-03-15T10:30:00Z
+openwiki:
+  roles: [workflow, domain]
+  change_kinds: [lifecycle, public-api]
+  source_paths: [lib/watcher.js, lib/builder.js, lib/process-manager.js, lib/installer.js]
+  symbols: [Watcher, Builder, ProcessManager, Installer]
+  test_paths: [test/watcher.test.js, test/builder.test.js, test/process-manager.test.js]
+  validation_commands: [npm test]
 ---
 
 # RESTHeart CLI Development Workflows
