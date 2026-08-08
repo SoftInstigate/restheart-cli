@@ -4,6 +4,13 @@ title: RESTHeart CLI Testing Guidance
 description: Testing strategies, patterns, and best practices for RESTHeart CLI development and maintenance
 tags: [testing, vitest, unit-tests, integration-tests, mocking]
 timestamp: 2026-03-15T10:30:00Z
+openwiki:
+  roles: [testing]
+  change_kinds: [lifecycle]
+  source_paths: [test/cli.test.js, test/builder.test.js, test/config.test.js, test/watcher.test.js, test/process-manager.test.js, test/utils.test.js, test/logger.test.js, test/error-handler.test.js, test/build-system-resolver.test.js]
+  symbols: [initCLI, runCommand, Builder, ConfigManager, Watcher, ProcessManager, Logger, ErrorHandler, resolveBuildSystem]
+  test_paths: [test/cli.test.js, test/builder.test.js, test/config.test.js, test/watcher.test.js, test/process-manager.test.js, test/utils.test.js, test/logger.test.js, test/error-handler.test.js, test/build-system-resolver.test.js]
+  validation_commands: [npm test]
 ---
 
 # RESTHeart CLI Testing Guidance

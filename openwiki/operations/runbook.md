@@ -4,6 +4,13 @@ title: RESTHeart CLI Operations Runbook
 description: Troubleshooting, debugging, and operational procedures for RESTHeart CLI issues and maintenance
 tags: [operations, runbook, troubleshooting, debugging, maintenance]
 timestamp: 2026-03-15T10:30:00Z
+openwiki:
+  roles: [operations]
+  change_kinds: [lifecycle]
+  source_paths: [lib/process-manager.js, lib/installer.js, lib/watcher.js]
+  symbols: [ProcessManager, Installer, Watcher]
+  test_paths: [test/process-manager.test.js, test/watcher.test.js]
+  validation_commands: [npm test]
 ---
 
 # RESTHeart CLI Operations Runbook
