@@ -101,6 +101,20 @@ The orchestration layer that coordinates all components. Responsibilities:
 - **Configuration Management**: Delegates to ConfigManager
 - **Lifecycle Management**: Handles startup, shutdown, and cleanup
 
+**Key Methods**:
+- `install(version, force)`: Delegates to Installer
+- `build(mvnParams, skipTests)`: Delegates to Builder
+- `deploy()`: Delegates to Builder.deploy()
+- `run(restheartOptions)`: Delegates to ProcessManager
+- `watchFiles(restheartOptions)`: Delegates to Watcher
+- `kill()`: Delegates to ProcessManager.kill()
+- `status()`: Delegates to ProcessManager.status()
+- `isRunning()`: Delegates to ProcessManager.isRunning()
+- `checkAndKill()`: Delegates to ProcessManager.checkAndKill()
+- `onlyPrintConfig(restheartOptions)`: Checks if options are config-print-only flags (`-t`, `-c`, `-v`)
+- `printConfiguration()`: Logs all current config values
+- `setHttpPort(port)`, `setDebugMode(debug)`, `setBuildSystem(buildSystem)`: Config setters
+
 **Key Design Decisions**:
 - Single responsibility: each component handles one domain
 - Dependency injection: components receive ConfigManager in constructor
@@ -134,34 +148,39 @@ Manages all configuration settings. Responsibilities:
 
 Handles building and deploying RESTHeart plugins. Responsibilities:
 
-- **Build Execution**: Runs Maven or Gradle build commands
+- **Build Execution**: Runs Maven or Gradle build commands (prefers wrapper scripts `mvnw`/`gradlew`)
 - **Artifact Deployment**: Copies built JARs to RESTHeart plugins directory
-- **Build System Resolution**: Determines which build system to use
-- **Error Handling**: Deduplicates and formats build output
+- **Build System Resolution**: Determines which build system to use via `resolveBuildSystem`
+- **Error Handling**: Deduplicates consecutive error output lines
 
 **Key Design Decisions**:
 - Delegates build system specifics to `build-systems/` module
 - Cleans target directory before building
 - Returns to original directory after build (even on failure)
 - Uses silent shell execution with deduplicated error output
+- Build params use Maven conventions (`clean package`); Gradle maps these via `mapBuildParams`
 
 #### Installer (`lib/installer.js`)
 
 Manages RESTHeart installation. Responsibilities:
 
 - **Version Resolution**: Handles "latest", specific versions, and local paths
-- **Download Management**: Downloads RESTHeart from GitHub releases
-- **Local Installation**: Installs from local RESTHeart builds
-- **Version Verification**: Checks existing installations
+- **Download Management**: Downloads RESTHeart from GitHub releases using native Node.js HTTPS
+- **Local Installation**: Installs from local RESTHeart build directories
+- **Version Verification**: Checks existing installations, verifies via `java -jar ... -v`
 
 **Installation Strategies**:
 1. **Remote**: Downloads from GitHub releases (latest or specific version)
-2. **Local**: Copies from local RESTHeart build directory
+2. **Local**: Copies from local RESTHeart build directory (detected by `/` or `\` in the argument)
+
+**Constructor Dependencies**:
+- `ConfigManager`: For directory paths and settings
+- `Builder`: Used for post-install build if needed
 
 **Key Design Decisions**:
-- Checks for Java installation before proceeding
+- Checks for Java installation before proceeding (via `commandExists`)
 - Verifies existing installations to avoid redundant downloads
-- Supports force reinstallation with `--force` flag
+- Supports force reinstallation with `--force` flag (cleans cache directory)
 - Uses native Node.js HTTPS for downloads (no external dependencies)
 
 #### ProcessManager (`lib/process-manager.js`)
@@ -169,16 +188,25 @@ Manages RESTHeart installation. Responsibilities:
 Manages RESTHeart process lifecycle. Responsibilities:
 
 - **Process Execution**: Starts RESTHeart with configured options
-- **Process Termination**: Kills running RESTHeart instances
-- **Port Management**: Checks port availability and finds free ports
+- **Process Termination**: Kills running RESTHeart instances with SIGTERM/SIGKILL fallback
+- **Port Management**: Checks port availability on both IPv4 (`127.0.0.1`) and IPv6 (`::1`)
 - **Status Monitoring**: Checks if RESTHeart is running
+- **Config Detection**: Parses `-o` flag from RESTHeart options to find YAML config for host/port
+
+**Key Methods**:
+- `run(restheartOptions)`: Starts RESTHeart as a background process
+- `kill()`: Uses `lsof` for port-specific detection, falls back to `ps-list`; SIGTERM then SIGKILL after 15s timeout
+- `isRunning()`: Checks both `httpPort` and `httpPort + 1000` (RESTHeart's MongoDB wire protocol port)
+- `status()`: Logs whether RESTHeart is running at the configured port
+- `checkAndKill()`: Conditionally kills if already running
+- `onlyPrintConfig(restheartOptions)`: Returns `true` when options contain `-t`, `-c`, or `-v` (RESTHeart print/config flags)
 
 **Key Design Decisions**:
 - Prefers `lsof` for port-specific process detection
 - Falls back to `ps-list` for process discovery
 - Parses RESTHeart YAML config for host/port settings
-- Captures and manages RHO environment variable
-- Implements graceful shutdown with timeout
+- Captures RHO environment variable at startup (`originalRHO`) to prevent duplication on restart
+- Implements graceful shutdown with SIGTERM, escalating to SIGKILL after 15s timeout
 
 #### Watcher (`lib/watcher.js`)
 
@@ -237,12 +265,23 @@ Shared utility functions. Responsibilities:
 Abstracts build system differences. Responsibilities:
 
 - **Build System Resolution**: Determines Maven vs Gradle based on project files
-- **Command Generation**: Generates appropriate build commands
-- **Output Directory**: Returns correct target directory for each build system
+- **Command Generation**: Generates appropriate build commands, preferring wrapper scripts
+- **Output Directory**: Returns correct target directory for each build system (`target` for Maven, `build` for Gradle)
 
 **Supported Build Systems**:
-- **Maven**: `mvn clean package` with configurable parameters
-- **Gradle**: `gradle build` with wrapper support
+- **Maven** (`maven.js`): Prefers `./mvnw -f pom.xml ...`, falls back to `mvn`; uses `-DskipTests={true|false}`
+- **Gradle** (`gradle.js`): Prefers `./gradlew ...`, falls back to `gradle`; uses `-x test` to skip tests
+
+**Gradle Parameter Mapping** (`mapBuildParams`):
+- `'package'` → `'build'`
+- `'clean package'` → `'clean build'`
+- Other values passed through unchanged
+
+**Auto-Detection Logic** (`resolveBuildSystem` in `index.js`):
+1. Check for explicit `--build-system` option → use that system
+2. Check for `pom.xml` or `mvnw` → Maven
+3. Check for `gradlew`, `build.gradle`, `build.gradle.kts`, `settings.gradle`, `settings.gradle.kts` → Gradle
+4. Default to Maven when neither detected
 
 ## Data Flow
 
@@ -274,12 +313,15 @@ sequenceDiagram
     participant PM as ProcessManager
     participant CH as chokidar
 
-    CLI->>RH: watchFiles(restheartOptions, watchOptions)
-    RH->>W: watchFiles(restheartOptions, watchOptions)
+    CLI->>RH: watch(restheartOptions)
+    RH->>PM: checkAndKill()
+    Note over RH: If --build: build('clean package', true), deploy()
+    RH->>PM: run(restheartOptions)
+    RH->>W: watchFiles(restheartOptions)
     W->>CH: watch(paths, options)
     CH-->>W: change event (filePath)
     W->>W: debounce timeout
-    W->>B: build()
+    W->>B: build('clean package', true)
     B->>B: resolveBuildCommand()
     B->>B: shell.exec(buildCommand)
     B->>B: deploy()
