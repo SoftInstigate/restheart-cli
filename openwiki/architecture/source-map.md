@@ -47,6 +47,9 @@ restheart-cli/
 ├── .github/workflows/      # CI/CD configuration
 │   ├── ci.yml              # CI pipeline (test, lint, format)
 │   └── openwiki-update.yml # Scheduled OpenWiki documentation refresh
+├── .github/copilot-instructions.md # Agent instruction context
+├── AGENTS.md               # Repository agent guidance (OpenWiki section)
+├── CLAUDE.md               # Claude Code agent brief
 ├── rh.js                   # Executable entry point
 ├── package.json            # Project configuration
 ├── README.md               # Main documentation
@@ -75,8 +78,16 @@ initCLI()
 The main CLI setup and command routing.
 
 **Key Functions**:
-- `initCLI()`: Sets up yargs, registers commands, handles global options
-- `runCommand()`: Routes commands to appropriate RESTHeartManager methods
+- `initCLI()`: Sets up yargs, registers commands, handles global options, prints welcome banner
+- `runCommand(command, argv, rh)`: (exported) Routes commands to RESTHeartManager methods
+
+**Command Routing** (`runCommand`):
+- `install` → `rh.install(version, force)`
+- `build` → `rh.build('clean package')` + `rh.deploy()` (tests enabled)
+- `run` → `rh.checkAndKill()` → optionally `rh.build('clean package', true)` + `rh.deploy()` → `rh.run(options)`
+- `kill` → `rh.checkAndKill()`
+- `watch` → `rh.checkAndKill()` → optionally build/deploy → `rh.run()` → `rh.watchFiles()`
+- `status` → `rh.status()`
 
 **Command Registration Pattern**:
 ```javascript
@@ -154,15 +165,22 @@ yargs(hideBin(process.argv))
 
 **Key Responsibilities**:
 - Starts RESTHeart process
-- Kills running instances
-- Checks port availability
-- Monitors process status
+- Kills running instances (SIGTERM with SIGKILL fallback after 15s)
+- Checks port availability on both IPv4 and IPv6
+- Monitors process status (checks both httpPort and httpPort+1000)
+- Detects RESTHeart config-print flags (`-t`, `-c`, `-v`) via `onlyPrintConfig`
+
+**Constructor**: Receives `ConfigManager`; captures `originalRHO` environment variable at startup
 
 **Key Methods**:
 - `run(restheartOptions)`: Starts RESTHeart
 - `kill()`: Terminates RESTHeart processes
-- `isRunning()`: Checks if RESTHeart is active
-- `checkPortAvailability(port)`: Verifies port is free
+- `isRunning()`: Checks if RESTHeart is active (ports httpPort and httpPort+1000)
+- `status()`: Logs running status
+- `checkAndKill()`: Conditionally kills if already running
+- `onlyPrintConfig(restheartOptions)`: Checks for config-print flags
+- `parseConfigPath(restheartOptions)`: Extracts `-o` config file path
+- `getHostAndPortFromConfig(configPath)`: Parses RESTHeart YAML config for host/port
 
 **When to modify**: When changing process lifecycle, adding health checks, or modifying port management.
 
@@ -193,6 +211,8 @@ yargs(hideBin(process.argv))
 
 **Class**: `RESTHeartManager`
 
+**Constructor**: `(httpPort, debugMode)` - creates ConfigManager, then Builder, ProcessManager, Installer, Watcher
+
 **Key Responsibilities**:
 - Coordinates all components
 - Provides public API for CLI commands
@@ -201,14 +221,32 @@ yargs(hideBin(process.argv))
 **Key Methods**:
 - `install(version, force)`: Delegates to Installer
 - `build(mvnParams, skipTests)`: Delegates to Builder
+- `deploy()`: Delegates to Builder.deploy()
 - `run(restheartOptions)`: Delegates to ProcessManager
-- `watchFiles(restheartOptions, watchOptions)`: Delegates to Watcher
-- `kill()`: Delegates to ProcessManager
-- `status()`: Delegates to ProcessManager
+- `watchFiles(restheartOptions)`: Delegates to Watcher
+- `kill()`: Delegates to ProcessManager.kill()
+- `status()`: Delegates to ProcessManager.status()
+- `isRunning()`: Delegates to ProcessManager.isRunning()
+- `checkAndKill()`: Delegates to ProcessManager.checkAndKill()
+- `onlyPrintConfig(restheartOptions)`: Checks for config-print flags
+- `printConfiguration()`: Logs all config values
+- `setHttpPort(port)`, `setDebugMode(debug)`, `setBuildSystem(buildSystem)`: Config setters
 
 **When to modify**: When adding new top-level features or changing component coordination.
 
 ## Infrastructure Components
+
+### CLI Help: `lib/help.js`
+
+**Exported**: `getVersion`, `commandDescriptions`, `addCommandExamples`
+
+**Key Responsibilities**:
+- Reads version from `package.json` via `getVersion()`
+- Provides command descriptions and usage examples for all CLI commands
+- `commandDescriptions`: Object with keys for each command (`install`, `build`, `run`, `kill`, `watch`, `status`)
+- `addCommandExamples(yargs, commandName)`: Attaches examples to yargs command definitions
+
+**When to modify**: When adding new commands, updating help text, or changing examples.
 
 ### Logging: `lib/logger.js`
 
@@ -237,10 +275,10 @@ yargs(hideBin(process.argv))
 ### Utilities: `lib/utils.js`
 
 **Key Functions**:
-- `checkPort(port)`: Checks port availability
-- `commandExists(command)`: Verifies system command exists
+- `checkPort(port)`: Checks port availability on IPv4 (`127.0.0.1`) and IPv6 (`::1`) via TCP connection
+- `commandExists(command)`: Verifies system command exists; exits process if not found
 - `ensureDir(dir)`: Creates directory recursively
-- `createSpinner(text)`: Creates progress spinner
+- `createSpinner(text)`: Creates progress spinner (via `ora`)
 
 **When to modify**: When adding new utility functions or changing existing behavior.
 
@@ -256,8 +294,19 @@ build-systems/
 
 **Resolution Logic** (`index.js`):
 1. Check for explicit `--build-system` option
-2. Auto-detect based on project files
-3. Default to Maven if no detection
+2. Auto-detect: `pom.xml` or `mvnw` → Maven; `gradlew`, `build.gradle`, `build.gradle.kts`, `settings.gradle`, `settings.gradle.kts` → Gradle
+3. Default to Maven if neither detected
+
+**MavenBuildSystem** (`maven.js`):
+- Prefers `./mvnw -f pom.xml` wrapper, falls back to `mvn`
+- Uses `-DskipTests={true|false}` for test control
+- Output directory: `target`
+
+**GradleBuildSystem** (`gradle.js`):
+- Prefers `./gradlew` wrapper, falls back to `gradle`
+- Uses `-x test` to skip tests
+- Maps Maven-style params: `'package'` → `'build'`, `'clean package'` → `'clean build'`
+- Output directory: `build`
 
 **When to modify**: When adding new build systems or changing detection logic.
 
@@ -339,6 +388,12 @@ npx vitest run --coverage
 - Creates a pull request via `peter-evans/create-pull-request` with branch `openwiki/update`
 
 **When to modify**: When changing the documentation update schedule or OpenWiki configuration.
+
+### `.github/copilot-instructions.md`
+
+Context file for AI coding assistants. Contains repository conventions and patterns.
+
+**When to modify**: When updating agent guidance for the repository.
 
 ## Key Code Patterns
 

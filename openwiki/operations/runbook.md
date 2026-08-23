@@ -457,8 +457,8 @@ rh --debug watch
 
 **Slow builds**:
 ```bash
-# Skip tests
-rh build --skip-tests
+# Skip tests with run --build (uses skipTests=true internally)
+rh run --build
 
 # Use faster build system
 rh build --build-system gradle

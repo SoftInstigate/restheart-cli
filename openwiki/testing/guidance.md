@@ -216,6 +216,11 @@ function createRh() {
         kill: vi.fn().mockResolvedValue(undefined),
         watchFiles: vi.fn(),
         status: vi.fn().mockResolvedValue(undefined),
+        checkAndKill: vi.fn().mockResolvedValue(undefined),
+        onlyPrintConfig: vi.fn().mockReturnValue(false),
+        setHttpPort: vi.fn(),
+        setBuildSystem: vi.fn(),
+        printConfiguration: vi.fn(),
     }
 }
 

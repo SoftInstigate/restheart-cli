@@ -82,14 +82,14 @@ rh watch
 
 ## Essential Commands
 
-| Command | Description |
-|---------|-------------|
-| `rh install [version\|path]` | Install or update RESTHeart |
-| `rh build` | Build and deploy plugins |
-| `rh run [options]` | Start RESTHeart |
-| `rh watch [options]` | Watch for changes and auto-rebuild |
-| `rh kill` | Stop running RESTHeart instances |
-| `rh status` | Check if RESTHeart is running |
+| Command | Alias | Description |
+|---------|-------|-------------|
+| `rh install [version\|path]` | `rh i` | Install or update RESTHeart |
+| `rh build` | `rh b` | Build and deploy plugins |
+| `rh run [options]` | `rh r` | Start RESTHeart |
+| `rh watch [options]` | `rh w` | Watch for changes and auto-rebuild |
+| `rh kill` | `rh k` | Stop running RESTHeart instances |
+| `rh status` | `rh s` | Check if RESTHeart is running |
 
 ## Common Options
 
@@ -98,6 +98,7 @@ rh watch
 - `--debug` - Enable debug mode
 - `--verbose` - Show verbose output
 - `--quiet` - Suppress non-error output
+- `--timestamps` - Add timestamps to log messages
 
 ## Documentation Structure
 
@@ -120,7 +121,7 @@ This documentation is organized into focused sections:
 ### Build System Selection
 
 ```bash
-# Auto-detect (default)
+# Auto-detect (default) — runs tests
 rh build
 
 # Force Maven
@@ -128,6 +129,9 @@ rh build --build-system maven
 
 # Force Gradle
 rh build --build-system gradle
+
+# Note: rh run --build and rh watch --build automatically skip tests
+# for faster iteration during development
 ```
 
 ### Development with MongoDB
@@ -172,11 +176,11 @@ Use this table to find the right starting point for common change types.
 
 | Change Area | Wiki Page | Source Entry Points | Key Symbols / Types | Focused Tests | Validation Command |
 |---|---|---|---|---|---|
-| Add or modify a CLI command | [Architecture](architecture/overview.md), [Source Map](architecture/source-map.md) | `lib/cli.js`, `lib/restheart.js` | `initCLI`, `runCommand`, `RESTHeartManager` | `test/cli.test.js` | `npx vitest run test/cli.test.js` |
+| Add or modify a CLI command | [Architecture](architecture/overview.md), [Source Map](architecture/source-map.md) | `lib/cli.js`, `lib/restheart.js`, `lib/help.js` | `initCLI`, `runCommand`, `RESTHeartManager`, `commandDescriptions` | `test/cli.test.js` | `npx vitest run test/cli.test.js` |
 | Change build/deploy behavior | [Architecture](architecture/overview.md), [Source Map](architecture/source-map.md) | `lib/builder.js`, `lib/build-systems/index.js` | `Builder`, `resolveBuildSystem` | `test/builder.test.js`, `test/build-system-resolver.test.js` | `npx vitest run test/builder.test.js` |
-| Add a new build system | [Architecture](architecture/overview.md) | `lib/build-systems/` | `MavenBuildSystem`, `GradleBuildSystem` | `test/build-system-resolver.test.js` | `npx vitest run test/build-system-resolver.test.js` |
+| Add a new build system | [Architecture](architecture/overview.md), [Source Map](architecture/source-map.md) | `lib/build-systems/` | `MavenBuildSystem`, `GradleBuildSystem`, `resolveBuildSystem` | `test/build-system-resolver.test.js` | `npx vitest run test/build-system-resolver.test.js` |
 | Modify installer logic | [Source Map](architecture/source-map.md) | `lib/installer.js` | `Installer` | (no dedicated test) | `npm test` |
-| Change process/port management | [Operations Runbook](operations/runbook.md), [Source Map](architecture/source-map.md) | `lib/process-manager.js` | `ProcessManager` | `test/process-manager.test.js` | `npx vitest run test/process-manager.test.js` |
+| Change process/port management | [Operations Runbook](operations/runbook.md), [Source Map](architecture/source-map.md) | `lib/process-manager.js` | `ProcessManager`, `isRestheartProcess` | `test/process-manager.test.js` | `npx vitest run test/process-manager.test.js` |
 | Modify file watcher behavior | [Development Workflows](workflows/development-workflow.md), [Source Map](architecture/source-map.md) | `lib/watcher.js` | `Watcher` | `test/watcher.test.js` | `npx vitest run test/watcher.test.js` |
 | Update configuration defaults | [Domain Concepts](domain/concepts.md), [Source Map](architecture/source-map.md) | `lib/config.js` | `ConfigManager` | `test/config.test.js` | `npx vitest run test/config.test.js` |
 | Change logging or error handling | [Architecture](architecture/overview.md) | `lib/logger.js`, `lib/error-handler.js` | `Logger`, `ErrorHandler` | `test/logger.test.js`, `test/error-handler.test.js` | `npx vitest run test/logger.test.js test/error-handler.test.js` |

@@ -78,6 +78,7 @@ my-restheart-plugin/
 - **Dependencies**: Managed in `pom.xml`
 - **Plugins**: Extend build functionality
 - **Repositories**: Download dependencies from Maven Central
+- **Wrapper**: `mvnw` for consistent builds (preferred over bare `mvn`)
 
 **RESTHeart CLI Usage**:
 ```bash
@@ -85,8 +86,8 @@ my-restheart-plugin/
 rh build --build-system maven
 
 # Maven commands executed:
-# mvn clean package (default)
-# mvn clean package -DskipTests (skip tests)
+# ./mvnw -f pom.xml clean package (default, prefers wrapper)
+# ./mvnw -f pom.xml clean package -DskipTests=true (skip tests)
 ```
 
 **Maven Files**:
@@ -103,7 +104,7 @@ rh build --build-system maven
 - **Tasks**: Units of work (build, test, deploy)
 - **Plugins**: Extend build functionality
 - **Dependencies**: Managed in build script
-- **Wrapper**: `gradlew` for consistent builds
+- **Wrapper**: `gradlew` for consistent builds (preferred over bare `gradle`)
 
 **RESTHeart CLI Usage**:
 ```bash
@@ -111,8 +112,12 @@ rh build --build-system maven
 rh build --build-system gradle
 
 # Gradle commands executed:
-# gradle clean build (default)
-# gradle clean build -x test (skip tests)
+# ./gradlew clean build (default, prefers wrapper)
+# ./gradlew clean build -x test (skip tests)
+
+# Note: Maven-style params are mapped:
+# 'package' → 'build'
+# 'clean package' → 'clean build'
 ```
 
 **Gradle Files**:
@@ -124,8 +129,8 @@ rh build --build-system gradle
 ### Build System Auto-Detection
 
 **Detection Logic**:
-1. Check for `pom.xml` → Use Maven
-2. Check for `build.gradle` or `build.gradle.kts` → Use Gradle
+1. Check for `pom.xml` or `mvnw` → Use Maven
+2. Check for `gradlew`, `build.gradle`, `build.gradle.kts`, `settings.gradle`, `settings.gradle.kts` → Use Gradle
 3. Default to Maven if no detection
 
 **Priority**: Maven takes precedence over Gradle when both exist
@@ -174,13 +179,15 @@ rh status --port 9090
 ### Process Detection
 
 **Detection Methods**:
-1. **lsof**: Check processes bound to specific port
-2. **ps-list**: List all processes and filter by name
+1. **lsof**: Check processes bound to specific port (preferred for port-specific kill)
+2. **ps-list**: List all processes and filter by name (fallback)
 
 **Process Identification**:
 - Process name: `java`
 - Command line contains: `restheart`
 - Port binding matches configured port
+
+**Running Check**: RESTHeart is considered running if either the HTTP port (`httpPort`) or the MongoDB wire protocol port (`httpPort + 1000`) has an active listener. The `checkPort` utility probes both `127.0.0.1` and `::1` for each port.
 
 ## Configuration
 
@@ -274,6 +281,10 @@ RHO='/mclient/connection-string->"mongodb://host:port" /http-listener/port->9090
 
 **Default Debounce Time**: 1000ms (1 second)
 
+**Write Stability**: The watcher also uses `awaitWriteFinish` with `stabilityThreshold: 1000ms` and `pollInterval: 200ms` to ensure files are fully written before triggering a rebuild.
+
+**Concurrency Guard**: An `isProcessing` flag prevents overlapping rebuilds. If a file change arrives while a build/restart is in progress, it is skipped.
+
 **Purpose**:
 - Prevents multiple rebuilds during rapid file saves
 - Reduces system load
@@ -316,6 +327,10 @@ rh watch --debounce-time 2000  # 2 seconds
 3. **Command Line**: `--port 9090`
 
 **Priority**: Environment variable > File > Command line
+
+### Config-Print Flags
+
+When RESTHeart options contain `-t`, `-c`, or `-v`, the CLI detects this via `onlyPrintConfig()` and skips the `checkAndKill`/`run` sequence, instead passing the options directly to `java -jar restheart.jar`. This allows using `rh run -- -v` to print RESTHeart version info without starting the server.
 
 ## Plugin Development Concepts
 

@@ -103,8 +103,8 @@ RESTHeart CLI supports Maven and Gradle projects with automatic detection.
 rh build
 
 # Detection logic:
-# 1. Check for pom.xml → Use Maven
-# 2. Check for build.gradle → Use Gradle
+# 1. Check for pom.xml or mvnw → Use Maven
+# 2. Check for gradlew, build.gradle, build.gradle.kts, settings.gradle, settings.gradle.kts → Use Gradle
 # 3. Default to Maven
 ```
 
@@ -335,17 +335,20 @@ rh build
 # Build with tests (default)
 rh build
 
-# Skip tests
-rh build --skip-tests
+# Skip tests by using run/watch with --build flag
+rh run --build   # internally passes skipTests=true
+rh watch --build # internally passes skipTests=true
 ```
 
 #### Build with Parameters
 
 ```bash
-# Maven-specific parameters
-rh build --mvn-params "-DskipTests -Pproduction"
+# Maven build system uses: mvn -f pom.xml clean package -DskipTests=false
+# Gradle build system maps: clean package → clean build
 
-# Note: --mvn-params is for advanced Maven usage
+# Force specific build system
+rh build --build-system maven
+rh build --build-system gradle
 ```
 
 ### 9. Installation Scenarios
