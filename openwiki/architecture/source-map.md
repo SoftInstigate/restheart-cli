@@ -3,14 +3,58 @@ type: Reference
 title: RESTHeart CLI Source Map
 description: Codebase navigation guide with file organization, entry points, and key source locations
 tags: [source-map, navigation, codebase, files]
-timestamp: 2026-03-15T10:30:00Z
-openwiki:
-  roles: [repository]
-  change_kinds: [lifecycle]
-  source_paths: [lib/cli.js, lib/restheart.js, lib/config.js, lib/builder.js, lib/installer.js, lib/process-manager.js, lib/watcher.js, lib/logger.js, lib/error-handler.js, lib/utils.js, lib/help.js, lib/build-systems/index.js, lib/build-systems/maven.js, lib/build-systems/gradle.js]
-  symbols: [initCLI, runCommand, RESTHeartManager, ConfigManager, Builder, Installer, ProcessManager, Watcher, Logger, ErrorHandler, resolveBuildSystem]
-  test_paths: [test/cli.test.js, test/builder.test.js, test/config.test.js, test/watcher.test.js, test/process-manager.test.js, test/utils.test.js, test/logger.test.js, test/error-handler.test.js, test/build-system-resolver.test.js]
-  validation_commands: [npm test]
+verified:
+  - by: openwiki/0.4.3
+    at: 2026-08-29T11:01:08.566Z
+sources:
+  - id: openwiki-source-164e2da859b5277df81c7d94
+    resource: repo://.github/workflows/ci.yml
+  - id: openwiki-source-5a75137c1627218d1d963bfe
+    resource: repo://lib/build-systems/gradle.js
+  - id: openwiki-source-d951bb075777a6947b30eb30
+    resource: repo://lib/build-systems/index.js
+  - id: openwiki-source-163477361a6809fc17d8749d
+    resource: repo://lib/build-systems/maven.js
+  - id: openwiki-source-ff0ec4e942fc180be46342e6
+    resource: repo://lib/builder.js
+  - id: openwiki-source-0b4729d2a1304d7f82525861
+    resource: repo://lib/cli.js
+  - id: openwiki-source-f6f99b85088f1716c38ca8bf
+    resource: repo://lib/config.js
+  - id: openwiki-source-33099cbd41d12f89cbfbc48c
+    resource: repo://lib/error-handler.js
+  - id: openwiki-source-beac0c2e3ce2872cb1f6b895
+    resource: repo://lib/installer.js
+  - id: openwiki-source-4827a4a071cdc2becf01c047
+    resource: repo://lib/logger.js
+  - id: openwiki-source-24e86caa9e81b482d3e67372
+    resource: repo://lib/process-manager.js
+  - id: openwiki-source-9ad26f3f70a2843208d349e4
+    resource: repo://lib/restheart.js
+  - id: openwiki-source-2e7ca1db4d594a92e4265908
+    resource: repo://lib/watcher.js
+  - id: openwiki-source-5b54a58d1b51cd490b0e7162
+    resource: repo://package.json
+  - id: openwiki-source-77eac4028c91607535aab330
+    resource: repo://rh.js
+  - id: openwiki-source-768836e002432df2a3472afc
+    resource: repo://test/build-system-resolver.test.js
+  - id: openwiki-source-24146808fc85cd824c74979a
+    resource: repo://test/builder.test.js
+  - id: openwiki-source-50f3fd31b652e7ee35122bbb
+    resource: repo://test/cli.test.js
+  - id: openwiki-source-fd8840bb85ccd0829274124c
+    resource: repo://test/config.test.js
+  - id: openwiki-source-ba30c51348ae59f069ca2733
+    resource: repo://test/error-handler.test.js
+  - id: openwiki-source-ac69ef011b93ef990cac407a
+    resource: repo://test/logger.test.js
+  - id: openwiki-source-1e10f3627cb690b8445579cf
+    resource: repo://test/process-manager.test.js
+  - id: openwiki-source-730739190a7cf55a7a90fb6f
+    resource: repo://test/utils.test.js
+  - id: openwiki-source-86a549c0952e7e496d1d4f12
+    resource: repo://test/watcher.test.js
 ---
 
 # RESTHeart CLI Source Map

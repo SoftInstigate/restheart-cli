@@ -3,14 +3,23 @@ type: Reference
 title: RESTHeart CLI Domain Concepts
 description: Core terminology, concepts, and domain knowledge for understanding RESTHeart CLI and the RESTHeart ecosystem
 tags: [domain, concepts, terminology, restheart, plugins]
-timestamp: 2026-03-15T10:30:00Z
-openwiki:
-  roles: [domain]
-  change_kinds: [lifecycle]
-  source_paths: [lib/config.js, lib/watcher.js, lib/process-manager.js]
-  symbols: [ConfigManager, Watcher, ProcessManager]
-  test_paths: [test/config.test.js, test/watcher.test.js, test/process-manager.test.js]
-  validation_commands: [npm test]
+verified:
+  - by: openwiki/0.4.3
+    at: 2026-08-29T11:01:08.566Z
+sources:
+  - id: openwiki-source-5a75137c1627218d1d963bfe
+    resource: repo://lib/build-systems/gradle.js
+  - id: openwiki-source-d951bb075777a6947b30eb30
+    resource: repo://lib/build-systems/index.js
+  - id: openwiki-source-f6f99b85088f1716c38ca8bf
+    resource: repo://lib/config.js
+  - id: openwiki-source-24e86caa9e81b482d3e67372
+    resource: repo://lib/process-manager.js
+  - id: openwiki-source-7e6abb6577c4cd283206381b
+    resource: repo://lib/utils.js
+  - id: openwiki-source-2e7ca1db4d594a92e4265908
+    resource: repo://lib/watcher.js
+generated: { by: "openwiki/0.4.3", at: "2026-08-29T11:01:08.566Z" }
 ---
 
 # RESTHeart CLI Domain Concepts
@@ -128,10 +137,10 @@ rh build --build-system gradle
 
 ### Build System Auto-Detection
 
-**Detection Logic**:
+**Detection Logic** (priority order):
 1. Check for `pom.xml` or `mvnw` → Use Maven
 2. Check for `gradlew`, `build.gradle`, `build.gradle.kts`, `settings.gradle`, `settings.gradle.kts` → Use Gradle
-3. Default to Maven if no detection
+3. Default to Maven if neither detected
 
 **Priority**: Maven takes precedence over Gradle when both exist
 
@@ -161,6 +170,8 @@ rh build --build-system gradle
 
 **Default Port**: 8080
 
+**JDWP Debug Port**: RESTHeart automatically starts a JDWP debug agent on port `httpPort + 1000`. For example, if the HTTP port is 8080, the debug port is 9080.
+
 **Port Configuration**:
 ```bash
 # Use specific port
@@ -187,7 +198,7 @@ rh status --port 9090
 - Command line contains: `restheart`
 - Port binding matches configured port
 
-**Running Check**: RESTHeart is considered running if either the HTTP port (`httpPort`) or the MongoDB wire protocol port (`httpPort + 1000`) has an active listener. The `checkPort` utility probes both `127.0.0.1` and `::1` for each port.
+**Running Check**: RESTHeart is considered running if either the HTTP port (`httpPort`) or the MongoDB wire protocol port (`httpPort + 1000`) has an active listener. The `checkPort` utility probes both `127.0.0.1` and `::1` for each port with a 2-second timeout.
 
 ## Configuration
 
@@ -216,8 +227,8 @@ rh run
 | Key | Description | Default |
 |-----|-------------|---------|
 | `repoDir` | Project root directory | `process.cwd()` |
-| `cacheDir` | Cache directory | `.cache` |
-| `rhDir` | RESTHeart installation | `.cache/restheart` |
+| `cacheDir` | Cache directory | `.cache` (relative to repoDir) |
+| `rhDir` | RESTHeart installation | `.cache/restheart` (relative to repoDir) |
 | `httpPort` | HTTP port | `8080` |
 | `debugMode` | Debug output | `false` |
 | `buildSystem` | Build system | `auto` |
@@ -227,6 +238,8 @@ rh run
 **Definition**: Runtime HTTP Options environment variable for overriding RESTHeart configuration.
 
 **Format**: `RHO='/config/path->"value"'`
+
+**Duplication Prevention**: The CLI captures the original `RHO` value at startup (`originalRHO`). When restarting RESTHeart in watch mode, it appends additional options (port and logging settings) to the original value, preventing exponential duplication across restarts.
 
 **Examples**:
 ```bash

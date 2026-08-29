@@ -3,14 +3,45 @@ type: Architecture
 title: RESTHeart CLI Architecture Overview
 description: Technical architecture, component relationships, and design decisions of the RESTHeart CLI tool
 tags: [architecture, design, components, patterns]
-timestamp: 2026-03-15T10:30:00Z
-openwiki:
-  roles: [architecture]
-  change_kinds: [lifecycle, public-api]
-  source_paths: [lib/cli.js, lib/restheart.js, lib/config.js, lib/builder.js, lib/installer.js, lib/process-manager.js, lib/watcher.js]
-  symbols: [initCLI, RESTHeartManager, ConfigManager, Builder, Installer, ProcessManager, Watcher]
-  test_paths: [test/cli.test.js, test/builder.test.js, test/config.test.js, test/watcher.test.js, test/process-manager.test.js]
-  validation_commands: [npm test]
+verified:
+  - by: openwiki/0.4.3
+    at: 2026-08-29T11:01:08.566Z
+sources:
+  - id: openwiki-source-5a75137c1627218d1d963bfe
+    resource: repo://lib/build-systems/gradle.js
+  - id: openwiki-source-d951bb075777a6947b30eb30
+    resource: repo://lib/build-systems/index.js
+  - id: openwiki-source-ff0ec4e942fc180be46342e6
+    resource: repo://lib/builder.js
+  - id: openwiki-source-0b4729d2a1304d7f82525861
+    resource: repo://lib/cli.js
+  - id: openwiki-source-f6f99b85088f1716c38ca8bf
+    resource: repo://lib/config.js
+  - id: openwiki-source-33099cbd41d12f89cbfbc48c
+    resource: repo://lib/error-handler.js
+  - id: openwiki-source-beac0c2e3ce2872cb1f6b895
+    resource: repo://lib/installer.js
+  - id: openwiki-source-4827a4a071cdc2becf01c047
+    resource: repo://lib/logger.js
+  - id: openwiki-source-24e86caa9e81b482d3e67372
+    resource: repo://lib/process-manager.js
+  - id: openwiki-source-9ad26f3f70a2843208d349e4
+    resource: repo://lib/restheart.js
+  - id: openwiki-source-7e6abb6577c4cd283206381b
+    resource: repo://lib/utils.js
+  - id: openwiki-source-2e7ca1db4d594a92e4265908
+    resource: repo://lib/watcher.js
+  - id: openwiki-source-24146808fc85cd824c74979a
+    resource: repo://test/builder.test.js
+  - id: openwiki-source-50f3fd31b652e7ee35122bbb
+    resource: repo://test/cli.test.js
+  - id: openwiki-source-fd8840bb85ccd0829274124c
+    resource: repo://test/config.test.js
+  - id: openwiki-source-1e10f3627cb690b8445579cf
+    resource: repo://test/process-manager.test.js
+  - id: openwiki-source-86a549c0952e7e496d1d4f12
+    resource: repo://test/watcher.test.js
+generated: { by: "openwiki/0.4.3", at: "2026-08-29T11:01:08.566Z" }
 ---
 
 # RESTHeart CLI Architecture Overview
@@ -338,7 +369,7 @@ sequenceDiagram
     participant I as Installer
 
     CLI->>RH: install(version, force)
-    RH->>I: install(restheartVersion, forceInstall)
+    RH->>I: install(restheartVersion, force)
     I->>I: commandExists("java")
     alt isLocalPath
         I->>I: installFromLocal(restheartVersion)

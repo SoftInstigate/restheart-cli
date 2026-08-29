@@ -3,7 +3,6 @@ type: Guide
 title: RESTHeart CLI Testing Guidance
 description: Testing strategies, patterns, and best practices for RESTHeart CLI development and maintenance
 tags: [testing, vitest, unit-tests, integration-tests, mocking]
-timestamp: 2026-03-15T10:30:00Z
 openwiki:
   roles: [testing]
   change_kinds: [lifecycle]
@@ -11,6 +10,31 @@ openwiki:
   symbols: [initCLI, runCommand, Builder, ConfigManager, Watcher, ProcessManager, Logger, ErrorHandler, resolveBuildSystem]
   test_paths: [test/cli.test.js, test/builder.test.js, test/config.test.js, test/watcher.test.js, test/process-manager.test.js, test/utils.test.js, test/logger.test.js, test/error-handler.test.js, test/build-system-resolver.test.js]
   validation_commands: [npm test]
+verified:
+  - by: openwiki/0.4.3
+    at: 2026-08-29T11:01:08.566Z
+sources:
+  - id: openwiki-source-5b54a58d1b51cd490b0e7162
+    resource: repo://package.json
+  - id: openwiki-source-768836e002432df2a3472afc
+    resource: repo://test/build-system-resolver.test.js
+  - id: openwiki-source-24146808fc85cd824c74979a
+    resource: repo://test/builder.test.js
+  - id: openwiki-source-50f3fd31b652e7ee35122bbb
+    resource: repo://test/cli.test.js
+  - id: openwiki-source-fd8840bb85ccd0829274124c
+    resource: repo://test/config.test.js
+  - id: openwiki-source-ba30c51348ae59f069ca2733
+    resource: repo://test/error-handler.test.js
+  - id: openwiki-source-ac69ef011b93ef990cac407a
+    resource: repo://test/logger.test.js
+  - id: openwiki-source-1e10f3627cb690b8445579cf
+    resource: repo://test/process-manager.test.js
+  - id: openwiki-source-730739190a7cf55a7a90fb6f
+    resource: repo://test/utils.test.js
+  - id: openwiki-source-86a549c0952e7e496d1d4f12
+    resource: repo://test/watcher.test.js
+generated: { by: "openwiki/0.4.3", at: "2026-08-29T11:01:08.566Z" }
 ---
 
 # RESTHeart CLI Testing Guidance
@@ -84,23 +108,27 @@ test/
 
 ```javascript
 import { vi } from 'vitest'
-import shell from 'shelljs'
 
-// Mock shell.exec
+// Hoisted mock pattern used in actual tests
+const shellMocks = vi.hoisted(() => ({
+    pwd: vi.fn(() => '/start'),
+    rm: vi.fn(),
+    cd: vi.fn(),
+    exec: vi.fn(() => ({ code: 0 })),
+    find: vi.fn(() => []),
+    cp: vi.fn(() => ({ code: 0, stderr: '' })),
+    ls: vi.fn(() => []),
+}))
+
 vi.mock('shelljs', () => ({
-    default: {
-        exec: vi.fn(),
-        cd: vi.fn(),
-        rm: vi.fn(),
-        cp: vi.fn(),
-    },
+    default: shellMocks,
 }))
 
 // Setup mock behavior
-shell.exec.mockReturnValue({ code: 0, stdout: 'Success', stderr: '' })
+shellMocks.exec.mockReturnValue({ code: 0, stdout: 'Success', stderr: '' })
 
 // Test
-const result = shell.exec('mvn clean package')
+const result = shellMocks.exec('mvn clean package')
 expect(result.code).toBe(0)
 ```
 
@@ -115,22 +143,22 @@ expect(result.code).toBe(0)
 
 ```javascript
 import { vi } from 'vitest'
-import fs from 'node:fs'
 
-// Mock fs.existsSync
+// Hoisted mock pattern
+const fsMocks = vi.hoisted(() => ({
+    existsSync: vi.fn(),
+    chmodSync: vi.fn(),
+}))
+
 vi.mock('node:fs', () => ({
-    default: {
-        existsSync: vi.fn(),
-        readFileSync: vi.fn(),
-        mkdirSync: vi.fn(),
-    },
+    default: fsMocks,
 }))
 
 // Setup mock behavior
-fs.existsSync.mockReturnValue(true)
+fsMocks.existsSync.mockReturnValue(true)
 
 // Test
-const result = fs.existsSync('/path/to/file')
+const result = fsMocks.existsSync('/path/to/file')
 expect(result).toBe(true)
 ```
 
@@ -145,7 +173,6 @@ expect(result).toBe(true)
 
 ```javascript
 import { vi } from 'vitest'
-import psList from 'ps-list'
 
 // Mock ps-list
 vi.mock('ps-list', () => ({
@@ -244,25 +271,29 @@ it('routes build command to build and deploy', async () => {
 
 ```javascript
 import { vi } from 'vitest'
-import { ErrorHandler } from '../lib/error-handler.js'
 
-// Mock ErrorHandler
-vi.mock('../lib/error-handler.js', () => ({
+// Hoisted mock pattern for error handler
+const errorHandlerMocks = vi.hoisted(() => ({
     ErrorHandler: {
-        handleError: vi.fn(),
-        processError: vi.fn(),
+        processError: vi.fn(() => {
+            throw new Error('processError called')
+        }),
+        fileSystemError: vi.fn(() => {
+            throw new Error('fileSystemError called')
+        }),
     },
 }))
 
+vi.mock('../lib/error-handler.js', () => errorHandlerMocks)
+
 // Test error handling
 it('should handle build failure', async () => {
-    shell.exec.mockReturnValue({ code: 1, stdout: '', stderr: 'Build failed' })
+    shellMocks.exec.mockReturnValue({ code: 1, stdout: '', stderr: 'Build failed' })
     
-    await builder.build()
-    
-    expect(ErrorHandler.processError).toHaveBeenCalledWith(
-        expect.stringContaining('Build failed'),
-        expect.any(Object)
+    expect(() => builder.build('clean package', true)).toThrow('processError called')
+    expect(errorHandlerMocks.ErrorHandler.processError).toHaveBeenCalled()
+    expect(errorHandlerMocks.ErrorHandler.processError.mock.calls[0][0]).toContain(
+        'Build failed'
     )
 })
 ```
@@ -271,6 +302,35 @@ it('should handle build failure', async () => {
 - Testing error scenarios
 - Testing validation failures
 - Testing recovery mechanisms
+
+### 7. Module Isolation Pattern
+
+**Pattern**: Use `vi.resetModules()` for proper test isolation
+
+```javascript
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+describe('Component', () => {
+    let Component
+
+    beforeEach(async () => {
+        vi.resetModules()
+        vi.clearAllMocks()
+        
+        // Re-import fresh module for each test
+        ;({ Component } = await import('../lib/component.js'))
+    })
+
+    it('test case', () => {
+        // Each test gets a fresh module instance
+    })
+})
+```
+
+**When to Use**:
+- When tests need fresh module imports
+- When mocking singleton patterns
+- When testing module initialization
 
 ## Test Coverage by Component
 
@@ -282,7 +342,7 @@ it('should handle build failure', async () => {
 - RESTHeart options (after -- separator)
 - Command aliases (i, b, r)
 
-**Test Count**: ~10 tests
+**Test Count**: 7 tests
 
 **Key Test Scenarios**:
 - Build command routes to build and deploy
@@ -299,7 +359,7 @@ it('should handle build failure', async () => {
 - Build system resolution
 - Error handling
 
-**Test Count**: ~15 tests
+**Test Count**: 11 tests
 
 **Key Test Scenarios**:
 - Successful build
@@ -316,7 +376,7 @@ it('should handle build failure', async () => {
 - Error handling
 - Directory creation
 
-**Test Count**: ~10 tests
+**Test Count**: 7 tests
 
 **Key Test Scenarios**:
 - Valid configuration
@@ -333,7 +393,7 @@ it('should handle build failure', async () => {
 - Rebuild triggering
 - Watch path validation
 
-**Test Count**: ~10 tests
+**Test Count**: 11 tests
 
 **Key Test Scenarios**:
 - Watch files setup
@@ -348,7 +408,7 @@ it('should handle build failure', async () => {
 - Port availability
 - Process killing
 
-**Test Count**: ~5 tests
+**Test Count**: 4 tests
 
 **Key Test Scenarios**:
 - Check if running
@@ -363,7 +423,7 @@ it('should handle build failure', async () => {
 - Directory creation
 - Spinner creation
 
-**Test Count**: ~10 tests
+**Test Count**: 3 tests
 
 **Key Test Scenarios**:
 - Check port availability
@@ -377,7 +437,7 @@ it('should handle build failure', async () => {
 - Error categorization
 - Exit behavior
 
-**Test Count**: ~8 tests
+**Test Count**: 7 tests
 
 **Key Test Scenarios**:
 - Handle error
@@ -392,7 +452,7 @@ it('should handle build failure', async () => {
 - Output formatting
 - Timestamps
 
-**Test Count**: ~8 tests
+**Test Count**: 9 tests
 
 **Key Test Scenarios**:
 - Debug logging
@@ -408,7 +468,7 @@ it('should handle build failure', async () => {
 - Gradle selection
 - Default behavior
 
-**Test Count**: ~8 tests
+**Test Count**: 3 tests
 
 **Key Test Scenarios**:
 - Auto-detect Maven
@@ -423,7 +483,7 @@ it('should handle build failure', async () => {
 **File System Mocks**:
 ```javascript
 // Mock file existence
-fs.existsSync.mockImplementation((path) => {
+fsMocks.existsSync.mockImplementation((path) => {
     const existingPaths = ['/valid/path', '/another/path']
     return existingPaths.includes(path)
 })
@@ -441,7 +501,7 @@ psList.mockResolvedValue([
 **Shell Mocks**:
 ```javascript
 // Mock shell commands
-shell.exec.mockImplementation((cmd) => {
+shellMocks.exec.mockImplementation((cmd) => {
     if (cmd.includes('mvn')) {
         return { code: 0, stdout: 'BUILD SUCCESS', stderr: '' }
     }
@@ -647,14 +707,14 @@ beforeEach(() => {
 it('should build successfully', () => {
     // Arrange
     const builder = createBuilder()
-    shell.exec.mockReturnValue({ code: 0, stdout: 'Success', stderr: '' })
+    shellMocks.exec.mockReturnValue({ code: 0, stdout: 'Success', stderr: '' })
     
     // Act
     const result = builder.build()
     
     // Assert
     expect(result).toBeTruthy()
-    expect(shell.exec).toHaveBeenCalled()
+    expect(shellMocks.exec).toHaveBeenCalled()
 })
 ```
 

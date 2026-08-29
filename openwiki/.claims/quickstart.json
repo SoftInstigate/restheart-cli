@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:0ac2c86e20d0edc7c9717f204c39dc0e74313d50099743e98d60bcaea666580a",
+  "claims": [
+    {
+      "id": "claim_51d6794139544045bbc4dc8b2b540483",
+      "statement": "CLI commands have short aliases: install (i), build (b), run (r), watch (w), kill (k), and status (s).",
+      "evidence": [
+        {
+          "resource": "repo://lib/cli.js#L65-L182",
+          "version": "repo-lines-v1:sha256:5caaa1cf83cb6b2e05216fd3e5dbb524ff1cb89c3aba7557cc427cd3b0eee506:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0ZjVkMGUyMWFhZDhmNWViZTY1YjkwNWE1YTNjZTc2NzZhYzdhMTlmYWFhMGQ0NzQzMzk3Y2FhOGI2ZGZlZmI0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI1OTA5YTUzYTYxOGQwMjhlMWQzMDAwYzBhN2FiY2VlY2JlNWZiMzdmNGU1MTFlZmU0NjY0M2ZhZDZlNjY4NzJmIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIxNjVlNjMzNmMzYjM1ZmRiYmIzZmJkNDQ3YmVhNGRiMWYzYjVlMjZkZWQ0NDlhYWM2NmQ1NjYxYWZmNzkyZGU3IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIwNTUxNWUzMTYzNmY2NmU0YmM5NmVlMmFiNTJjMWJiZmNkOWU4MzgwYjZmMjM4ODNhZmE4NmQzNTZlM2VhNDU0In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_075a77ca78d04786989a05665cc84614",
+      "statement": "The default HTTP port for RESTHeart is 8080, configurable via --port option.",
+      "evidence": [
+        {
+          "resource": "repo://lib/cli.js#L105-L110",
+          "version": "repo-lines-v1:sha256:eb71050ca7ae01104e4c97d13cadf879bef4ac9242307ec653b7463f7a02f16b:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjcxYjMwMmI0ODg5N2FmOGQyZjNiODYyZjhlYWIzOTQ0MDI1MTI4OTVkMWZjYzcxNDZlNmM4MjNmOTZjYjg1MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzI4MDhiODJlNWY4ZTVjMzEzZjY2ZmI3MjA5ZGNiOWEyMDIzMTQyOGVkMDkwNzk4NTAyZWVlMDI4ODM3NTQ4OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDZjYThiNWI2M2Y0NjRjYzdhNDQxNTEzODExZDkxY2Y1ODUyOTkyNDYzM2I0MzFmYWE0MmU2M2IyZTRmYWQ0ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTczMzc1ZmZmODVjNjdhZmI2NTA4ODYwYTMyZDU2YjIyNDk5YWFiZDNmYjY0YmNkZGZhMmUwZjRkNDU4MWQ3OCJ9"
+        },
+        {
+          "resource": "repo://lib/config.js#L25-L26",
+          "version": "repo-lines-v1:sha256:3ee19e67127581f6923f99365ad77aedfdcee9a8030b332f2f81bc3f1740d7e3:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmI2NGI0MWQ0NDYxNmIwZjI1MTUyMjU3ODUzZGNmYzNlNDk5NzEzNDY3MDU4OWY1ODlkY2M4YmU1N2Y4MWQ1ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODBkNzEwYTE0MWRmNWI3NGE4YWQ2NDk0YzVlZTc2ODY4YjI1MzhlZDk5NTI0NGM3YWNkNjAyZWEyMjM4MzM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTQ5YThlMDliZjNjMzgyMGIyNTJjYjM5ODcxMTliNWZmM2U0ZDUyM2RmYWZhMTBmN2M5NGVkMWZiMzE2NmQwNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTJiNTliNWY3NTBlNWQxMTkzNDgyYjlhMWM5Njk2MTBkOTBmNmFiMTUxODNjMzUxMGVjMDc1ZWU4YzIzZjZkYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9561cd8dc7484d489886d8f11f2f18b2",
+      "statement": "Supported build systems are auto (default), maven, and gradle, configured via --build-system option.",
+      "evidence": [
+        {
+          "resource": "repo://lib/build-systems/index.js#L6-L34",
+          "version": "repo-lines-v1:sha256:aacf6f9f70389543e3a69a6bda86cd73819abedea0f256c7310ec78d7d2aa761:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhZjEyOTc2M2E3YzAzYzk5YjlhMzgyZGFmNGRlODVlOTU4ZGM4ZmQ1ZDQ4ZTE5NDVkNTAxYzQyMTRhMTI2NDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzQ3NWZlOWMyNmE0ODk1ZDJkN2IzZDEyYzVhZjg1Y2Y0ZDE4NzY2MTdiNWQ3NTYxZTk0NjhjMGJhZTY5YTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5N2MzMWIzN2UxZTYxZGJiNTk4Njg4MTUxNTk5NmJhNDExYzZlYzNjZWM4NWQ0NWZiMDBmY2YwNmY1MzYwMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://lib/cli.js#L203-L209",
+          "version": "repo-lines-v1:sha256:a908c4cf7e58bd29622ed2546d0f16ce2eb1140074907c554bd390a05836a938:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzI3MGY0MzAwMzY3NzQyOTBkMzM0Yzc0MjJjMjU0YmVhOTcwMWZlNzQyYmE3MzU3ZGU1NDdjNTMzMTI2NWNjOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjliMTk4MmU4ZGQ3NDgxMTgxNDZiMzlhMmQwMDYyZjQwODFlMzQ3NzliODY3NWMyMzRjNGZiMTI0ZGMzOTM5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzZkY2Y5ZjdlNWNhZGI5NGQxZTJlNzFjNDU1OGYwYWY2YjJhN2I2NDE1ZjE1ODc2YjhiYjdkYzY2M2U2MjMzNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDkyNWI4ODA1NGQ0M2UxOTJlYzA2YzBlMTkyNmIyMTdhNWFlMDJiOWZhYWY2NzU4NThlOWNkOWU4M2QyNTMyMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ee89e3fcb6dc4cddb07bda5da1508f10",
+      "statement": "The watch command supports --debounce-time option with a default of 1000 milliseconds.",
+      "evidence": [
+        {
+          "resource": "repo://lib/cli.js#L154-L159",
+          "version": "repo-lines-v1:sha256:05d0971b17b5e2dd043a0dd91d7263b5e871c79c5db8cb63cee051600573b011:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDVkNmMyZmYzNjgwYjg5ZjliZTI0OWNjN2M3NjUyNjZhODFiZTk2MWVmOGI0ZGZlMjE2ZDRkYjZmNjZkZTYzMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmIzYTIxOWFlNDEyZTYyMDcyODExNGRkOGVlODI4ZDViZmRlMGY4NWIyMmNhNzc1MzE0OTVkNzI4MjI5NWNhNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjEwYjU4YzdmZTA5ZmQwZjViYjMzMDUwZGIzY2U5MDMyNjhjMGQ4N2EwNGUxMzY3N2FiMTA4NzE5NjJmMTY4NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTExZTk2MThmNTQ5Mjk1NmQ4NzJlMWVhZjU3MmUwODEzNzMzMDE5MWEyOTk4YjRkMmYwNDU1NmUxNDAyNTBhZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_edb8e8ff07ba4de3ba3a4266546da3da",
+      "statement": "The task routing table provides mappings from change areas to source files, symbols, tests, and validation commands.",
+      "evidence": [
+        {
+          "resource": "repo://lib/cli.js#L250-L328",
+          "version": "repo-lines-v1:sha256:7a126f4abbeebd89aa5af87660b753542bd82bb66c5657cf7a50341704000dd7:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwMDk4MjBkNmM5ZDNlYWYwM2YyMmRjZDhkODlkMzE3ZTc0YzkzM2NlM2I0NmY2MTdiNjJjZTA4ZjlhM2E0NGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwMmE4ODY3ODQyNTJkNDVmM2FkZTE4YTFhYzU1MDZiMDA1YjcyNjg5YWJkYjg2MjJmODNhMDdkYWI3YzQyMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://test/cli.test.js#L1-L50",
+          "version": "repo-lines-v1:sha256:8a9d070beb44c0a6ba48c3c33f8752ef5bffb96880152887533a74e4eb6a6a5d:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyM2JmNTdhMzNmMTE4NWYyNmMzODBhNWYzOTUyYTZkOTgzNzljZTEzYzM5MmUwNzlhMzQyOWFiNDg0NzE2NDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5NmQxZWFiOWU0OWRmZjkwYWI3NTVlNWViNDFlYmI1Y2MwNGI1Y2JiMDEzZmY4NWMyZWQyOTU4YmNlNTdlYTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3NGYxZmRlYjVkMWRlOTU0MTc0NzkzMDQyYzAyZDdmMWZmMDFlNDIwYjBjZjBhYTRkODU0NjQyNmM0ODM2NmYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T11:01:08.566Z"
+  }
+}
