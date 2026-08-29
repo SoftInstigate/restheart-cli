@@ -3,14 +3,19 @@ type: Guide
 title: RESTHeart CLI Quickstart
 description: Getting started with RESTHeart CLI - installation, basic usage, and navigation to detailed documentation
 tags: [quickstart, getting-started, restheart-cli]
-timestamp: 2026-03-15T10:30:00Z
-openwiki:
-  roles: [workflow]
-  change_kinds: [public-api, lifecycle]
-  source_paths: [rh.js, lib/cli.js]
-  symbols: [initCLI, runCommand]
-  test_paths: [test/cli.test.js]
-  validation_commands: [npm test]
+verified:
+  - by: openwiki/0.4.3
+    at: 2026-08-29T11:01:08.566Z
+sources:
+  - id: openwiki-source-d951bb075777a6947b30eb30
+    resource: repo://lib/build-systems/index.js
+  - id: openwiki-source-0b4729d2a1304d7f82525861
+    resource: repo://lib/cli.js
+  - id: openwiki-source-f6f99b85088f1716c38ca8bf
+    resource: repo://lib/config.js
+  - id: openwiki-source-50f3fd31b652e7ee35122bbb
+    resource: repo://test/cli.test.js
+generated: { by: "openwiki/0.4.3", at: "2026-08-29T11:01:08.566Z" }
 ---
 
 # RESTHeart CLI Quickstart
@@ -99,6 +104,7 @@ rh watch
 - `--verbose` - Show verbose output
 - `--quiet` - Suppress non-error output
 - `--timestamps` - Add timestamps to log messages
+- `--debounce-time MS` - Delay before rebuilding after file changes (default: 1000)
 
 ## Documentation Structure
 

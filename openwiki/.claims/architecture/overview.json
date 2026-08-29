@@ -1,0 +1,320 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8ca2a116cd6a7a62ef398ad79c21cfaac746536026eecd29efd0eb6494c52e97",
+  "claims": [
+    {
+      "id": "claim_e09fa5340e9c4a9ab6e49c2ea4030bb1",
+      "statement": "RESTHeart CLI follows a layered architecture with four distinct layers: CLI Layer (lib/cli.js) for user interaction, Manager Layer (lib/restheart.js) for orchestration, Component Layer for domain-specific logic, and Infrastructure Layer for cross-cutting concerns.",
+      "evidence": [
+        {
+          "resource": "repo://lib/builder.js",
+          "version": "repo-file-v1:sha256:622dc4c16d982d5ae0498e082d52e1f264cd65caec8b01a06bc7e41b23c8b661"
+        },
+        {
+          "resource": "repo://lib/cli.js#L12-L242",
+          "version": "repo-lines-v1:sha256:58b20e642998ddc3a610c2fe8db70567b79b94854df6e2f1681b845e5f2e3281:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2ODhkNWNhNTEwMjM2NTYzZTQyY2QzMzQyMGEwOWI4ZmE0Yjc0ZGFkNmFjNmVmYTIyNDhhMDhkY2I5NGUwODFlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1ZDZmMjFiYWIzNjYxNjI2NzAzMGFmMjI4MWU1M2FiYjIyZjM0ODNjOGUwMjBkOTFlNTgyYzk4ZjU0NjdlM2QxIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1YzM5MDM4ZDc3YjZlODY2MWU0OThiNTYxYzhkMmQwODc4N2JmZjcxN2RjMzQ0NDFlOTBlZmFmZTEzMmYzMWVkIn0"
+        },
+        {
+          "resource": "repo://lib/config.js",
+          "version": "repo-file-v1:sha256:f0623d2c8f24742ad9d78067d3e30bc50bf3b71503420c90430b015d762ab860"
+        },
+        {
+          "resource": "repo://lib/error-handler.js",
+          "version": "repo-file-v1:sha256:649d7ff4f34e73c88f0e124d2c5fe2cd68ec98460c7cf6e6afdfa8596b1eeb42"
+        },
+        {
+          "resource": "repo://lib/installer.js",
+          "version": "repo-file-v1:sha256:87cf40224aa33b523ab1730b0a872ce7c29a2b059bd0a95d5993ddf8b5fa436d"
+        },
+        {
+          "resource": "repo://lib/logger.js",
+          "version": "repo-file-v1:sha256:851b72c388774542110a5da68847aed1e4e1769f98dbaaee103816b0b6f257e2"
+        },
+        {
+          "resource": "repo://lib/process-manager.js",
+          "version": "repo-file-v1:sha256:07d1acbfcb024ca86418bc19fae9ee32dd7386a4b8574c087f6bdb60d5b612b5"
+        },
+        {
+          "resource": "repo://lib/restheart.js#L12-L30",
+          "version": "repo-lines-v1:sha256:0d24cb12e049aab1adcf9a9c7847496f5eb0b42b0db2613b2081f69b3de5269f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxNjhlOTMzN2VkMjdjMDk3ODdlZWRlM2E5MjZmMGIxODFiMGQyNGE1N2FiNmRkMzIyOTU1YTRhOThkOWNmOTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ4YjkwZmQ4ZDQ4MjNlOWE2ZDJmODM5MjRiOTE2NWQzYmY5MTA4NjBhODZjMDI5ZDA2NjAyNTFiMjFmYTRiZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1NzJhYWQzYjI5MzIwOGNjMzk2YzFmYjM1MTY1MGM3MDBhY2YxZjhiZGNlYWEzYmQzN2U1ODcwMTMxMmE5MmIifQ"
+        },
+        {
+          "resource": "repo://lib/utils.js",
+          "version": "repo-file-v1:sha256:be968e900d4b853c5f1f6088057e0bac0d9c0c436db3bb74a2ffe1b40ad9fbc9"
+        },
+        {
+          "resource": "repo://lib/watcher.js",
+          "version": "repo-file-v1:sha256:e9999f0e3770ee7f4226837001d3088784ddb94ef74e1093859b6b0c1904eeaa"
+        }
+      ]
+    },
+    {
+      "id": "claim_6f6fdc15b177445eae9b6545e689450e",
+      "statement": "The CLI Layer (lib/cli.js) uses yargs for command parsing with strict mode and populate-- configuration, routes commands to RESTHeartManager methods via runCommand function, handles global options (debug, verbose, quiet, timestamps, build-system), and implements global error handling for uncaught exceptions and unhandled rejections.",
+      "evidence": [
+        {
+          "resource": "repo://lib/cli.js#L12-L242",
+          "version": "repo-lines-v1:sha256:58b20e642998ddc3a610c2fe8db70567b79b94854df6e2f1681b845e5f2e3281:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2ODhkNWNhNTEwMjM2NTYzZTQyY2QzMzQyMGEwOWI4ZmE0Yjc0ZGFkNmFjNmVmYTIyNDhhMDhkY2I5NGUwODFlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1ZDZmMjFiYWIzNjYxNjI2NzAzMGFmMjI4MWU1M2FiYjIyZjM0ODNjOGUwMjBkOTFlNTgyYzk4ZjU0NjdlM2QxIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1YzM5MDM4ZDc3YjZlODY2MWU0OThiNTYxYzhkMmQwODc4N2JmZjcxN2RjMzQ0NDFlOTBlZmFmZTEzMmYzMWVkIn0"
+        },
+        {
+          "resource": "repo://lib/cli.js#L250-L328",
+          "version": "repo-lines-v1:sha256:7a126f4abbeebd89aa5af87660b753542bd82bb66c5657cf7a50341704000dd7:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwMDk4MjBkNmM5ZDNlYWYwM2YyMmRjZDhkODlkMzE3ZTc0YzkzM2NlM2I0NmY2MTdiNjJjZTA4ZjlhM2E0NGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwMmE4ODY3ODQyNTJkNDVmM2FkZTE4YTFhYzU1MDZiMDA1YjcyNjg5YWJkYjg2MjJmODNhMDdkYWI3YzQyMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_43e9d7d21b174fc695dd4294fd28ceff",
+      "statement": "RESTHeartManager (lib/restheart.js) acts as the orchestration layer that coordinates all components, implements the facade pattern providing simplified public API methods (install, build, deploy, run, watchFiles, kill, status, isRunning, checkAndKill), and delegates to specialized components while managing configuration through ConfigManager.",
+      "evidence": [
+        {
+          "resource": "repo://lib/restheart.js#L12-L30",
+          "version": "repo-lines-v1:sha256:0d24cb12e049aab1adcf9a9c7847496f5eb0b42b0db2613b2081f69b3de5269f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxNjhlOTMzN2VkMjdjMDk3ODdlZWRlM2E5MjZmMGIxODFiMGQyNGE1N2FiNmRkMzIyOTU1YTRhOThkOWNmOTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ4YjkwZmQ4ZDQ4MjNlOWE2ZDJmODM5MjRiOTE2NWQzYmY5MTA4NjBhODZjMDI5ZDA2NjAyNTFiMjFmYTRiZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1NzJhYWQzYjI5MzIwOGNjMzk2YzFmYjM1MTY1MGM3MDBhY2YxZjhiZGNlYWEzYmQzN2U1ODcwMTMxMmE5MmIifQ"
+        },
+        {
+          "resource": "repo://lib/restheart.js#L75-L100",
+          "version": "repo-lines-v1:sha256:f6b6465e89641dbf0b173deda31ee148388a41f1f596b4584619d9f8c12e3434:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjMmZmMjA0MDBlNWE0ZWEyYWUwNmI4OGQ1ODAzZThmMTFlM2JkZGViYjI4YmU3ZGQ2ZmVkZGUxYWFlODFkYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExOTliZmYyMGFkYWJjODA0ZjcxMTEzZjVkNDFjZDBhNWUwNjU2ODM0MjU1MzQ0OTM4MjI4MzNlOTE1NzkyNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjMzliZjk5ZTk1Mzc4MmIzNDRiMWZmMWEyZDA2MWNhZmMyOTAwNjNiYWJjZjkzMmYzOGJjYzJiMzc1Y2EzNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlMmI5ZTIxZmRjODZmYzJjMmVlNDQ3MjE4NWQ2NzY0NjdiZGQxY2JmMmUyNGI0ZGM2NDRhYjFhYmIzMzI1NDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_af9d68e5036f44068af0e9dbbdb513a1",
+      "statement": "Components use dependency injection where ConfigManager is injected into Builder, ProcessManager, Installer, and Watcher constructors, with Installer also receiving Builder instance, and Watcher receiving both ProcessManager and Builder.",
+      "evidence": [
+        {
+          "resource": "repo://lib/builder.js#L34-L36",
+          "version": "repo-lines-v1:sha256:495bbabbf03f21cf58dfc0f710d832937da89ccf7c524efe418b480a944bc343:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTdkNTJkNDk0ZGU3YzYyZjI5NjdjN2IxZTQ1ZWY1YzhlZTk2MjkwZWY3NzBjODg3YmI2NDQyZGI2MmQ5MmI3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjQwNTIzMGE1OTczNGI1Y2EwNzc5ODdmNzVjZTEyYjk2NjU3YzU4MjAzNjVhN2NmNjhkYzc4ZGE4MTc3N2Q5ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWRjZDMyY2MyYWNmYjZjZjBjNjljYjAxNWFjNDNjNGYwZDcwOThiOWNmOTYxMTE1Y2ZiYTVlZDRjMDBlZDQxOSJ9"
+        },
+        {
+          "resource": "repo://lib/installer.js#L18-L21",
+          "version": "repo-lines-v1:sha256:f632c95d685c2aca5a03b84a81793e1e2215533920bffd98b6634d88d3127ba3:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDMwMGI1N2I5YzFiOTY0YWRhNDIwMGFkOTMzNDIyNWNhNmJhYmQzMjllOGYyNWIxODE3ZDZiM2ZlNTUxZmEyZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWFlYzhiN2FiMTk1Y2ZjMjNiZWZmMTJkODIxZmQ5MDQ1ZDBlOGExYjczYzY2MGZkYmYxMWQ4Mjk1NWQ5YWQzOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGNkZmUyOWZkYTcyMWQ4ZWFiMmIzZjE3MGQzY2VlYTFiYzY1OWZmNDBjMTFkODAwNjgxNGVlYTU1OTQ0ZTY4NiJ9"
+        },
+        {
+          "resource": "repo://lib/process-manager.js#L20-L23",
+          "version": "repo-lines-v1:sha256:9e85d222dfeacbd6e44cffcfe1d48c4ef1293c357e1488b8769a87c51d29b6f8:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTdkNTJkNDk0ZGU3YzYyZjI5NjdjN2IxZTQ1ZWY1YzhlZTk2MjkwZWY3NzBjODg3YmI2NDQyZGI2MmQ5MmI3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzVhZjYyNmZiOGUwZWEyMzZiMGMyNTU2ZDE0M2U0ODZiNTM0ZDVhOTBhZDdjNzlhZDUwYmZhMDk4NTM2MmI4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzQwMWNmZmMxOGQwM2Y2OGRlZTk5YThlNzc2MzgwM2U1ZDBiMzk4MjdlY2Q1NGE2ZWQ5NzY4NjI5MzQwZTYyMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWUyYjllMjFmZGM4NmZjMmMyZWU0NDcyMTg1ZDY3NjQ2N2JkZDFjYmYyZTI0YjRkYzY0NGFiMWFiYjMzMjU0NyJ9"
+        },
+        {
+          "resource": "repo://lib/restheart.js#L26-L29",
+          "version": "repo-lines-v1:sha256:07d6ac31af488c3b02cd8c4b6e7fea63b223d2baa2cd2e07795582e9d7c699da:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzZkMDIzZDlkMjk0NjE1MmRhM2EyNTdkMDJkOWJhZmVkM2ZmOTczZWQ1MTZhMDAxZDljZTU1MTI3NDQwNzFjOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFmNjIwY2FmMjBmODlmMGY0M2ViNzdlZWY2MmJiOWYxMmU2ZTQ2OGJmZTA1OWFiOWI2M2I5ZGFlZGY4ZjU2MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTczYTUyY2ZmMjg3YjZjNTBkZDNmOWYwNjVhNDBlM2I3Y2FlODcyZjA5ODliMGZlZmQyZjM5NTYxYWI3MTVhNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWUyYjllMjFmZGM4NmZjMmMyZWU0NDcyMTg1ZDY3NjQ2N2JkZDFjYmYyZTI0YjRkYzY0NGFiMWFiYjMzMjU0NyJ9"
+        },
+        {
+          "resource": "repo://lib/watcher.js#L18-L22",
+          "version": "repo-lines-v1:sha256:b58c2886b1a5a171225543ca1b5d37926967ef97b54fd7bced2a35763e845c08:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGJkMDk2ZDdmZDI3NTRkMWQ1ZDBiN2UxMTljYzU5NWFlNGIzNzA1MTIwNDEwN2RmNTJhMjA0MTNmODQ5MTRjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODJjNTgzODEwYmUxOGIzZTBjMWNmYmQzNzU3Y2I1NTY3OWMzNWExNjBjZmNiNGIwZGZhODFlMjNlYzYwN2Y2YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjlkMjlhNTdmYTllYWJlMTcyNjk1YzI1MTZlMDQxOGViMmIxZmJiZmY4ZmM0ZDZhZjk5NDI0NjlhMDM2YTkzMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bb5a571626af42429306d6ba7cd72137",
+      "statement": "ConfigManager (lib/config.js) manages runtime configuration with validation for httpPort (1-65535), debugMode (boolean), buildSystem (auto/maven/gradle), ensures cache directories exist, and provides getter/setter methods for configuration values.",
+      "evidence": [
+        {
+          "resource": "repo://lib/config.js#L10-L41",
+          "version": "repo-lines-v1:sha256:91d382747648b2f90358d540b64d1e8ccf1c6c19464962203fb6b19056e553e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5NmNjZTNkMjZiMTQ2NzdmODdhY2M1MDU0Y2QzOGRiZTlkZTFlNTY0ZWQwYmM1M2FkMGIzYTdlMDNmMmI3NDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkYjQwYzFhZjAzMGQ1MGZjYTk0ODg0ODA2Y2M4YWY4YWNkM2Q5MDJkNDUxNWE4MDc2NTY4NTg1MzAzYzkyYTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFiZWYyZGI1MzAzNTVjYjJlMDQ5MmIxYjZiMDE5NGRlNDIxZTMyN2YyNTg0ZGQ1NjVhZDY0OTg2YjE4NmM4ODUifQ"
+        },
+        {
+          "resource": "repo://lib/config.js#L62-L87",
+          "version": "repo-lines-v1:sha256:de9facbc7c85a27be2c3d7c5177def8e47950a87d97d93d64a4502779f4d28d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmOWE5Mjk5YzZlYjJjOGI1NTBmNTljMDM2YzlmMzA3NGM4MGI0YjI3MWViZDJkMDFmYzViZjY4ZWU4ZTkxYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1NTI5ZGI0ZTI5NmRjNjUyOTYzYTkyNjExNjg4YTE0M2IyMzQ2MDZhMTJjYTUyNjI1NDZiOGUzYzI3NTdkZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxNjZkYzY1YjUyYmU1ODFkZDRmNTQwZjc3OGE4YTExYzliNDg4MjM0NGVkMmEwOTI0MmMzMzNlOTNhNmE4YTkifQ"
+        },
+        {
+          "resource": "repo://lib/config.js#L89-L100",
+          "version": "repo-lines-v1:sha256:aacd29949ce01b152dc85a3498c8c7754dc9a87700ea27a8e4676cee3d727fb8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5Y2JiYzY1NDY5ZGIxY2EyODQyZWZkOTdkZjdlZTJjZTZjYzE1NzE0ODJkMDFhMThiNzkwYTEwYzdjNTEwZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkNWU0MTVlZGFjODgzNmExZDdkNWE1OGM4ZmRiMmMyN2Q4M2JlYTQ1YjkzNjE3Y2JiZjg0MmVmNzc2YWIzMWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd5f83cb6ba843b88b285c35d9156bfd",
+      "statement": "Builder (lib/builder.js) delegates build system specifics to build-systems module via resolveBuildSystem function, cleans target directory before building, returns to original directory after build (even on failure), and uses silent shell execution with deduplicated error output.",
+      "evidence": [
+        {
+          "resource": "repo://lib/build-systems/index.js#L6-L35",
+          "version": "repo-lines-v1:sha256:8424505e2ea05482c9ca1adce0d3aae2cdd8a42fe060bb37c72089f6a3d98cd0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhZjEyOTc2M2E3YzAzYzk5YjlhMzgyZGFmNGRlODVlOTU4ZGM4ZmQ1ZDQ4ZTE5NDVkNTAxYzQyMTRhMTI2NDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5N2MzMWIzN2UxZTYxZGJiNTk4Njg4MTUxNTk5NmJhNDExYzZlYzNjZWM4NWQ0NWZiMDBmY2YwNmY1MzYwMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://lib/builder.js#L29-L41",
+          "version": "repo-lines-v1:sha256:71c6663a3e0faf4830c4b9c5f2142d2565c0d7b051887c64f0cd48ebf187add8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4ODQ2Y2E0MjQ5YzNjZTRkNjRlMGYxMzE0YjZjNGU5YmM0YTAyOTg4MmMxZTJlNjlkNTA0OGUyMGUxMWNiNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzY2JhZmEzNDZiZTE5NGRlMzhhMzhmMGE5MjAyMjFkZjFjNzdhMGFmMzY3MmM3Y2Q0YWUwYmNiYWIxYjc0MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmY2MyNGFlYjUzOGM3MzRjMGQyMGJlZWI1YmVmOGEzZGE2MzkxNWM0NTAxOWFhZWFkYjRkZjUwZDc5ODNmNDcifQ"
+        },
+        {
+          "resource": "repo://lib/builder.js#L48-L101",
+          "version": "repo-lines-v1:sha256:f58703e4c4593569339824b99e2e7097cffbf3ec85f1561888263a97a86cf1f2:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiYzM0ZDA2ZjYwYzkzZmJmOGJjYzZjMTRhZWJiZmQ0NGQyMGM5ZDY4MjhjMGI2NTM0YWU2M2M2MzRmNWYwZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyZmU5NGMwY2RlOTg5NDc5ZDUwYWI0MGFkNjI4OTk3MjkwYmY4YmViNTQxZjQwMjBjNzJhZTg0YjExNTk3MGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyMTQ3OTA4ZjhhOGM0NzA5NDA0ZDgyZDBkNzkyZWQ2MjY5YTFiOTFjYTM1OTAyOTM3NDIzYjFkOWUwMzcxMjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6c8d686a425347a38fc0dbfe6b5266f9",
+      "statement": "Build system auto-detection (lib/build-systems/index.js) checks for explicit --build-system option first, then looks for pom.xml or mvnw for Maven, then gradlew/build.gradle/build.gradle.kts/settings.gradle/settings.gradle.kts for Gradle, defaulting to Maven when neither detected.",
+      "evidence": [
+        {
+          "resource": "repo://lib/build-systems/index.js#L6-L35",
+          "version": "repo-lines-v1:sha256:8424505e2ea05482c9ca1adce0d3aae2cdd8a42fe060bb37c72089f6a3d98cd0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhZjEyOTc2M2E3YzAzYzk5YjlhMzgyZGFmNGRlODVlOTU4ZGM4ZmQ1ZDQ4ZTE5NDVkNTAxYzQyMTRhMTI2NDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5N2MzMWIzN2UxZTYxZGJiNTk4Njg4MTUxNTk5NmJhNDExYzZlYzNjZWM4NWQ0NWZiMDBmY2YwNmY1MzYwMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_15a582e8c7734fc58dcf7e0168656206",
+      "statement": "Installer (lib/installer.js) supports two installation strategies: remote download from GitHub releases for versions, and local installation from directories detected by path separators (/ or \\). It checks for Java installation via commandExists, verifies existing installations to avoid redundant downloads, and supports force reinstallation with --force flag.",
+      "evidence": [
+        {
+          "resource": "repo://lib/installer.js#L12-L98",
+          "version": "repo-lines-v1:sha256:df88716531a0e4c0026b5bd82ad840e7fd5b9e5d3c2183e907d6d883c3288df9:eyJzZWxlY3RlZExpbmVDb3VudCI6ODcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4YzRlNWQ3MWI4ZjU5M2NkMjdmODA2ZmZkY2U0ZjBmNGNmN2Q4Yjg5NjMwZGFhZWM5ZDk2NWM2YmUxZDM1YzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3NjliZDVmNDVlMTJmYmI4ZDFhMDc5N2JlOWE3YmI1OTkwODk5Y2JkY2NiZWMyM2VjZmJlNDE0NTI3YTIxNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxMTUxZGU0ZDc2MmIwYTFiNTA5YWNhZDJiZDliMWIyNTlkMDhjNzc0OTA3ZjUyM2QxMjNjNWNiM2M0OTBiMmQifQ"
+        },
+        {
+          "resource": "repo://lib/installer.js#L36-L39",
+          "version": "repo-lines-v1:sha256:4456957cedaeec9f8291416dde3424f79d15e140d96da9dad1500d7f0774d202:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjI1NmM2MDg4YWY0YmQ4OTcxODJkZmUyODA0YmFhZWM4NWViYmE3ZTI2ZWE4NDM5YTgzNjFiNjg4YjZmZTY0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzZjNGE4NjA0OGE5NzIxYWRjMTcxM2NkZWMzYTNhM2ZmZGYzNWI1MmZhZjY2M2UyYTk2YzU2NWE0ZDJkZmFiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDUzYTdhZGI0MmFkNWQ1YmY5ZDUwNGRmOTFiN2I4MWJiNWYzMjRhNmNlNGIzNDIxODExMWIzYmQ0MzMxOTk0YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmE0NTM1NmM5ODEyZDgxYTg3NjJmYjQ4Yzg2MDJiZTI1YzhmNTYyZjFjN2U5NzkwMDQzMDBkYjk0ZmFhNjAzZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_748fb805396e4085a4ebaf9f42b3289c",
+      "statement": "ProcessManager (lib/process-manager.js) manages RESTHeart process lifecycle with run() starting background process via nohup, kill() using lsof for port-specific detection with ps-list fallback and SIGTERM/SIGKILL escalation after 15s timeout, isRunning() checking both httpPort and httpPort+1000 ports, and captures originalRHO environment variable at startup to prevent duplication on restart.",
+      "evidence": [
+        {
+          "resource": "repo://lib/process-manager.js#L131-L152",
+          "version": "repo-lines-v1:sha256:ac98ca6d7f8f8dafa97d6dbb2e764d7b3f62dc52db496e0701bd29e422798152:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5Y2UyZGUzNjNkMWM4M2Y1MWMyYjI4MjQ0NGRmNTdkNTA4ODEzN2Y5N2ZhZGRmMGQ2YTBlMGFmNjBmYjg3Y2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NDY0NmVmMDFhYTRlOTg5ODYwOTcwOWQ1YzMxMDI3MWE5ZTQ3YzVjZWRkMDQwNTZiMTk0ZDUxMTFiODIzMGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3M2JhMjQwOGQ4OTYyNzY0ZmMwNzUyMDM1NjZlMjU5OGNhYWI3YmQyYzM0NjljYTYxNmYwZmRkMDhhMzFkZGYifQ"
+        },
+        {
+          "resource": "repo://lib/process-manager.js#L15-L24",
+          "version": "repo-lines-v1:sha256:f73be4235972fd57ed5db3e8c95f4f81bf1e5ee3c4671cfa9f73140927b6614c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhYWY2NzFjODQwNjI0ZDNkOTQ0YzNlYzQxOWM2YzNlZTRhNWY0MmFjMzczZWI4MDZmZjE0NTk3ZWJkODRkODkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4NzVlNDI3NDg2ZDM5ZjQwOWFkMGJmN2JlNjhhNGRhYjVlNTlhZjVkYTJlODhiZjMzMWYzMDI2ZmYwMTRkOGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhNzUzNjNlOGM5ZTAyYTE4NWRkMmY4OThmMWY2NzA4MGVmYWUzODVhZGU4ZTYzYjg0NGUzNDEzN2VjM2UzNzcifQ"
+        },
+        {
+          "resource": "repo://lib/process-manager.js#L205-L300",
+          "version": "repo-lines-v1:sha256:14998e4f6772f721f634accd180fd47ae28699042070059684486d46d801b9e2:eyJzZWxlY3RlZExpbmVDb3VudCI6OTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMzBmN2E2ZTFmYmUyNjBmNTI4ZGEyMDhjZGUwODUyZWVlYTQ2ZDVkMTE3NWZlMDdkMTFiMTNhZTMwYjUxZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiYmZkOTQxNWI4YjEwMmI3NjRlN2UxZTllNmQ2OGEwYjA5MzNjMDRhZWJkYzczYWMwYmEzMGI5M2QxYzAwN2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0ZjZlNzU5YzM0MWRkZWIxYmUyYmRjNWIxNjk0N2Y2NDUyYjE0YjNlYjdjYjk0MTRmZGQ3MjRlZjU2OTQ2NWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmYjA4MmZjMGMyODY2Y2VhMTBhZWY0MThhNDEwYTA1OWZjM2UxNTg4YzI2ZjkyNTIyYWVlYzI4NTJjY2VkODgifQ"
+        },
+        {
+          "resource": "repo://lib/process-manager.js#L68-L125",
+          "version": "repo-lines-v1:sha256:6202359eb27e44cb0ea889fd5fc559bd2c941bb69d880675ac621a3ae5a75b3c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlYWM0OWU5M2ZlYWQ1NzM2ZTEyMTdjOGEzOTM1NDFjNzZhNWFlNWM4MjIzZDgwOGE5OWViZDhiMDgxNTYxN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlMzk4ZWY5ZTNhYzRkMDdlYmFlMTAyZWRlNmYxOWRjMTMyYzMzMDcwYTlmYTA2NWE1ODMwNzZkMzJiODVlNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyOTI3MDQyYjY4MWI2ODhiNWYwZTc2ZjJhZDQ2ZTIxMWM2ZjA1NmEyZWQzYWU3NTJhMGZkNTU5OWM0MzNiMGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_66fe944416ca485cb64d0125dee21851",
+      "statement": "Watcher (lib/watcher.js) uses chokidar for cross-platform file watching with debouncing (default 1000ms), watches Java source files, build configuration files (pom.xml, build.gradle, etc.), and RESTHeart config files parsed from -o option, validates watch paths exist before starting, and coordinates rebuild-deploy-restart sequence on file changes.",
+      "evidence": [
+        {
+          "resource": "repo://lib/watcher.js#L11-L22",
+          "version": "repo-lines-v1:sha256:79e27c855da0941edd6247762d70150dd14cc0dd3cb92eb4767d870029f8fe5a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjZTA5MjYzZGQ0ODZkZjU3NDA3YWIxM2IxNzZlNDIwOGFmYzlmNWQxYzA4MmM0MWQ2OTQ1M2JhMWI3ZGQ4ZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1MDc5Mzk2NDExNGY4ZDFjNjRmZjAxNzgyZDdjMDJkYjBlZGVmZGYwZWRkODM1N2Q3N2Y3YjBlNzdiMzQ5ZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI5ZDI5YTU3ZmE5ZWFiZTE3MjY5NWMyNTE2ZTA0MThlYjJiMWZiYmZmOGZjNGQ2YWY5OTQyNDY5YTAzNmE5MzMifQ"
+        },
+        {
+          "resource": "repo://lib/watcher.js#L134-L196",
+          "version": "repo-lines-v1:sha256:6a99ad2f72985c236706d5d8418a0488852c6dd4dcd285d858bb478d934906b8:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViYjQ1MWM2ZGZiOWU0MGZjOGE0YTYwMmIyNGMwNzY4YTIzZDY3OGU1YWY5YWZjNTEzYWU0MGJjYjQ1MzUxMmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyM2Q5ZTQyY2JkZTQzMGQ0NDAwOGE0NjY1MTE1ZmQwM2IxM2ZiZDYwNWEyODZiM2U0MzdjZWZkZTcxNmIwYmIifQ"
+        },
+        {
+          "resource": "repo://lib/watcher.js#L32-L132",
+          "version": "repo-lines-v1:sha256:460f48af1a468811c5ea9bc16a6dbbb28d005868000b3cf3152ef9cdd9dbbd64:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0NGI5YWQwODQ0NmQ2OGFlNjFiMWM0MjkxMWZiMGQ1YmQ0MmYzNzI2ZTVhN2NhNTYwNjRiMDEwYTEwNmU1MGVhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1ODRlNTljZmRhOWNkYmI3NDUxZjQ4ZjY0OGQ4ODE3MWIwNjkxMzQyMzlhOGVjMmY3OTI3NWE2NGI3MzBkNmU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlYTA0ZjhjZjY2OWI0ZjA5NDkzM2Y4NmUwNmRlNTI0M2Y2YmMzNjhiZDk1MDY2OWZjMTlmNzgyMGRkYzMxNWFmIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_16dfcf17a537459591bc8af26aca77d8",
+      "statement": "ErrorHandler (lib/error-handler.js) provides centralized error handling with static methods for different error categories (handleError, commandNotFound, configError, processError, fileSystemError, networkError), controls process exit behavior, and manages stack trace visibility.",
+      "evidence": [
+        {
+          "resource": "repo://lib/error-handler.js#L34-L36",
+          "version": "repo-lines-v1:sha256:79a64581b06148b09bd18bb45f5bec62deea65cbeb1a33aa4a43f0f2b70ff031:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGNiZTVkYmI2YTI5N2RhZjljM2VlZTVjYTM5NDhkMzVjZWY1YTU2ODg4ZDA1MWRhMTVhMDBlZDFlZWFiZWZkMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjM0ZTU0YjI5ZTZkMTZkMzU3ZTllYzUzZTVhZTk4ZGJlZTc3N2E1OWYwOWFkNWFhM2EyNTg0Nzc0MDEzZmJiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGUxNmQyMjk0YjQ2NDhkZjI0OTUxYjZjMmUzNzU1ODg1YjM4OTViYmE3YzBiNThlMWVmZTU3ZjY0YTA0Y2JhYyJ9"
+        },
+        {
+          "resource": "repo://lib/error-handler.js#L43-L45",
+          "version": "repo-lines-v1:sha256:ea203087241d194bd86a5a09b8ff575a2375351d8d845cfdd26a0be8e01fff4e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGQxYTY2MDI5YjBhYTE4YTMxODU5ZWY1YWU4NTE0NTBhNjdmODc3ZTA1MzEwMmJkNTljYTBlZjIzM2YyNDQxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2E0ODA2ZjI3Nzk1NWFlMjcyM2JkN2Y5M2E5NmRiMzlhMGM2MTBmZTQ4MjJmZTNlNTE4NGI3MGVkYjQyMWEzOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzE5YjcxMmFmMDQ1OWNhMDlhYjU1NzM5Y2M3ZDIzYTVmZGRmZWQ2ZDg2ZWMwMWIwYTlmMDMyYTZkNGRmYWUyOCJ9"
+        },
+        {
+          "resource": "repo://lib/error-handler.js#L6-L27",
+          "version": "repo-lines-v1:sha256:5fd68ee5111237ed353c37b38dd715b8109a55f9c7beee9d8f7ef7efa5d2a6af:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyYWU4NzJlN2RiN2VlNjQ4NTc1MDMxZGVjNmU2MGVkYWZiNjhjNGVkMjhkNjdmODAzNjhlMzExNTM0MjY3NDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmY2UxMTVkODkwNDg5YmU1MmZjZTdmZWEzOTA3NTE3Njc1M2NjMWRiODc0NGQwZTUyZDA1NmUyMjBhZWRkZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhOTA0NDNjYzBiZjIwZjE1YzUwNTM4YTYwODZkOTNmNTg3NjYzYTk2ZWNjMWZkOTI1OGM4NjM4MTJmODA1OWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f25f448ae4cc4bea844c258b009beccd",
+      "statement": "Utils (lib/utils.js) provides shared utility functions including commandExists for checking system commands, checkPort for verifying port availability across IPv4/IPv6 hosts, createSpinner for progress indication, and ensureDir for recursive directory creation.",
+      "evidence": [
+        {
+          "resource": "repo://lib/utils.js#L12-L19",
+          "version": "repo-lines-v1:sha256:0ac592cc55e73a3289ccaaff4eb07683c7f2a9c5a3b0bd42fb1a5e0cb2be5220:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZiOWJmZTdjYmZiZjBmMjg2NmZiODFlYzhlZWFhMGI0ODI1MjljOGMwM2EwZDUzN2UxOGMxNjIzMDIzNjI1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGQ5Y2I1MjA2NDAyOWRlYzkyODAxNWQwOWZjMjk5MzFlZWZkYTYxYjY3ZTk1OThkOTg3YjE3YjJhNGZkNjdlNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTkxZWJkZjRmNTNiMjRkYmU4OTA5ZTZlNmNkNDUyODlmODBjM2Q1MGU1YTA3MzIzNmI4ZWEzYjMwY2Q3YjIwYyJ9"
+        },
+        {
+          "resource": "repo://lib/utils.js#L26-L74",
+          "version": "repo-lines-v1:sha256:44e0e3123cd7ddba64688e9dedad958db0127b1fcee114d5e7acf936a6c64bc5:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkMWY1ZGJiYzI1MDc3ZDQ0MzM3ZDZjNjUwMTMwMDdjM2EwMjk0ZWM5ZDIxNTQxMDMyMDE4YzAzYjZlZjdjNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczZmE5ZjI4YjFhMjk3Y2Q2YjcxMzE1MDA1MzI4ZWMwNmEwNzAyN2RmNWU2Mzc2ZGEzOTVlYzVhODAwMWZkZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMzYzFkZTI1N2JhNDlhOTIwOTM5ZjZkNmU1YzQ0MzQ4ZDI3M2NmMjExZmMyZDk3ODkxNjk4NmRlMTk4MTE5ZTQifQ"
+        },
+        {
+          "resource": "repo://lib/utils.js#L81-L100",
+          "version": "repo-lines-v1:sha256:6347df77aa1b31ed2e1dfca0df7e37cc00be478e9843b65508ecbfb67f735d41:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlODUyYjI0OWQyMDcxY2ViZjI5YmQwYmE4Y2Y4OTE5ODNkMGRlMWVmNDJjY2Q5NTk3YWRhYmJlNTI1MjgxMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4YTRhZWZhMTk5OTcyMmM1NTA1MTViMWZkMDUzNDliZjA4ODQzMTcwZjc1ZjQ1NjZjYmNmNDczM2NjMzc0NWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7c7bc99e35f14db38d79c26c49f9e622",
+      "statement": "The runCommand function in cli.js routes commands via switch statement: install calls rh.install(), build calls rh.build('clean package') then rh.deploy(), run checks onlyPrintConfig then optionally checkAndKill and build/deploy before rh.run(), kill calls checkAndKill(), watch calls checkAndKill then optionally build/deploy then rh.run() and rh.watchFiles(), status calls rh.status().",
+      "evidence": [
+        {
+          "resource": "repo://lib/cli.js#L276-L321",
+          "version": "repo-lines-v1:sha256:9b542ba4e4bc33341f639ea8918a3312042c73e86cbae9c3767bd9d8ae1a7a59:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2Y2NjZThhODZjZDQ5Y2RkZmZjYmU1ZTRhNjI3MDFmNjk5YTY4NjdkNzcyMDI4OTA1ZTQ0YTU2NmJhN2IyZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhMGE5M2QwMDZhZDE2MGYwYzRhNTE3ODc4ZjI3NDNkNjA3NGQwYzFjNDVlZmNiZGQ2NjA0MWIzNTczOTcyNGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViNzRmMGYzNGViNDAwOTIxZGIyOWM2MTUzN2RhMjhjODUzZjk5OTQwZjQyOTA0YjVhN2QwOTBhODIyN2I3NWUifQ"
+        },
+        {
+          "resource": "repo://test/cli.test.js#L20-L50",
+          "version": "repo-lines-v1:sha256:f3af4475dc8884a6e75b69e510294f78c5af3bb019bf6e90fb6a86a3dace8b26:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwMmQ4N2E3NzU2ZmUyNDBmMDA3M2VjM2I3Y2Q0MWJjMTc2ZDM1YWNmMmRhMTM5NTQ5MzYzNDRmOTg3YzFkNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5NmQxZWFiOWU0OWRmZjkwYWI3NTVlNWViNDFlYmI1Y2MwNGI1Y2JiMDEzZmY4NWMyZWQyOTU4YmNlNTdlYTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3NGYxZmRlYjVkMWRlOTU0MTc0NzkzMDQyYzAyZDdmMWZmMDFlNDIwYjBjZjBhYTRkODU0NjQyNmM0ODM2NmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_260779aab2244a90b3eae53ec4aafcff",
+      "statement": "Gradle build system (lib/build-systems/gradle.js) maps Maven-style build parameters via mapBuildParams: 'package' maps to 'build', 'clean package' maps to 'clean build', other values pass through unchanged, and uses -x test flag for skipping tests.",
+      "evidence": [
+        {
+          "resource": "repo://lib/build-systems/gradle.js#L32-L50",
+          "version": "repo-lines-v1:sha256:66264d88b8a191bd29c0c2800408fb142651c24926d7ce72ffd5b01c0e5fb963:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyOWQyZTJjMjIzMzllZWEwMzI0ZDBhOTU1ZDMxMDZmNzQzMzYyODkxYmM4ZjJjMjI5NTM4YjdjYTc0OWUwMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjZjMyN2U0NGUyNzg2ZDQwMjA0MGM3YTBlMTgyZmMzNzNhOGQ4MDBjNjU5NGVhMzAyMWY0YmM2MTcyMjUxMGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3MDE1NTg1ZjViM2M4YTAyN2RmM2Y3NDg0ZjJjMDI2ZWQxNjQ0YTM1NTliODJiOTU4ODRkNjU3NDU0NzI4ODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjY2UzOTgwZGMzMmNhNWM1MmVmYTIyNjNkMWMyNDJhN2M5YWU1YjZmNDk4YmMwYjAxMzZiOWY2OGFhYzViY2QifQ"
+        },
+        {
+          "resource": "repo://lib/build-systems/gradle.js#L6-L18",
+          "version": "repo-lines-v1:sha256:178549ec422c31ae6dbeec9b7689218d9258555ed1cefe643f0dd7f994f643cb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2ZjMyMjdhMTgwMGVjODcwYjQwOGQwZTI4YjJhMDYxOTA2NmI2MWFkY2Y3MmQwNzIzNDc2MWVlY2JlOTc3Y2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmZDk1NGJlZDRhYzFjMTJlMjIyZmE1MWI2MDM1MGYyZGY2ZWEyMjNhNzczMjkwODkzYjZjM2Y1NTM1YjU1NmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3OTU4ZjYwYjI1ZTRiOWE1MTZmODg4MzY5ZDFhMGIzNjg2ZWEwZjYyMWIwNGZiYTJlZTlhNDk4ZjdiNWI0NGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_56d447dd55b34ba39baad1c57a1fec7a",
+      "statement": "ProcessManager parses RESTHeart YAML configuration file (specified via -o flag) to extract host and port settings using js-yaml, falling back to defaults if parsing fails.",
+      "evidence": [
+        {
+          "resource": "repo://lib/process-manager.js#L31-L63",
+          "version": "repo-lines-v1:sha256:6a944a6c4c1130d0d3355ef92782a86533dbe5a37dc46b2c9d032f7d254250be:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyOTczOGYxYTZjMDY1MTc3ZmJjMmU3NWE0OWVmZDg1ZGI3NWNiZTc1OTUwN2QwZThiMDdiZDdkOWZjZjVlMzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmZTVhZTgxMWU5YmZiNjhmZWE5M2IwZWMxYzRhMjY4NTkxZGU0OWQ0YjFiOTYyNjk2YmEyZmY5YmYwOWMwODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzYzJkYmQ5MGFiNmJlZmI1NzU1NWJiZWM5YzI5NjNlMzlhYWQwZjgyZTliMmMwOTA2YjFmMDY1ZmUxYzJlNjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_59a1e7567e4e4dfaac04b780f827e9e6",
+      "statement": "Watcher's processFileUpdate method distinguishes between Java source changes, build configuration changes, and RESTHeart config changes, applying different rebuild strategies: full rebuild for Java/build config, restart-only for config changes, and full rebuild as fallback for unknown file types.",
+      "evidence": [
+        {
+          "resource": "repo://lib/watcher.js#L134-L196",
+          "version": "repo-lines-v1:sha256:6a99ad2f72985c236706d5d8418a0488852c6dd4dcd285d858bb478d934906b8:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViYjQ1MWM2ZGZiOWU0MGZjOGE0YTYwMmIyNGMwNzY4YTIzZDY3OGU1YWY5YWZjNTEzYWU0MGJjYjQ1MzUxMmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyM2Q5ZTQyY2JkZTQzMGQ0NDAwOGE0NjY1MTE1ZmQwM2IxM2ZiZDYwNWEyODZiM2U0MzdjZWZkZTcxNmIwYmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2885f171f4ae441d925f9bce95639759",
+      "statement": "Tests use vitest with mocking of shell commands (shell.exec), file system operations (fs.existsSync, fs.readFileSync), process management (process.kill, ps-list), and component methods to test individual components in isolation.",
+      "evidence": [
+        {
+          "resource": "repo://test/builder.test.js",
+          "version": "repo-file-v1:sha256:e56d72b8b85aec2aaff4dbc8d637d16b1290f10b087d5219263d2d45e5e9ab3f"
+        },
+        {
+          "resource": "repo://test/cli.test.js#L1-L50",
+          "version": "repo-lines-v1:sha256:8a9d070beb44c0a6ba48c3c33f8752ef5bffb96880152887533a74e4eb6a6a5d:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyM2JmNTdhMzNmMTE4NWYyNmMzODBhNWYzOTUyYTZkOTgzNzljZTEzYzM5MmUwNzlhMzQyOWFiNDg0NzE2NDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5NmQxZWFiOWU0OWRmZjkwYWI3NTVlNWViNDFlYmI1Y2MwNGI1Y2JiMDEzZmY4NWMyZWQyOTU4YmNlNTdlYTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3NGYxZmRlYjVkMWRlOTU0MTc0NzkzMDQyYzAyZDdmMWZmMDFlNDIwYjBjZjBhYTRkODU0NjQyNmM0ODM2NmYifQ"
+        },
+        {
+          "resource": "repo://test/config.test.js",
+          "version": "repo-file-v1:sha256:6cfab680b73ccdf5b3db550bdac9b4b7bfb8ff86f90067a6aa919a1db6842147"
+        },
+        {
+          "resource": "repo://test/process-manager.test.js",
+          "version": "repo-file-v1:sha256:3b6104f0375f5714335727940e6ffa335e91b187fa99178f417b9812bb35a1c4"
+        },
+        {
+          "resource": "repo://test/watcher.test.js",
+          "version": "repo-file-v1:sha256:b16c71aa976bd616fddc2325e848779182dbcf5e26b8a00c976008c13c3fba44"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-29T11:01:08.566Z"
+  }
+}

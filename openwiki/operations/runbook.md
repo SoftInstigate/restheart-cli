@@ -3,14 +3,33 @@ type: Playbook
 title: RESTHeart CLI Operations Runbook
 description: Troubleshooting, debugging, and operational procedures for RESTHeart CLI issues and maintenance
 tags: [operations, runbook, troubleshooting, debugging, maintenance]
-timestamp: 2026-03-15T10:30:00Z
-openwiki:
-  roles: [operations]
-  change_kinds: [lifecycle]
-  source_paths: [lib/process-manager.js, lib/installer.js, lib/watcher.js]
-  symbols: [ProcessManager, Installer, Watcher]
-  test_paths: [test/process-manager.test.js, test/watcher.test.js]
-  validation_commands: [npm test]
+verified:
+  - by: openwiki/0.4.3
+    at: 2026-08-29T11:01:08.566Z
+sources:
+  - id: openwiki-source-5a75137c1627218d1d963bfe
+    resource: repo://lib/build-systems/gradle.js
+  - id: openwiki-source-d951bb075777a6947b30eb30
+    resource: repo://lib/build-systems/index.js
+  - id: openwiki-source-163477361a6809fc17d8749d
+    resource: repo://lib/build-systems/maven.js
+  - id: openwiki-source-ff0ec4e942fc180be46342e6
+    resource: repo://lib/builder.js
+  - id: openwiki-source-0b4729d2a1304d7f82525861
+    resource: repo://lib/cli.js
+  - id: openwiki-source-f6f99b85088f1716c38ca8bf
+    resource: repo://lib/config.js
+  - id: openwiki-source-33099cbd41d12f89cbfbc48c
+    resource: repo://lib/error-handler.js
+  - id: openwiki-source-beac0c2e3ce2872cb1f6b895
+    resource: repo://lib/installer.js
+  - id: openwiki-source-24e86caa9e81b482d3e67372
+    resource: repo://lib/process-manager.js
+  - id: openwiki-source-7e6abb6577c4cd283206381b
+    resource: repo://lib/utils.js
+  - id: openwiki-source-2e7ca1db4d594a92e4265908
+    resource: repo://lib/watcher.js
+generated: { by: "openwiki/0.4.3", at: "2026-08-29T11:01:08.566Z" }
 ---
 
 # RESTHeart CLI Operations Runbook
@@ -47,6 +66,21 @@ lsof -i :8080
 4. Kill existing: `rh kill`
 5. Try standalone: `rh run -- -s`
 
+**Kill Process Flow**:
+
+```mermaid
+flowchart TD
+    A["rh kill"] --> B{"Check if RESTHeart running"}
+    B -->|Yes| C["ProcessManager.kill()"]
+    C --> D["Find PIDs using lsof"]
+    D --> E["Send SIGTERM to all PIDs"]
+    E --> F{"Wait 15 seconds"}
+    F -->|Process exits| G["Done"]
+    F -->|Process still running| H["Send SIGKILL to all PIDs"]
+    H --> G
+    B -->|No| I["Log: Process not found"]
+```
+
 **Build fails**:
 1. Check build output
 2. Verify build system: `rh build --build-system maven`
@@ -74,6 +108,8 @@ java --version
 
 # 3. Check if port is in use
 lsof -i :8080
+# Also check JDWP port (httpPort + 1000)
+lsof -i :9080
 
 # 4. Verify RESTHeart installation
 ls -la .cache/restheart/restheart.jar
@@ -127,6 +163,24 @@ rh install --force
 - `rh build` fails with errors
 - Compilation errors
 - Dependency download failures
+
+**Build and Deploy Flow**:
+
+```mermaid
+flowchart TD
+    A["rh build"] --> B["Builder.build()"]
+    B --> C["resolveBuildSystem()"]
+    C --> D{"Build system?"}
+    D -->|"Maven"| E["./mvnw clean package"]
+    D -->|"Gradle"| F["./gradlew clean build"]
+    E --> G["shell.exec()"]
+    F --> G
+    G --> H{"Exit code 0?"}
+    H -->|Yes| I["Builder.deploy()"]
+    H -->|No| J["ErrorHandler.processError()"]
+    I --> K["Copy JARs to plugins/"]
+    K --> L["Done"]
+```
 
 **Diagnostic Steps**:
 
@@ -206,6 +260,24 @@ java --version
 - File changes not detected
 - Excessive rebuilds
 - Watch process crashes
+
+**Watch Mode Flow**:
+
+```mermaid
+flowchart TD
+    A["rh watch"] --> B["Watcher.watchFiles()"]
+    B --> C["chokidar monitors files"]
+    C --> D{"File change detected"}
+    D --> E["Debounce timeout"]
+    E --> F{"Change type?"}
+    F -->|".java file"| G["Build, Deploy, Restart"]
+    F -->|"pom.xml/build.gradle"| G
+    F -->|"Config file (.yml/.yaml/.properties)"| H["Restart only"]
+    F -->|"Unknown file"| G
+    G --> I["processManager.run()"]
+    H --> I
+    I --> J["Continue watching"]
+```
 
 **Diagnostic Steps**:
 
@@ -325,17 +397,34 @@ rh install --force
 - Cannot start RESTHeart
 - Multiple instances running
 
+**Port Checking Logic**:
+
+The CLI checks two ports to determine if RESTHeart is running:
+- **httpPort** (default: 8080): Main RESTHeart HTTP port
+- **httpPort + 1000** (default: 9080): JDWP debugger port
+
+```bash
+# Check both ports
+lsof -i :8080
+lsof -i :9080
+```
+
 **Diagnostic Steps**:
 
 ```bash
 # 1. Check port usage
 lsof -i :8080
+lsof -i :9080
 
 # 2. Check all RESTHeart processes
 ps aux | grep restheart
 
 # 3. Check rh status
 rh status
+
+# 4. Check debug mode
+rh --debug status
+# Look for "isRunningOnHttpPort:" and "isRunningOnHttpPortPlus1000:" messages
 ```
 
 **Common Causes & Solutions**:
@@ -350,6 +439,10 @@ rh kill --port 8080
 
 # Verify
 rh status
+
+# If SIGTERM doesn't work, check for SIGKILL fallback
+# ProcessManager.kill() waits 15 seconds for SIGTERM,
+# then sends SIGKILL if process still running
 ```
 
 **Other application using port**:
@@ -573,6 +666,94 @@ set +x
 strace -f rh run
 ```
 
+## Implementation Details
+
+### Port Checking Logic
+
+The `ProcessManager.isRunning()` method checks both ports to determine if RESTHeart is running:
+
+```javascript
+// From lib/process-manager.js
+async isRunning() {
+    const httpPort = this.configManager.get('httpPort')
+    const isRunningOnHttpPort = await checkPort(httpPort)
+    const isRunningOnHttpPortPlus1000 = await checkPort(httpPort + 1000)
+    return isRunningOnHttpPort || isRunningOnHttpPortPlus1000
+}
+```
+
+**Key Points**:
+- Checks both IPv4 (`127.0.0.1`) and IPv6 (`::1`) addresses
+- Uses TCP connection attempts with 2-second timeout
+- Returns `true` if either port is accessible
+- JDWP port (httpPort + 1000) is used for Java debugging
+
+### Kill Process Logic
+
+The `ProcessManager.kill()` method implements graceful shutdown:
+
+```javascript
+// From lib/process-manager.js
+async kill() {
+    // 1. Find PIDs using lsof (preferred) or ps-list (fallback)
+    // 2. Send SIGTERM to all PIDs
+    // 3. Wait up to 15 seconds for process to exit
+    // 4. If still running, send SIGKILL
+}
+```
+
+**Key Points**:
+- Prefers `lsof` for port-specific process detection
+- Falls back to `ps-list` for process discovery
+- Uses SIGTERM for graceful shutdown
+- Escalates to SIGKILL after 15-second timeout
+- Waits for port to be freed before returning
+
+### Watch Mode Implementation
+
+The `Watcher.watchFiles()` method monitors multiple file types:
+
+```javascript
+// From lib/watcher.js
+watchFiles(restheartOptions, watchOptions) {
+    // Default watched paths:
+    // - src/main/**/*.java (Java source files)
+    // - **/pom.xml (Maven config)
+    // - **/build.gradle (Gradle config)
+    // - **/build.gradle.kts (Gradle Kotlin DSL)
+    // - **/settings.gradle (Gradle settings)
+    // - **/settings.gradle.kts (Gradle Kotlin DSL settings)
+    // - Config files from -o option
+}
+```
+
+**Key Points**:
+- Uses chokidar for cross-platform file watching
+- Implements debouncing (default: 1000ms)
+- Distinguishes between Java, build config, and config file changes
+- Config file changes trigger restart without rebuild
+- Java/build config changes trigger full rebuild cycle
+
+### Build System Resolution
+
+The build system is resolved using `resolveBuildSystem()`:
+
+```javascript
+// From lib/build-systems/index.js
+function resolveBuildSystem(repoDir, preferred = 'auto') {
+    // 1. Check for explicit --build-system option
+    // 2. Check for pom.xml or mvnw → Maven
+    // 3. Check for gradlew, build.gradle, build.gradle.kts, settings.gradle, settings.gradle.kts → Gradle
+    // 4. Default to Maven when neither detected
+}
+```
+
+**Key Points**:
+- Prefers wrapper scripts (`./mvnw`, `./gradlew`) over system commands
+- Maven uses `-DskipTests={true|false}` for test skipping
+- Gradle uses `-x test` to skip tests
+- Build params are mapped: `'package'` → `'build'`, `'clean package'` → `'clean build'`
+
 ## Operational Procedures
 
 ### 1. Clean Installation
@@ -748,6 +929,44 @@ npm update
 **Exit Code 126**: Permission denied
 **Exit Code 127**: Command not found
 
+### ErrorHandler Error Types
+
+The CLI uses centralized error handling with specific error types:
+
+- **commandNotFound**: Command or tool not installed (e.g., `java`, `mvn`)
+- **configError**: Invalid configuration values (port, build system, etc.)
+- **networkError**: Download failures, connection issues, timeouts
+- **processError**: Build failures, process crashes, runtime errors
+- **fileSystemError**: Permission issues, missing files, directory creation failures
+
+**Diagnosing by error type**:
+```bash
+# commandNotFound errors
+# Check if required tools are installed
+java --version
+mvn --version
+gradle --version
+
+# configError errors
+# Check configuration values
+rh --debug run
+# Look for "Invalid port" or "Invalid build system" messages
+
+# networkError errors
+# Check network connectivity
+ping github.com
+ping repo1.maven.org
+
+# processError errors
+# Check build output and logs
+tail -f restheart.log
+
+# fileSystemError errors
+# Check permissions and disk space
+df -h
+ls -la .cache/
+```
+
 ## Prevention Best Practices
 
 ### 1. Regular Maintenance
@@ -774,6 +993,12 @@ npm update
 - Backup RESTHeart configuration
 - Backup plugin source code
 - Document build procedures
+
+## Related Documentation
+
+- **Architecture Overview**: [../architecture/overview.md](../architecture/overview.md)
+- **Domain Concepts**: [../domain/concepts.md](../domain/concepts.md)
+- **Testing Guidance**: [../testing/guidance.md](../testing/guidance.md)
 
 ## Escalation Procedures
 
