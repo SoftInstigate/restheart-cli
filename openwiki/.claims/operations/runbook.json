@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:f8e2b0964d11296b674ecf5e2c860eff8df5ce451b381d4d2cff70874d8df15b",
+  "pageVersion": "sha256:83def4a8f3c5651e508f26ed5479a2daa10d9abebb32a5abc3b7032b7a05f4b5",
   "claims": [
     {
       "id": "claim_727331737b1f43e68e403c557057173e",
@@ -155,10 +155,40 @@
           "version": "repo-lines-v1:sha256:6957ada5cdccb8a082ea226e6522c236523153c3cc2bd6072a4db18d9e26277a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxNjVhMDYyNmVkMGJiNzE5ZDY2YzIwNDBkNzc2MGRiY2UwNzkyOTdlM2QxYWI0MjJhNzk1NzQ2MjI2NTQ0OTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NzVlOTRhOTA0YWM0OWIzMTU0ZDQ2NzJhNjZlODYyOWI4NmRhYzc0ZTNlMjkzN2JlNjkyN2FlM2RhMTFjNTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0NTRiNDM4OWU1NzUwNTlhMmQxZTkxY2ZiOTIxNmJiMjY5ZDgzZWEwMzBlMzk5Yjc0ODJhNWU0ZDk0NTk0MjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyN2ExMDIzZWFmZGE1ZWIxYjdmMGRlOTg5OTdmZTZlNTgxYzQ3MWVmYzQ4YTIzNjZjZTBkNDZjOTAyNTJmYjEifQ"
         }
       ]
+    },
+    {
+      "id": "claim_0457fb0e21204988b17734d67df3e23d",
+      "statement": "Builder.dedupeConsecutiveLines() removes duplicate consecutive lines from build output before logging, improving readability of error messages when builds fail",
+      "evidence": [
+        {
+          "resource": "repo://lib/builder.js#L9-L24",
+          "version": "repo-lines-v1:sha256:e571a9c2f8e5d233625757df9f905000af968f8531c5dc8acf4cba6ce5d45af1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5OTVmMGU1OGI1ZDdlM2Q4OThiYjIzODU2ZWUxMWFkYmZmMTMyZTVkNDZjY2IxODg1NzAxODhkZDFmYjQ3OGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkY2MzZGY4ZWY2NWFjZGEzZDc1NzM1NTgzMjAxN2NlMDczMTA0ZWJkMjEwOTFjYTRmZTQ2NjlmZTk4ZGRjNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2YmZkMTI1NWVhNTczMzcyYzg2YmVmZDJmYTBlZmQ4MzAyZTAxZmFkMTA0NjY0OWYyYmZmM2U1ZjRlNzQ5NWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d99291f707104747b8901282d29b1c1c",
+      "statement": "Installer.downloadAndExtractRESTHeart() follows HTTP 301/302 redirects when downloading RESTHeart from GitHub releases, automatically retrying with the new URL",
+      "evidence": [
+        {
+          "resource": "repo://lib/installer.js#L218-L233",
+          "version": "repo-lines-v1:sha256:f014301671e7247fb31b62a4b6b360a9111f84800a9be0fe4eed46c12a0d9506:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1ZTdkZmU4ZmYwZTYzYTIyNDNjOTc0MWU3OGVmNzM3NzYyMmYyY2RjNzAwZmZmYzk0NTNiZjIxNDcwMGQ3NTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3YWM0OTA1ZTZkMGM4YTI1ZDUxYTk2OGNjYjVmZGUxZGY5ZjhkZDc4NTllY2ZkN2U1MWRlMjY2NTU5NGYxOTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjNGMxZDc0ZDI4YTQ4ZmM4Yjc3YjI0ZTA3MmQ3NjBmYTgwYmFiNGI1NzA1MGFkNDgwNjQxNTM1NWNkNDMwZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0Mjc3ZWQ4OWNmODM4OTBlOTZmNjNjOTAxM2ZhMmQxNmM3MjkzNGRiZjY1ZTRhYzk4M2MyYTMxOTM3MWNiNGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_49d2493c21334a09b06628f3dd0a23e4",
+      "statement": "When RESTHeart fails to start within timeout, ProcessManager.run() displays the last 1000 characters from restheart.log to help diagnose startup issues",
+      "evidence": [
+        {
+          "resource": "repo://lib/process-manager.js#L280-L286",
+          "version": "repo-lines-v1:sha256:b1e802b0a748a0f6079347a404a2dba3ee639110bfbf45b5ccb22f31a62078c5:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkxZjkwOTcyYzc0NWNlY2NlZWU3ZmVhYWRjMDgxN2Q5ODIwNDFhNjcxYzc0NzYyNjBhYWUwYzU2YjkyMDM4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGM2NDc5Y2MyMzA0NDBmZDQxZTgyMjQyMTg2Nzk2OTg1NTlkMjg5M2JkNjdiNDM4MGFmYWI4MTFiMzhhNTVhYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjNjMWFlYWRiNjE2YWVmNDUzZGQwNGYzYmMzMzViODkyMzQ4NTJjNzgyNDY1NWU1MWRhZTA1OGVhMDQwOTRmZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjhkOGIzNmU2ZGI4YzA0ZTc5NmI5NDNjY2E5MzY1MGExNGVkM2FiNTNhNzQ1ZTA4NmE0ZDIzMTAwMGFmODQ1OSJ9"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.4.3",
-    "at": "2026-08-29T11:01:08.566Z"
+    "by": "openwiki/0.5.1",
+    "at": "2026-09-12T08:36:22.976Z"
   }
 }

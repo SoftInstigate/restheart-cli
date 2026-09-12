@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:ddfbcc7ed7a6ec2befac2cfbcb56e25c97d694409090b1692e075c80ed1b907b",
+  "claims": [
+    {
+      "id": "claim_9189db2879eb4328ab5a7025887fb2e1",
+      "statement": "The primary development workflow for RESTHeart plugins follows the cycle: Install → Build → Run → Watch → Iterate → Kill, where each step is orchestrated by the RESTHeartManager class.",
+      "evidence": [
+        {
+          "resource": "repo://lib/cli.js#L276-L328",
+          "version": "repo-lines-v1:sha256:76a16fad53920dd361474e6ebf2f3fa5f2375fe6554a76a5d67b2822c41e2a69:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2Y2NjZThhODZjZDQ5Y2RkZmZjYmU1ZTRhNjI3MDFmNjk5YTY4NjdkNzcyMDI4OTA1ZTQ0YTU2NmJhN2IyZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhMGE5M2QwMDZhZDE2MGYwYzRhNTE3ODc4ZjI3NDNkNjA3NGQwYzFjNDVlZmNiZGQ2NjA0MWIzNTczOTcyNGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://lib/restheart.js#L70-L148",
+          "version": "repo-lines-v1:sha256:aa5d3f97479f0ee971f8cf230582600090d896eb4f40f10912bd7d8b5bcf0576:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5Y2JiYzY1NDY5ZGIxY2EyODQyZWZkOTdkZjdlZTJjZTZjYzE1NzE0ODJkMDFhMThiNzkwYTEwYzdjNTEwZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3NTZkNGIzZThlZjY1ZmI2OTBjYTUyMTNiOWJkOWY5MDc5MjRjMTMzMThlNWJkY2Y3NmE3MzE2YWExYzY0ODYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0e5531af51e2448dac45681a349a024f",
+      "statement": "Watch mode monitors Java source files (src/main/**/*.java), build configuration files (pom.xml, build.gradle, build.gradle.kts, settings.gradle, settings.gradle.kts), and RESTHeart configuration files specified with -o option. It uses a 1000ms debounce delay and automatically executes kill→build→deploy→restart sequence on file changes.",
+      "evidence": [
+        {
+          "resource": "repo://lib/watcher.js#L134-L195",
+          "version": "repo-lines-v1:sha256:1e8895e87619939a6dd48e5cf34743e4331dfa6c2d6c887b639bfcd84ba84168:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViYjQ1MWM2ZGZiOWU0MGZjOGE0YTYwMmIyNGMwNzY4YTIzZDY3OGU1YWY5YWZjNTEzYWU0MGJjYjQ1MzUxMmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTI5ZTkxZTBmOTljM2U4MjVkZTY5YjQzNWZiNjQ4NGQxYjBhMWRmMmY0NjU2MWFiZjFhMjlmMDQxODhiODgifQ"
+        },
+        {
+          "resource": "repo://lib/watcher.js#L32-L132",
+          "version": "repo-lines-v1:sha256:460f48af1a468811c5ea9bc16a6dbbb28d005868000b3cf3152ef9cdd9dbbd64:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0NGI5YWQwODQ0NmQ2OGFlNjFiMWM0MjkxMWZiMGQ1YmQ0MmYzNzI2ZTVhN2NhNTYwNjRiMDEwYTEwNmU1MGVhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1ODRlNTljZmRhOWNkYmI3NDUxZjQ4ZjY0OGQ4ODE3MWIwNjkxMzQyMzlhOGVjMmY3OTI3NWE2NGI3MzBkNmU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlYTA0ZjhjZjY2OWI0ZjA5NDkzM2Y4NmUwNmRlNTI0M2Y2YmMzNjhiZDk1MDY2OWZjMTlmNzgyMGRkYzMxNWFmIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_8fe752cbaa5141578c2126132ec2a5bf",
+      "statement": "The RHO environment variable allows overriding RESTHeart configuration at runtime, particularly for connecting to specific MongoDB instances during development. Format: RHO='/config/path->\"value\"'.",
+      "evidence": [
+        {
+          "resource": "repo://lib/process-manager.js#L230-L233",
+          "version": "repo-lines-v1:sha256:5b599ce95e01c88f31f20d42d40d6cdbb1711aed059c6ebd2a0f55cb80fe8620:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWI4YzYxNTQ2YWY1NTZiMzQwOTMzZmU4MDE1NjI4NTMxZGFhMWRkYWZhZTAwNTBhNTgxZjgwZjExYTM3NTMzZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDliMTBjOWJlNTA4MmQ3NTQxZjYyNzU1YmUxZDY4ZDgwYmE1YzljNWIwYTFjZGZlNzJkM2QyMTYwOGQ4MGYwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDBhZjI4MjUyNGI1ODY4NDkxNTkwOTFlNDhkODFkYTQzZWQxMTIxNDJlOWVlYjkzZTBkZjBjNTIxYjc4OThmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTgxM2UzZDk2MTRmNGY4NTgwZjY3N2I1YjViZDhiMzQ4MWRkOWQ1NmYxYjM1NmE0MzQxNjBjYmY0NzRmYzcxOSJ9"
+        },
+        {
+          "resource": "repo://usage-guide.md#L81-L89",
+          "version": "repo-lines-v1:sha256:b2b25029ec0f82a8c61215c99636f607eaad413a0b483c49e0882358e9a12e8e:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGM1NTM3YmZmNDJjMTIwMTExZmMyZmQxZGM3NGEzMmRmNzU2MWUxOTgxN2FmMjlhOTA2NjI5M2E2NWZiODk0OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDdjMDZjNTYxZDVjMzI3MzQzNjg1MjY4YTQ2YjMzOTFmMzk5OGVlZTg5MGQyYmU1MWYwZDIxY2M0YTUzYWU2ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDM0MzYwZmRlOTc4YThiYjIwNmUwNGU0ZDMyZTJiNDRkZTA4ZTc4NzJhNzIxNjMzMGNkMWNhMjYxN2JmNGIxNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDE2ZGM1MDc0ZjlkZTZlOTgzYzg1Mzg0YTllYTFjZWJiODg5ZTVjYmQ3MmVlZjg4NDdiM2ZjZDdhZDQzMjM0NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c61ea7a91fe944fb9979d96b88f5edee",
+      "statement": "RESTHeart fails to start without a MongoDB connection. The -s flag enables standalone mode, disabling MongoDB-dependent plugins for development that doesn't require database access.",
+      "evidence": [
+        {
+          "resource": "repo://lib/process-manager.js#L205-L216",
+          "version": "repo-lines-v1:sha256:38c08c630315b7f502450c4cd6ce5df6fcffa58095149e96fd96c12a1000affe:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMzBmN2E2ZTFmYmUyNjBmNTI4ZGEyMDhjZGUwODUyZWVlYTQ2ZDVkMTE3NWZlMDdkMTFiMTNhZTMwYjUxZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0ZjZlNzU5YzM0MWRkZWIxYmUyYmRjNWIxNjk0N2Y2NDUyYjE0YjNlYjdjYjk0MTRmZGQ3MjRlZjU2OTQ2NWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlZjJmNjNkMTAxYjBiOTU1NGE5Y2FkMzM5NjU0ZDRiNmM5ZGJmYzI2Mzc2Yjg1N2EzZDc1MzkwMWQxMDU0YjUifQ"
+        },
+        {
+          "resource": "repo://usage-guide.md#L56-L77",
+          "version": "repo-lines-v1:sha256:e6efa69029e915a7848f81447e275d4b68524b843ddfda9ee97ffb7daf71ecea:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMjhkNDc5MWE5OTUwNWYxNDc3OTRmZTJlMGI4ZWQ1N2JlZmQ1ZmMyN2Q4MzVkMWE5ZmEzODQ3N2M4NjE5YjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3YzA2YzU2MWQ1YzMyNzM0MzY4NTI2OGE0NmIzMzkxZjM5OThlZWU4OTBkMmJlNTFmMGQyMWNjNGE1M2FlNmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyMTdhZTczYjI1OGU4N2QzZGMzNjgyYWRjZTc4ZWZjMGEyMWFiZDUwNWFiN2ZmMDkwMmM0Nzk4NmQ2MDQxZGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzNDM2MGZkZTk3OGE4YmIyMDZlMDRlNGQzMmUyYjQ0ZGUwOGU3ODcyYTcyMTYzMzBjZDFjYTI2MTdiZjRiMTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5a11b1e97a1e4bfbad6db5fae77a32b9",
+      "statement": "Local SNAPSHOT development workflow involves building RESTHeart core locally with 'mvn clean package', installing from local path with 'rh install ~/restheart/core/target', then developing plugins with watch mode.",
+      "evidence": [
+        {
+          "resource": "repo://lib/installer.js#L100-L146",
+          "version": "repo-lines-v1:sha256:50664785d3b54bb71146bb5db56beb5da6385b5945c8900a86db3f43e64c7a4c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5Y2JiYzY1NDY5ZGIxY2EyODQyZWZkOTdkZjdlZTJjZTZjYzE1NzE0ODJkMDFhMThiNzkwYTEwYzdjNTEwZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMwNDE4Y2Y0OTZiNjRjZDExMzlmMDQ0NTYyZTM5MWU2Yjc0Njk4ZmI5MTE3NTIzOTU4Y2IxODUxNWNlMzllNzgifQ"
+        },
+        {
+          "resource": "repo://lib/installer.js#L152-L179",
+          "version": "repo-lines-v1:sha256:f16b783fda9b59444f1c0dd38f1a53a7f7e419b1fadaa0f794429af89a013b78:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljYWViNzgyMzhiY2U3MWQyN2M1MDgzMGUyMjBiZDIwZWQxY2EzYjU5Nzk3ZWU5YTEwOTI1NzkwOGRhYmQ2ODAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhYjg2YzdlY2JlYjA2OTgwMDM5YWI2OTk0NTQwNTQyNzEyOTU4ZWI4YmMyNTYyODZkNTRmYzQwZDBmODJjM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1NTRmMTBlZDlkMjRiNDFhMzkzOTkzYjUyMjg1MjIwYWQ1MDY3NGFmMTA5OTQyY2JmZTliNDk2Y2ViOTdiYzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2d2818ea54274989803958a7db713176",
+      "statement": "Build system auto-detection checks for pom.xml or mvnw (Maven), then gradlew, build.gradle, build.gradle.kts, settings.gradle, settings.gradle.kts (Gradle), defaulting to Maven. Explicit override uses --build-system flag.",
+      "evidence": [
+        {
+          "resource": "repo://lib/build-systems/index.js#L1-L35",
+          "version": "repo-lines-v1:sha256:15a58dc196a47f8be3535d4b85056cf975899e8007a89909c2a47a5a3ce5cefc:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2Y4OGNhZDUzZjQ5ZTQ4ODMzNDBiMTAxMDllMGI5NzhjMWI3MjVkZjJiYWM2OTE2YTE0ZDhiYjZiODIzYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://lib/cli.js#L203-L209",
+          "version": "repo-lines-v1:sha256:a908c4cf7e58bd29622ed2546d0f16ce2eb1140074907c554bd390a05836a938:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzI3MGY0MzAwMzY3NzQyOTBkMzM0Yzc0MjJjMjU0YmVhOTcwMWZlNzQyYmE3MzU3ZGU1NDdjNTMzMTI2NWNjOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjliMTk4MmU4ZGQ3NDgxMTgxNDZiMzlhMmQwMDYyZjQwODFlMzQ3NzliODY3NWMyMzRjNGZiMTI0ZGMzOTM5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzZkY2Y5ZjdlNWNhZGI5NGQxZTJlNzFjNDU1OGYwYWY2YjJhN2I2NDE1ZjE1ODc2YjhiYjdkYzY2M2U2MjMzNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDkyNWI4ODA1NGQ0M2UxOTJlYzA2YzBlMTkyNmIyMTdhNWFlMDJiOWZhYWY2NzU4NThlOWNkOWU4M2QyNTMyMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1607997a7e8f4263a548982ae2fd64b4",
+      "statement": "To add a new CLI command: 1) Register command in cli.js with yargs, 2) Add method to RESTHeartManager class, 3) Delegate to appropriate subsystem (Builder, Installer, ProcessManager, or Watcher), 4) Update help.js with command descriptions and examples.",
+      "evidence": [
+        {
+          "resource": "repo://lib/cli.js#L65-L182",
+          "version": "repo-lines-v1:sha256:5caaa1cf83cb6b2e05216fd3e5dbb524ff1cb89c3aba7557cc427cd3b0eee506:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0ZjVkMGUyMWFhZDhmNWViZTY1YjkwNWE1YTNjZTc2NzZhYzdhMTlmYWFhMGQ0NzQzMzk3Y2FhOGI2ZGZlZmI0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI1OTA5YTUzYTYxOGQwMjhlMWQzMDAwYzBhN2FiY2VlY2JlNWZiMzdmNGU1MTFlZmU0NjY0M2ZhZDZlNjY4NzJmIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIxNjVlNjMzNmMzYjM1ZmRiYmIzZmJkNDQ3YmVhNGRiMWYzYjVlMjZkZWQ0NDlhYWM2NmQ1NjYxYWZmNzkyZGU3IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIwNTUxNWUzMTYzNmY2NmU0YmM5NmVlMmFiNTJjMWJiZmNkOWU4MzgwYjZmMjM4ODNhZmE4NmQzNTZlM2VhNDU0In0"
+        },
+        {
+          "resource": "repo://lib/help.js#L26-L105",
+          "version": "repo-lines-v1:sha256:d7106edf5675094f69ab5a925da1edb1cbd511c29a610fe59dd817a0d2a9e7ea:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwY2Y4M2FiODI0NTdiOGM4ZjY3ODNjMTExMTNjNWY0MDg4Y2Y5NjJhZDMxOWU2ZmM1NDJlOWMwYTc3ZDAzYjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhOTczMzMzMzIwYzgzNWY0YTcxNDQzYWZkOWM3NWQzOTJmMjFhNmU0ODkwNTE4MWNjYTQxZWQ2NTA1MzQyNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3YjIyNTNmZGJiYTg1MGE0ZjE0NWM0MmNkMjhkYjg4MzE5NDg2ZjE0M2IwMzI1ZjIzZjRkZTlhMjRhN2FjZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://lib/restheart.js#L12-L148",
+          "version": "repo-lines-v1:sha256:430196a97ae188ef4a47e3b3e4734e146ccec2675e98e365aaf2aa6c9a7682ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4MTY4ZTkzMzdlZDI3YzA5Nzg3ZWVkZTNhOTI2ZjBiMTgxYjBkMjRhNTdhYjZkZDMyMjk1NWE0YTk4ZDljZjk3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkOGI5MGZkOGQ0ODIzZTlhNmQyZjgzOTI0YjkxNjVkM2JmOTEwODYwYTg2YzAyOWQwNjYwMjUxYjIxZmE0YmRkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.1",
+    "at": "2026-09-12T08:36:22.976Z"
+  }
+}

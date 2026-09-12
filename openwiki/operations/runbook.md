@@ -4,8 +4,8 @@ title: RESTHeart CLI Operations Runbook
 description: Troubleshooting, debugging, and operational procedures for RESTHeart CLI issues and maintenance
 tags: [operations, runbook, troubleshooting, debugging, maintenance]
 verified:
-  - by: openwiki/0.4.3
-    at: 2026-08-29T11:01:08.566Z
+  - by: openwiki/0.5.1
+    at: 2026-09-12T08:36:22.976Z
 sources:
   - id: openwiki-source-5a75137c1627218d1d963bfe
     resource: repo://lib/build-systems/gradle.js
@@ -29,7 +29,7 @@ sources:
     resource: repo://lib/utils.js
   - id: openwiki-source-2e7ca1db4d594a92e4265908
     resource: repo://lib/watcher.js
-generated: { by: "openwiki/0.4.3", at: "2026-08-29T11:01:08.566Z" }
+generated: { by: "openwiki/0.5.1", at: "2026-09-12T08:36:22.976Z" }
 ---
 
 # RESTHeart CLI Operations Runbook
@@ -72,14 +72,20 @@ lsof -i :8080
 flowchart TD
     A["rh kill"] --> B{"Check if RESTHeart running"}
     B -->|Yes| C["ProcessManager.kill()"]
-    C --> D["Find PIDs using lsof"]
-    D --> E["Send SIGTERM to all PIDs"]
-    E --> F{"Wait 15 seconds"}
-    F -->|Process exits| G["Done"]
-    F -->|Process still running| H["Send SIGKILL to all PIDs"]
-    H --> G
-    B -->|No| I["Log: Process not found"]
+    C --> D{"lsof available?"}
+    D -->|Yes| E["Find PIDs using lsof on httpPort"]
+    D -->|No| F["Fall back to ps-list"]
+    F --> G["Filter processes: name=java and cmd contains restheart"]
+    E --> H["Send SIGTERM to all PIDs"]
+    G --> H
+    H --> I{"Wait 15 seconds"}
+    I -->|Process exits| J["Done"]
+    I -->|Process still running| K["Send SIGKILL to all PIDs"]
+    K --> J
+    B -->|No| L["Log: Process not found"]
 ```
+
+Figure: RESTHeart graceful kill sequence with SIGTERM timeout and SIGKILL fallback
 
 **Build fails**:
 1. Check build output
@@ -177,10 +183,15 @@ flowchart TD
     F --> G
     G --> H{"Exit code 0?"}
     H -->|Yes| I["Builder.deploy()"]
-    H -->|No| J["ErrorHandler.processError()"]
-    I --> K["Copy JARs to plugins/"]
-    K --> L["Done"]
+    H -->|No| J["dedupeConsecutiveLines(buildOutput)"]
+    J --> K["ErrorHandler.processError()"]
+    I --> L["Copy JARs to plugins/"]
+    L --> M["Done"]
 ```
+
+Figure: RESTHeart plugin build and deploy cycle with output deduplication on failure
+
+**Build Output Deduplication**: When a build fails, `Builder.dedupeConsecutiveLines()` removes duplicate consecutive lines from build output before logging, improving readability of error messages (see `lib/builder.js`).
 
 **Diagnostic Steps**:
 
@@ -279,6 +290,8 @@ flowchart TD
     I --> J["Continue watching"]
 ```
 
+Figure: RESTHeart watch mode file change processing and rebuild logic
+
 **Diagnostic Steps**:
 
 ```bash
@@ -329,6 +342,8 @@ df -h
 ```
 
 ### 4. Installation Issues
+
+**HTTP Redirect Handling**: The installer's `downloadAndExtractRESTHeart()` follows HTTP 301/302 redirects when downloading RESTHeart from GitHub releases. If a redirect occurs, it automatically follows the new URL (see `lib/installer.js`).
 
 **Symptoms**:
 - `rh install` fails
@@ -402,6 +417,8 @@ rh install --force
 The CLI checks two ports to determine if RESTHeart is running:
 - **httpPort** (default: 8080): Main RESTHeart HTTP port
 - **httpPort + 1000** (default: 9080): JDWP debugger port
+
+**Process Detection Logic**: When killing RESTHeart, the CLI prefers `lsof` for port-specific process detection (targeting only processes bound to the configured httpPort). If `lsof` is unavailable or returns nothing, it falls back to `ps-list` filtering by process name `java` and command containing `restheart` (see `lib/process-manager.js`).
 
 ```bash
 # Check both ports
@@ -616,8 +633,10 @@ tail -50 restheart.log
 ```
 
 **Log Locations**:
-- `restheart.log`: Main RESTHeart log
+- `restheart.log`: Main RESTHeart log (written to repository root by `ProcessManager.run()`)
 - Console output: Build and CLI output
+
+**Log Analysis Guidance**: When RESTHeart fails to start, the CLI automatically shows the last 1000 characters from `restheart.log` to help diagnose startup issues (see `lib/process-manager.js`). Use `tail -f restheart.log` for real-time monitoring.
 
 ### 3. Monitor System Resources
 

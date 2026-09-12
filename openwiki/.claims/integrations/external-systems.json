@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:9e72867f026cc778fe77159189ee21f999e198966333ccea9b29c27f7c29a1eb",
+  "claims": [
+    {
+      "id": "claim_e6498cb3cc62469b9f03b2c438abadbf",
+      "statement": "The CLI requires JDK 21+ and executes RESTHeart using java -jar with JDWP debug agent enabled on address 0.0.0.0:<httpPort+1000>.",
+      "evidence": [
+        {
+          "resource": "repo://lib/process-manager.js#L205-L242",
+          "version": "repo-lines-v1:sha256:43735537e4e201e9eb9c84bf4b5d7d657deedf4dbe46b456996531b67a5a31df:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMzBmN2E2ZTFmYmUyNjBmNTI4ZGEyMDhjZGUwODUyZWVlYTQ2ZDVkMTE3NWZlMDdkMTFiMTNhZTMwYjUxZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwYWMwMTNjYmU0OWNjYzAyODA3MDIzY2ZlYzcxMmU4MmVlM2I4YjhhMmJiY2IzYmI5ZDgxZTA2ZDJlYjlhOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0ZjZlNzU5YzM0MWRkZWIxYmUyYmRjNWIxNjk0N2Y2NDUyYjE0YjNlYjdjYjk0MTRmZGQ3MjRlZjU2OTQ2NWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhMWE1OTVhNjZkMWZjMWY0YmM1OTJlYzc4NjViNWQxMTU1NDdmMWFlNjU1ZWI0ZDg4MGJiOGU2YjA4Y2E1ZmUifQ"
+        },
+        {
+          "resource": "repo://lib/process-manager.js#L294-L298",
+          "version": "repo-lines-v1:sha256:db14bbc3ffb2cbef4af5b0023269a1af48a3c67e398e525416ec45178af9a663:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmY3MmU4MjFhYWEwZmIzZGNhYTYyNDhjZDdmYmI2MDFjYTU1MTQxNTBhMDgyYmQ2ZWY2YmI1YTlmZGZiN2I3YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODRhYjY2MTIwNmRmZGIwMDA0ZDg0ODA4NmJkNTBhMGVmYzI3NzVlYjgwY2M4OTk1YmU2NzQ2NjBjMDk2ODk5YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDAyNWQxYzY4NjIxMDg0ZWFlYjUzOWNlOTE1MjUyM2U2N2M2YzQxZTNmNTBlY2ZmYjAxNTBlOTliYTk0MTEyMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGJjMWVhMzE0YzRkYjBmYmQyYzc0ZTM2ZDcxNjYwYzk4YjNjZTkzNDA1MzZhZmRiODFjYjc3NDNkNTc2NTcxYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ff798d4facdd4220b25a3e717317044b",
+      "statement": "The CLI uses dual-stack port probing (IPv4 127.0.0.1 then IPv6 ::1) with 2-second timeout per host to check if RESTHeart is running.",
+      "evidence": [
+        {
+          "resource": "repo://lib/process-manager.js#L131-L152",
+          "version": "repo-lines-v1:sha256:ac98ca6d7f8f8dafa97d6dbb2e764d7b3f62dc52db496e0701bd29e422798152:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5Y2UyZGUzNjNkMWM4M2Y1MWMyYjI4MjQ0NGRmNTdkNTA4ODEzN2Y5N2ZhZGRmMGQ2YTBlMGFmNjBmYjg3Y2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NDY0NmVmMDFhYTRlOTg5ODYwOTcwOWQ1YzMxMDI3MWE5ZTQ3YzVjZWRkMDQwNTZiMTk0ZDUxMTFiODIzMGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3M2JhMjQwOGQ4OTYyNzY0ZmMwNzUyMDM1NjZlMjU5OGNhYWI3YmQyYzM0NjljYTYxNmYwZmRkMDhhMzFkZGYifQ"
+        },
+        {
+          "resource": "repo://lib/utils.js#L26-L73",
+          "version": "repo-lines-v1:sha256:f555e7aa86b0111373b1ed8686ce042e46db5c3ccec9b990f1bd0776c2f89ecf:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkMWY1ZGJiYzI1MDc3ZDQ0MzM3ZDZjNjUwMTMwMDdjM2EwMjk0ZWM5ZDIxNTQxMDMyMDE4YzAzYjZlZjdjNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NzVlOTRhOTA0YWM0OWIzMTU0ZDQ2NzJhNjZlODYyOWI4NmRhYzc0ZTNlMjkzN2JlNjkyN2FlM2RhMTFjNTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczZmE5ZjI4YjFhMjk3Y2Q2YjcxMzE1MDA1MzI4ZWMwNmEwNzAyN2RmNWU2Mzc2ZGEzOTVlYzVhODAwMWZkZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTI5ZTkxZTBmOTljM2U4MjVkZTY5YjQzNWZiNjQ4NGQxYjBhMWRmMmY0NjU2MWFiZjFhMjlmMDQxODhiODgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6c7a5881dea64c6181efe4f0aed64106",
+      "statement": "The CLI downloads RESTHeart from GitHub releases with automatic 301/302 redirect handling and tar.gz extraction.",
+      "evidence": [
+        {
+          "resource": "repo://lib/installer.js#L185-L207",
+          "version": "repo-lines-v1:sha256:a4e091ab25d93229b6d6ace67b9dffa1fe2bf38dcc18f249ab350c4ebd04ca24:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzMTRkMzU0NDFjY2M1NDdiYjljNjQ4MTk0OThhNzdjYzQxMGNiZmE1ODdiYTIyZTk1MTkxMjUxYzM1ODIzYWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjOTgwMGQwYzQ0NzkzYTNkNWJlZjYxNDI2OTk4NDkxZjFiNTMxZTYxMTRjOGFlMzFkYWUyZDc4YjFlODUxMzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1N2U5YzZlOWQ1MzhkNjFiZTVhZTYzZGYzY2JmNWM3YTgxNzBiZWU3MjRiN2IzMzEyZGJkYjBhYTEwYzljNGYifQ"
+        },
+        {
+          "resource": "repo://lib/installer.js#L214-L273",
+          "version": "repo-lines-v1:sha256:1cac4ad4e87f3b07af2a2e95603614e0c6400f6feaec3397e1d8c926b3064ed6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YzA0NWYwM2UzY2ZhODRiNmIzZTIzMTE1YWIzNjdlYTdhNjM3NGU5ZmUzMGY3ZjZhMDUwZGFjMDQwZjQzMTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5YjE5ODJlOGRkNzQ4MTE4MTQ2YjM5YTJkMDA2MmY0MDgxZTM0Nzc5Yjg2NzVjMjM0YzRmYjEyNGRjMzkzOTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmZGVlYjZkNmM0YWFmNmRiN2NlODBiMDY0M2Y5NWQ5Zjg0YWRmMzUxOTAxNWI3YzI3NjY1MGUwMjk2YmY5YjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlMmI5ZTIxZmRjODZmYzJjMmVlNDQ3MjE4NWQ2NzY0NjdiZGQxY2JmMmUyNGI0ZGM2NDRhYjFhYmIzMzI1NDcifQ"
+        },
+        {
+          "resource": "repo://lib/installer.js#L281-L353",
+          "version": "repo-lines-v1:sha256:0500d726e7553d51b5e7b6505a4a148d026a67c4b86e5e1aeeb25a4ef39adbea:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjYzEyZGE3MmEyYWU5ZTE2NDI4YzlmNDZmYTZlODNjMjIxZjg0MjNlOGIwNTEwMGRjZDc1NjdmNjM1ODFkOWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiMTAxN2Q2ZjVlMjk2OTVjOWRlZDQ4MjE1YjQyNTJhZTI2ODIwN2EwNzU4YzgyOTg4N2M1Y2YzMzliYmZjMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6cb18c1e0e40497eb42d67d6ddce377e",
+      "statement": "The CLI uses ps-list for process discovery by name 'java' and command containing 'restheart' as fallback when lsof unavailable.",
+      "evidence": [
+        {
+          "resource": "repo://lib/process-manager.js#L10-L11",
+          "version": "repo-lines-v1:sha256:49387af77197c1150f80bd2ef360f1a9c76aeb12cb0424e24fadba3d5e8ffcf3:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWM3MDAzODg4ZWNiZGE4OGM2MmM0MmYzMDNmMmE0YjJkMTNmNDMzNjllY2I2NjA5YWFhMDQxY2I2MGE2MTg0ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzMxYzUyOTIyNGI4ZTdiMWM4MjZjN2JlOTFiZWQ2OTg5NGFkYTljMjhjZWYzOTc3MzhlNzhlZDdlYzY4ZjNiNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjg3NWU0Mjc0ODZkMzlmNDA5YWQwYmY3YmU2OGE0ZGFiNWU1OWFmNWRhMmU4OGJmMzMxZjMwMjZmZjAxNGQ4YiJ9"
+        },
+        {
+          "resource": "repo://lib/process-manager.js#L3-L4",
+          "version": "repo-lines-v1:sha256:7b1d6ef208b484a9057e4fb47668f390cbca020bfe41326bcb0fd7102e817931:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODUwYWIzNDJiM2I5YjA3N2Q1ZTExOGQ0YTBjMmQ3ZGY3MmI4YjFlOGVlMDE2ZWRjMTY5OTE2ZTFmNDdlMDFhZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmEzZjdiN2E2OTUxNThiOGM1YTNjZTYyOTRhYTFlNjUwMDM5OTExZWYxNGQyYmRjZGYwYjc0Mjc0ZTExODdiYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjg0ZmE2ZWExM2RjYjcxNmFiZWI4YWQyMWI0NzVhMDRlZmVkNmIwYTUwMGE0ZmFlZjkyOWNkNjAwYzcwNjhhOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmQ0NjQ2YTIxNjk0M2Q2MDYwNzRmNTVhYmQ4MGQwODllNmZjZTc5YWEzYjAxNDEwYWZhODc3ZjFjZTQyODBjNCJ9"
+        },
+        {
+          "resource": "repo://lib/process-manager.js#L68-L96",
+          "version": "repo-lines-v1:sha256:941321a26c2fbee5e817649a48434734fab3ff49928eddbe8c1604dc5a07ca3c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlYWM0OWU5M2ZlYWQ1NzM2ZTEyMTdjOGEzOTM1NDFjNzZhNWFlNWM4MjIzZDgwOGE5OWViZDhiMDgxNTYxN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlMzk4ZWY5ZTNhYzRkMDdlYmFlMTAyZWRlNmYxOWRjMTMyYzMzMDcwYTlmYTA2NWE1ODMwNzZkMzJiODVlNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1NjIyN2VkYmE5Zjc0YWQ4M2Y1ZWE5NzhkZDg1MzY2OTNiODlhZTVmNGNjODg2MGU3ZjdiNTkxMzgwMTE5MDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4f7e74c6dc0c44eea632dcd77dbab5db",
+      "statement": "The CLI uses chokidar for file watching with dotfile ignoring, awaitWriteFinish stability threshold of 1000ms, and 1000ms debounce.",
+      "evidence": [
+        {
+          "resource": "repo://lib/watcher.js#L1-L7",
+          "version": "repo-lines-v1:sha256:016af9fc496274b1a0f2b73f2317a260682828fe478af2fdd6dbc1b82cf50c73:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWY3MzBmMjJmYmMyMjFhYzYzZGJlYzAzYjYwZjRjYjQxNTg4ZWM2YWJiM2RmZmJhOTZhNmNmOWYzNWJlZDhlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjUwNzkzOTY0MTE0ZjhkMWM2NGZmMDE3ODJkN2MwMmRiMGVkZWZkZjBlZGQ4MzU3ZDc3ZjdiMGU3N2IzNDlkZCJ9"
+        },
+        {
+          "resource": "repo://lib/watcher.js#L71-L78",
+          "version": "repo-lines-v1:sha256:b32cc81698838aa62c96a997324cf88406774f2616d0e9f1e232cd3412278d1f:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2EzOTQ1NjUxYWVhOGNhNjNhNWI2OTZiN2ZjZDNiMjY3ZmY3ZTViNDhhZTg5NmQ0ZjgwNGM2ODk3NjAyZWZlZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWY2MDc4MjhkNDFkNTliOGMzZjRiZmY5ZDRlZDJkNGQ4NjIzNGU4ZmY4YTgzZTk5NDg4ZjIyOGM1ZDMzMzNlYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTRkNzYxNzFlZDc4ZjZlYmI5NzQzYTM4YTBhMDViZGQzZmQxM2Y1ODYxZmE2NDEwN2IyMWY1OThiYjU0Njg1NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGQwMjg5NWM2OWNhMTk0OGNkYTQzYjI3N2I4N2ZkNDE2ZGZiMGQ1ZDgzOWI1OWQ4N2RjODhlMjk1NDI1YzllMyJ9"
+        },
+        {
+          "resource": "repo://lib/watcher.js#L80-L110",
+          "version": "repo-lines-v1:sha256:5cb8304c645af47b0a4b2aa79f251dbebd29037f5eb93b5a521cb60f4b987474:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYmQ4ZGQxYmVlOTExNGNlNTVhYTM4NjhlYmIwODc1NTM3OGM0YmU3NDc5YjE2NTg5MDM4NzllZjhmOWI2MzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmNjA3ODI4ZDQxZDU5YjhjM2Y0YmZmOWQ0ZWQyZDRkODYyMzRlOGZmOGE4M2U5OTQ4OGYyMjhjNWQzMzMzZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxMTkwM2NmMDM5ZjMwODc3NjIxZjUzNzhiNGVmNTY0NmIzMDJhM2EwZTdmMWRkMjk1ZDA0MjYzNmMzYjUxYTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0ZjdmOTczNzIwMDE0MGQ2ZDBiMDdhNzRiZjcyOTlmNmYzNjZiMzQ3OTc0YjYxNDRjZjEwZGE2N2RhMjdkODEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c0d033c310da411794496bf57b9200a4",
+      "statement": "The CLI uses shelljs for shell.exec (builds), shell.find (JAR discovery), shell.cp (deployment), and shell.cd (directory changes).",
+      "evidence": [
+        {
+          "resource": "repo://lib/builder.js#L123-L146",
+          "version": "repo-lines-v1:sha256:71c6c5d6199c51c2df4253f50b9052dc70ccebcdeed8032dd37d5e68d014c6d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlYmE1YWM1NTgxZTRhN2YzNDdjZWQyMGQyYmYzZTY4NzRjNzYzZDc0MTcxZDQ4OGVmMzQ0ZWI0N2MzZTE3MzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5OTNhMTY1NTRiZTkzNTRiNDAzOTk2YWZkMjgwNzU0ZGVjOWJjNmM3NzA2NjlmNTI5OTVkYTcyOTMzNjI4YWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4YzBmY2FiNTU2ZjU1MjIxZjJhOWYwNTFmZGU1NWJhOGVhYjQzYzQ4ZjE2M2YwOTk1YTg1YTA0OGQzMDdhODgifQ"
+        },
+        {
+          "resource": "repo://lib/builder.js#L3-L4",
+          "version": "repo-lines-v1:sha256:421f98829c41a3bcb46bb4792397ab67459fca5a8921fd5f0d57dbfcda5c4cc4:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmEzZjdiN2E2OTUxNThiOGM1YTNjZTYyOTRhYTFlNjUwMDM5OTExZWYxNGQyYmRjZGYwYjc0Mjc0ZTExODdiYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGU2NzQxNzNmMjMxMzJkYTkxMmMwMGU4ZmQzMmY2NTFiZDRlMzEwMDczNGIwNDA5NWI3ZWJhYjdiMzllNWFmMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjg0ZmE2ZWExM2RjYjcxNmFiZWI4YWQyMWI0NzVhMDRlZmVkNmIwYTUwMGE0ZmFlZjkyOWNkNjAwYzcwNjhhOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjc1NDMwNmVmN2NmZTM1YWQxMWNlM2YzYWJmMjFhOGM0Y2M4Njg5ZmQ1YTZiY2M3YmJhMjQzZDk2ODY4ZDI3YiJ9"
+        },
+        {
+          "resource": "repo://lib/builder.js#L66-L66",
+          "version": "repo-lines-v1:sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTUxYTdiNWE3Y2UxNGI2OTk5ODc5MjRjZjRiNDQ4NDUzN2E1MTc0ZTcyZTkxMWIxM2U0ZmEyY2I2ZjYxN2Q2NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTdiYTA2ZjRmYTc3NDgzNTg3MzVjNTM2YmM2YWYzOWJiZDJjMjlkMGE4MjhmODI1YTIwZTAyMDBjZTg5NTAyMyJ9"
+        },
+        {
+          "resource": "repo://lib/builder.js#L71-L71",
+          "version": "repo-lines-v1:sha256:d69c9c6177e3cfb2ceacc0c0484c0253416779a725f2b6b529adc8ca519c5073:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDY5YzljNjE3N2UzY2ZiMmNlYWNjMGMwNDg0YzAyNTM0MTY3NzlhNzI1ZjJiNmI1MjlhZGM4Y2E1MTljNTA3MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDY5YzljNjE3N2UzY2ZiMmNlYWNjMGMwNDg0YzAyNTM0MTY3NzlhNzI1ZjJiNmI1MjlhZGM4Y2E1MTljNTA3MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmNlODRiMmFjZTFkYTBmMzk4OTE1NWM5ODIxNGIzMjM0NGI1YTY4NDE5MzM1ZDAyN2EwYzBiMTNjOGE3NzNjYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjg4MzVkYWQ0ZTNhNTY2NzYyOGFiYjZjNjFhODYzNGM3M2FlMzNkODNhZjY2MjVhZTg4NDZlN2Y1Zjk2NTE4MyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c1fdf55421140a9a5fc8471b89bd97d",
+      "statement": "The CLI manages RHO environment variable passthrough by capturing original value at startup and appending RESTHeart-specific settings.",
+      "evidence": [
+        {
+          "resource": "repo://lib/process-manager.js#L23-L23",
+          "version": "repo-lines-v1:sha256:75af626fb8e0ea236b0c2556d143e486b534d5a90ad7c79ad50bfa0985362b80:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzVhZjYyNmZiOGUwZWEyMzZiMGMyNTU2ZDE0M2U0ODZiNTM0ZDVhOTBhZDdjNzlhZDUwYmZhMDk4NTM2MmI4MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzVhZjYyNmZiOGUwZWEyMzZiMGMyNTU2ZDE0M2U0ODZiNTM0ZDVhOTBhZDdjNzlhZDUwYmZhMDk4NTM2MmI4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGEzODQ1MDM1ZTUxOTM2NDQwYTUwMzJhYjI4MjE2OGU0NTk0YjNmODRjMTU1YjBkYmNmMzc4ZTk4MzAxMjM2YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWUyYjllMjFmZGM4NmZjMmMyZWU0NDcyMTg1ZDY3NjQ2N2JkZDFjYmYyZTI0YjRkYzY0NGFiMWFiYjMzMjU0NyJ9"
+        },
+        {
+          "resource": "repo://lib/process-manager.js#L230-L233",
+          "version": "repo-lines-v1:sha256:5b599ce95e01c88f31f20d42d40d6cdbb1711aed059c6ebd2a0f55cb80fe8620:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWI4YzYxNTQ2YWY1NTZiMzQwOTMzZmU4MDE1NjI4NTMxZGFhMWRkYWZhZTAwNTBhNTgxZjgwZjExYTM3NTMzZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDliMTBjOWJlNTA4MmQ3NTQxZjYyNzU1YmUxZDY4ZDgwYmE1YzljNWIwYTFjZGZlNzJkM2QyMTYwOGQ4MGYwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDBhZjI4MjUyNGI1ODY4NDkxNTkwOTFlNDhkODFkYTQzZWQxMTIxNDJlOWVlYjkzZTBkZjBjNTIxYjc4OThmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTgxM2UzZDk2MTRmNGY4NTgwZjY3N2I1YjViZDhiMzQ4MWRkOWQ1NmYxYjM1NmE0MzQxNjBjYmY0NzRmYzcxOSJ9"
+        },
+        {
+          "resource": "repo://lib/process-manager.js#L245-L245",
+          "version": "repo-lines-v1:sha256:dcafd84766e5d834900bbf8ba8b913cc24851193db14b580987dba781506f921:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGNhZmQ4NDc2NmU1ZDgzNDkwMGJiZjhiYThiOTEzY2MyNDg1MTE5M2RiMTRiNTgwOTg3ZGJhNzgxNTA2ZjkyMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGNhZmQ4NDc2NmU1ZDgzNDkwMGJiZjhiYThiOTEzY2MyNDg1MTE5M2RiMTRiNTgwOTg3ZGJhNzgxNTA2ZjkyMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2I5MDU2ZmQ4NGQwODUwZDViMDI1N2JiOTQ2YzNlNzE1ZTg0MDgyNWM3YjZmMWI3YzgyMmExYWYxYmQ1NjhiYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWNlMmI0ZDliOTczYTAzMTYxNGFkZjM5YTUwYjgwN2Q1NDkyZTE2Y2RlM2I3ZGY1NjUyMmQ3NWQ2NGI5NjVhOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e994feaf8e66416c9da2b5c26c665311",
+      "statement": "Gradle integration uses gradlew wrapper preference with gradle fallback and maps 'package' to 'build' and 'clean package' to 'clean build'.",
+      "evidence": [
+        {
+          "resource": "repo://lib/build-systems/gradle.js#L32-L60",
+          "version": "repo-lines-v1:sha256:27cf99cabe73fb43d31291d3028f090056a243a1f9e72a34379c50889d605ad3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyOWQyZTJjMjIzMzllZWEwMzI0ZDBhOTU1ZDMxMDZmNzQzMzYyODkxYmM4ZjJjMjI5NTM4YjdjYTc0OWUwMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3MDE1NTg1ZjViM2M4YTAyN2RmM2Y3NDg0ZjJjMDI2ZWQxNjQ0YTM1NTliODJiOTU4ODRkNjU3NDU0NzI4ODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmMGEyZDM1ZmNhMmI4NjBiMzVkY2E2MDY3MmJmYWVkNDY3MmY2ZTJlOWE1MGNkMDk2NjhhN2RiZmNiN2ZiOWYifQ"
+        },
+        {
+          "resource": "repo://lib/build-systems/gradle.js#L6-L18",
+          "version": "repo-lines-v1:sha256:178549ec422c31ae6dbeec9b7689218d9258555ed1cefe643f0dd7f994f643cb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2ZjMyMjdhMTgwMGVjODcwYjQwOGQwZTI4YjJhMDYxOTA2NmI2MWFkY2Y3MmQwNzIzNDc2MWVlY2JlOTc3Y2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmZDk1NGJlZDRhYzFjMTJlMjIyZmE1MWI2MDM1MGYyZGY2ZWEyMjNhNzczMjkwODkzYjZjM2Y1NTM1YjU1NmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3OTU4ZjYwYjI1ZTRiOWE1MTZmODg4MzY5ZDFhMGIzNjg2ZWEwZjYyMWIwNGZiYTJlZTlhNDk4ZjdiNWI0NGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0385e3fd10444a97bcfc38cdf62eccfe",
+      "statement": "Maven integration uses mvnw wrapper preference with mvn fallback and makes wrapper executable with chmod +x.",
+      "evidence": [
+        {
+          "resource": "repo://lib/build-systems/maven.js#L18-L44",
+          "version": "repo-lines-v1:sha256:f8538c94165c1a6443ce45353879be97db3eb0c927a2f22592b8e5f981580cf8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyOWQyZTJjMjIzMzllZWEwMzI0ZDBhOTU1ZDMxMDZmNzQzMzYyODkxYmM4ZjJjMjI5NTM4YjdjYTc0OWUwMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiMmI2Yzc1MmQwNTFiNTk5YjVhYjljOGFiODE1YzhlMjE5ZjAwNTMyMGQ3ZjRmYjZlYzkwYWVlZmIyZTY3YzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmMGEyZDM1ZmNhMmI4NjBiMzVkY2E2MDY3MmJmYWVkNDY3MmY2ZTJlOWE1MGNkMDk2NjhhN2RiZmNiN2ZiOWYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.1",
+    "at": "2026-09-12T08:36:22.976Z"
+  }
+}

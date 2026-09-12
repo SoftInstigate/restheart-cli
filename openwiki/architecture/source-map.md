@@ -1,11 +1,11 @@
 ---
-type: Reference
+type: reference
 title: RESTHeart CLI Source Map
-description: Codebase navigation guide with file organization, entry points, and key source locations
-tags: [source-map, navigation, codebase, files]
+description: Codebase navigation guide mapping every source file to its purpose, key exports, and when to modify it
+tags: [source-map, navigation, codebase, files, architecture]
 verified:
-  - by: openwiki/0.4.3
-    at: 2026-08-29T11:01:08.566Z
+  - by: openwiki/0.5.1
+    at: 2026-09-12T08:36:22.976Z
 sources:
   - id: openwiki-source-164e2da859b5277df81c7d94
     resource: repo://.github/workflows/ci.yml

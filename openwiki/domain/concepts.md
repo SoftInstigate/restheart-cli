@@ -4,8 +4,8 @@ title: RESTHeart CLI Domain Concepts
 description: Core terminology, concepts, and domain knowledge for understanding RESTHeart CLI and the RESTHeart ecosystem
 tags: [domain, concepts, terminology, restheart, plugins]
 verified:
-  - by: openwiki/0.4.3
-    at: 2026-08-29T11:01:08.566Z
+  - by: openwiki/0.5.1
+    at: 2026-09-12T08:36:22.976Z
 sources:
   - id: openwiki-source-5a75137c1627218d1d963bfe
     resource: repo://lib/build-systems/gradle.js
@@ -19,7 +19,7 @@ sources:
     resource: repo://lib/utils.js
   - id: openwiki-source-2e7ca1db4d594a92e4265908
     resource: repo://lib/watcher.js
-generated: { by: "openwiki/0.4.3", at: "2026-08-29T11:01:08.566Z" }
+generated: { by: "openwiki/0.5.1", at: "2026-09-12T08:36:22.976Z" }
 ---
 
 # RESTHeart CLI Domain Concepts
@@ -198,7 +198,7 @@ rh status --port 9090
 - Command line contains: `restheart`
 - Port binding matches configured port
 
-**Running Check**: RESTHeart is considered running if either the HTTP port (`httpPort`) or the MongoDB wire protocol port (`httpPort + 1000`) has an active listener. The `checkPort` utility probes both `127.0.0.1` and `::1` for each port with a 2-second timeout.
+**Running Check**: RESTHeart is considered running if either the HTTP port (`httpPort`) or the JDWP debug port (`httpPort + 1000`) has an active listener. The `checkPort` utility probes both `127.0.0.1` and `::1` for each port with a 2-second timeout.
 
 ## Configuration
 
@@ -239,7 +239,17 @@ rh run
 
 **Format**: `RHO='/config/path->"value"'`
 
-**Duplication Prevention**: The CLI captures the original `RHO` value at startup (`originalRHO`). When restarting RESTHeart in watch mode, it appends additional options (port and logging settings) to the original value, preventing exponential duplication across restarts.
+**Duplication Prevention**: The CLI captures the original `RHO` value at startup (`originalRHO`). When restarting RESTHeart in watch mode, it constructs a new RHO value by appending additional options (port and logging settings) to the original value, preventing exponential duplication across restarts. The construction logic is:
+```javascript
+const extra = `/http-listener/port->${httpPort};/logging/full-stacktrace->true;`
+shell.env['RHO'] = this.originalRHO ? `${this.originalRHO};${extra}` : extra
+```
+
+**Auto-Appended Options**:
+- `/http-listener/port->${httpPort}`: Ensures RESTHeart listens on the configured port
+- `/logging/full-stacktrace->true`: Enables full stack traces for debugging
+
+**Multiple Options Format**: Options are separated by semicolons (`;`), not spaces. The RHO value is terminated with a semicolon.
 
 **Examples**:
 ```bash
@@ -249,8 +259,8 @@ RHO='/mclient/connection-string->"mongodb://host:port"' rh run
 # Override HTTP port
 RHO='/http-listener/port->9090' rh run
 
-# Multiple overrides
-RHO='/mclient/connection-string->"mongodb://host:port" /http-listener/port->9090' rh run
+# Multiple overrides (separated by semicolons)
+RHO='/mclient/connection-string->"mongodb://host:port";/http-listener/port->9090' rh run
 ```
 
 **Use Cases**:
@@ -307,6 +317,33 @@ RHO='/mclient/connection-string->"mongodb://host:port" /http-listener/port->9090
 ```bash
 # Custom debounce time
 rh watch --debounce-time 2000  # 2 seconds
+```
+
+### File Change Decision Tree
+
+When a file change is detected, the watcher uses a decision tree to determine the appropriate action:
+
+**1. Java Source Change** (`src/main/**/*.java`):
+- Full rebuild → Deploy → Restart
+- Executes: `builder.build('package', true)` → `builder.deploy()` → `processManager.run()`
+
+**2. Build Configuration Change** (`pom.xml`, `build.gradle`, `build.gradle.kts`, `settings.gradle`, `settings.gradle.kts`):
+- Full rebuild → Deploy → Restart
+- Same sequence as Java source changes
+
+**3. Config-Only Change** (YAML/properties files from `-o` option or other `.yml`/`.yaml`/`.properties` files):
+- Restart only (no rebuild/deploy)
+- Executes: `processManager.run()` directly
+
+**4. Unknown File Type**:
+- Fallback to full rebuild → Deploy → Restart
+- Safety measure to ensure consistency
+
+**Detection Logic**:
+```javascript
+const isJavaChange = filePath.endsWith('.java') && filePath.includes('src/main')
+const isBuildConfigChange = ['pom.xml', 'build.gradle', 'build.gradle.kts', 'settings.gradle', 'settings.gradle.kts'].includes(fileName)
+const isConfigChange = isConfigExplicit || (isYamlOrProperties && !isJavaChange && !isBuildConfigChange)
 ```
 
 ## RESTHeart Configuration
