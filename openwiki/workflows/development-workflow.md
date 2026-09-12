@@ -3,14 +3,26 @@ type: Guide
 title: RESTHeart CLI Development Workflows
 description: Common development patterns, step-by-step guides, and practical workflows for RESTHeart plugin development
 tags: [workflows, development, patterns, guides]
-timestamp: 2026-03-15T10:30:00Z
-openwiki:
-  roles: [workflow, domain]
-  change_kinds: [lifecycle, public-api]
-  source_paths: [lib/watcher.js, lib/builder.js, lib/process-manager.js, lib/installer.js]
-  symbols: [Watcher, Builder, ProcessManager, Installer]
-  test_paths: [test/watcher.test.js, test/builder.test.js, test/process-manager.test.js]
-  validation_commands: [npm test]
+verified:
+  - by: openwiki/0.5.1
+    at: 2026-09-12T08:36:22.976Z
+sources:
+  - id: openwiki-source-d951bb075777a6947b30eb30
+    resource: repo://lib/build-systems/index.js
+  - id: openwiki-source-0b4729d2a1304d7f82525861
+    resource: repo://lib/cli.js
+  - id: openwiki-source-ff89815ddb18ceeef993c54c
+    resource: repo://lib/help.js
+  - id: openwiki-source-beac0c2e3ce2872cb1f6b895
+    resource: repo://lib/installer.js
+  - id: openwiki-source-24e86caa9e81b482d3e67372
+    resource: repo://lib/process-manager.js
+  - id: openwiki-source-9ad26f3f70a2843208d349e4
+    resource: repo://lib/restheart.js
+  - id: openwiki-source-2e7ca1db4d594a92e4265908
+    resource: repo://lib/watcher.js
+  - id: openwiki-source-fbe174d1bbbc5f315c180506
+    resource: repo://usage-guide.md
 ---
 
 # RESTHeart CLI Development Workflows

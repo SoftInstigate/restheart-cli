@@ -4,8 +4,8 @@ title: RESTHeart CLI Architecture Overview
 description: Technical architecture, component relationships, and design decisions of the RESTHeart CLI tool
 tags: [architecture, design, components, patterns]
 verified:
-  - by: openwiki/0.4.3
-    at: 2026-08-29T11:01:08.566Z
+  - by: openwiki/0.5.1
+    at: 2026-09-12T08:36:22.976Z
 sources:
   - id: openwiki-source-5a75137c1627218d1d963bfe
     resource: repo://lib/build-systems/gradle.js
@@ -41,7 +41,7 @@ sources:
     resource: repo://test/process-manager.test.js
   - id: openwiki-source-86a549c0952e7e496d1d4f12
     resource: repo://test/watcher.test.js
-generated: { by: "openwiki/0.4.3", at: "2026-08-29T11:01:08.566Z" }
+generated: { by: "openwiki/0.5.1", at: "2026-09-12T08:36:22.976Z" }
 ---
 
 # RESTHeart CLI Architecture Overview
@@ -74,38 +74,47 @@ flowchart TD
 
 *Component dependency graph showing how the CLI entry point flows through the orchestration layer to individual components.*
 
+```mermaid
+flowchart TD
+    subgraph CLI_Layer["CLI Layer"]
+        A["cli.js"]
+        A1["yargs command parsing"]
+        A2["runCommand routing"]
+        A3["CTRL-C SIGINT handling"]
+        A1 --> A2
+        A --> A1
+        A --> A3
+    end
+
+    subgraph Manager_Layer["Manager Layer"]
+        B["restheart.js - RESTHeartManager"]
+        B1["Facade pattern"]
+        B2["Component wiring"]
+        B --> B1
+        B --> B2
+    end
+
+    subgraph Component_Layer["Component Layer"]
+        C1["ConfigManager"]
+        C2["Builder"]
+        C3["Installer"]
+        C4["ProcessManager"]
+        C5["Watcher"]
+    end
+
+    subgraph Infrastructure_Layer["Infrastructure Layer"]
+        D1["Logger"]
+        D2["ErrorHandler"]
+        D3["Utils"]
+        D4["Build Systems"]
+    end
+
+    CLI_Layer --> Manager_Layer
+    Manager_Layer --> Component_Layer
+    Component_Layer --> Infrastructure_Layer
 ```
-┌─────────────────────────────────────────┐
-│              CLI Layer (cli.js)         │
-│  • Command parsing (yargs)             │
-│  • User interaction                    │
-│  • Option handling                     │
-└─────────────────┬───────────────────────┘
-                  │
-┌─────────────────▼───────────────────────┐
-│          Manager Layer (restheart.js)   │
-│  • Orchestration                       │
-│  • Component coordination              │
-│  • Public API                          │
-└─────────────────┬───────────────────────┘
-                  │
-┌─────────────────▼───────────────────────┐
-│        Component Layer                  │
-│  • ConfigManager (config.js)           │
-│  • Builder (builder.js)                │
-│  • Installer (installer.js)            │
-│  • ProcessManager (process-manager.js) │
-│  • Watcher (watcher.js)                │
-└─────────────────┬───────────────────────┘
-                  │
-┌─────────────────▼───────────────────────┐
-│         Infrastructure Layer            │
-│  • Logger (logger.js)                  │
-│  • ErrorHandler (error-handler.js)     │
-│  • Utils (utils.js)                    │
-│  • Build Systems (build-systems/)      │
-└─────────────────────────────────────────┘
-```
+
+*Layered architecture: CLI parses commands and delegates to RESTHeartManager, which orchestrates components that rely on shared infrastructure services.*
 
 ## Component Responsibilities
 
@@ -114,14 +123,63 @@ flowchart TD
 The entry point for user interaction. Responsibilities:
 
 - **Command Parsing**: Uses yargs to parse command-line arguments and options
-- **Command Routing**: Routes commands to appropriate manager methods
+- **Command Routing**: Routes commands to appropriate manager methods via `runCommand` switch statement
 - **User Feedback**: Displays welcome messages and handles CTRL-C gracefully
 - **Option Validation**: Validates global and command-specific options
+- **SIGINT Handling**: Intercepts CTRL-C and kills RESTHeart process before exiting
+- **RESTHeart Options Forwarding**: Uses `populate--` to capture options after `--` separator
+
+**Command Registration Pattern**:
+
+The CLI uses yargs with strict mode and `populate--` configuration to register commands:
+
+```javascript
+yargs(hideBin(process.argv))
+    .strict()
+    .parserConfiguration({ 'populate--': true })
+    .command(['install [restheart-version]', 'i'], description, builderFn, handlerFn)
+    .command(['build', 'b'], description, builderFn, handlerFn)
+    .command(['run [restheart-options..]', 'r'], description, builderFn, handlerFn)
+    // ... more commands
+    .middleware([/* global middleware for logger config */])
+    .parse()
+```
+
+**RESTHeart Options Forwarding**:
+
+The `populate--` configuration captures all arguments after the `--` separator into `argv['--']` array. The `runCommand` function joins these into a space-separated string and passes them to RESTHeart:
+
+```javascript
+const restheartOptions = argv['--']?.join(' ') || ''
+```
+
+This allows users to pass RESTHeart-specific options directly:
+
+```bash
+rh run -- -o /path/to/config.yml -s
+```
+
+**CTRL-C Handling**:
+
+The CLI intercepts `SIGINT` signals to ensure clean shutdown:
+
+```javascript
+process.on('SIGINT', async () => {
+    try {
+        if (await rh.isRunning()) {
+            await rh.kill()
+        }
+    } catch (error) {
+        logger.error(`Error during shutdown: ${error.message}`)
+    }
+    process.exit(0)
+})
+```
 
 **Key Design Decisions**:
-- Uses `populate--` to capture options after `--` separator for RESTHeart
 - Implements strict mode for command validation
-- Handles uncaught exceptions and unhandled rejections globally
+- Handles uncaught exceptions and unhandled rejections globally via `ErrorHandler.handleError`
+- Uses yargs middleware to configure logger level based on `--verbose`/`--quiet`/`--debug` flags
 
 ### Manager Layer (`lib/restheart.js`)
 
@@ -131,6 +189,34 @@ The orchestration layer that coordinates all components. Responsibilities:
 - **Public API**: Exposes high-level methods for CLI commands
 - **Configuration Management**: Delegates to ConfigManager
 - **Lifecycle Management**: Handles startup, shutdown, and cleanup
+
+**Facade Pattern**:
+
+RESTHeartManager implements the facade pattern, providing a simplified interface to the complex subsystem of components. The constructor wires dependencies via dependency injection:
+
+```javascript
+constructor(httpPort, debugMode) {
+    // Initialize configuration
+    this.configManager = new ConfigManager({
+        httpPort: httpPort || 8080,
+        debugMode: debugMode || false,
+    })
+
+    // Initialize components with dependency injection
+    this.builder = new Builder(this.configManager)
+    this.processManager = new ProcessManager(this.configManager)
+    this.installer = new Installer(this.configManager, this.builder)
+    this.watcher = new Watcher(this.configManager, this.processManager, this.builder)
+}
+```
+
+**Dependency Injection Pattern**:
+
+Components receive their dependencies through constructor injection:
+- `Builder` receives `ConfigManager`
+- `ProcessManager` receives `ConfigManager`
+- `Installer` receives `ConfigManager` and `Builder`
+- `Watcher` receives `ConfigManager`, `ProcessManager`, and `Builder`
 
 **Key Methods**:
 - `install(version, force)`: Delegates to Installer
@@ -273,6 +359,27 @@ Provides consistent logging output. Responsibilities:
 - **Formatting**: Color-coded output with optional timestamps
 - **Verbosity Control**: Respects `--verbose`, `--quiet`, and `--debug` flags
 
+**Log Levels**:
+
+The Logger uses a numeric level system for filtering:
+
+| Level | Value | Color | Description |
+|-------|-------|-------|-------------|
+| `DEBUG` | 0 | Gray | Diagnostic information for development |
+| `INFO` | 1 | Cyan | General information messages |
+| `SUCCESS` | 2 | Green | Successful operation messages |
+| `WARNING` | 3 | Yellow | Warning messages |
+| `ERROR` | 4 | Red | Error messages |
+
+**Special Methods**:
+- `status(message)`: Bold white text for key lifecycle events (starting, stopping, watching)
+- `log(message)`: Plain message that bypasses level filtering (always shown)
+
+**Verbosity Control**:
+- `--verbose` or `-v`: Sets level to `DEBUG` (shows all messages)
+- `--quiet` or `-q`: Sets level to `ERROR` (shows only errors)
+- Default: `INFO` level
+
 #### ErrorHandler (`lib/error-handler.js`)
 
 Centralized error handling. Responsibilities:
@@ -282,6 +389,30 @@ Centralized error handling. Responsibilities:
 - **Exit Control**: Determines whether to exit process on error
 - **Stack Trace Management**: Shows/hides stack traces based on context
 
+**Error Categories**:
+
+ErrorHandler provides static methods for different error categories:
+
+| Method | Category | Description |
+|--------|----------|-------------|
+| `handleError(error, options)` | Generic | Base error handler with exit control |
+| `commandNotFound(command, options)` | Command | Command not installed |
+| `configError(message, options)` | Configuration | Invalid settings |
+| `processError(message, options)` | Process | Build failures, process crashes |
+| `fileSystemError(message, options)` | Filesystem | Permission issues, missing files |
+| `networkError(message, options)` | Network | Download failures, connection issues |
+
+**Error Handling Options**:
+
+All error handler methods accept an options object:
+- `exitProcess`: Whether to exit the process (default: `true`)
+- `exitCode`: Exit code to use (default: `1`)
+- `showStack`: Whether to show stack trace (default: `false`)
+
+**Stack Trace Management**:
+- Stack traces are shown only when `showStack: true` is explicitly set
+- Stack traces are logged at `DEBUG` level (requires `--verbose` flag)
+
 #### Utils (`lib/utils.js`)
 
 Shared utility functions. Responsibilities:
@@ -290,6 +421,20 @@ Shared utility functions. Responsibilities:
 - **Command Existence**: Checks if system commands are available
 - **Directory Creation**: Ensures directories exist recursively
 - **Spinner Management**: Creates and manages progress spinners
+
+**Key Utilities**:
+
+**`commandExists(command)`**:
+Checks if a system command is available using `shell.which()`. Throws an error via `ErrorHandler.commandNotFound` if not found.
+
+**`checkPort(port)`**:
+Returns a Promise that resolves to `true` if the port is in use, `false` otherwise. Checks both IPv4 (`127.0.0.1`) and IPv6 (`::1`) addresses with a 2-second timeout per attempt.
+
+**`ensureDir(dir)`**:
+Creates a directory recursively if it doesn't exist. Uses `shell.mkdir('-p', dir)`. Throws a filesystem error via `ErrorHandler.fileSystemError` if creation fails.
+
+**`createSpinner(message)`**:
+Creates and starts an `ora` spinner with the given message. Returns the spinner instance for further control (e.g., `spinner.succeed()`, `spinner.fail()`).
 
 #### Build Systems (`lib/build-systems/`)
 
@@ -379,21 +524,68 @@ sequenceDiagram
     I->>I: Verify installation
 ```
 
+### SIGINT Handling Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant CLI as cli.js
+    participant RH as RESTHeartManager
+    participant PM as ProcessManager
+
+    User->>CLI: Presses CTRL-C
+    CLI->>CLI: SIGINT signal received
+    CLI->>RH: isRunning()
+    RH->>PM: isRunning()
+    PM-->>RH: boolean result
+    RH-->>CLI: boolean result
+    alt RESTHeart is running
+        CLI->>RH: kill()
+        RH->>PM: kill()
+        PM->>PM: SIGTERM to process
+        PM->>PM: Wait up to 15s
+        alt Still running after timeout
+            PM->>PM: SIGKILL to process
+        end
+        PM-->>RH: kill complete
+        RH-->>CLI: kill complete
+    end
+    CLI->>CLI: process.exit(0)
+```
+
 ## Error Handling Strategy
 
 ### Error Categories
 
+The ErrorHandler provides centralized error handling with these categories:
+
 1. **Configuration Errors**: Invalid settings, missing directories
+   - Handled by `ErrorHandler.configError()`
+   - Examples: Invalid port numbers, missing required directories
+
 2. **Filesystem Errors**: Permission issues, missing files
+   - Handled by `ErrorHandler.fileSystemError()`
+   - Examples: Cannot create directories, missing build artifacts
+
 3. **Process Errors**: Build failures, process crashes
+   - Handled by `ErrorHandler.processError()`
+   - Examples: Build command failures, RESTHeart startup failures
+
 4. **Network Errors**: Download failures, connection issues
+   - Handled by `ErrorHandler.networkError()`
+   - Examples: RESTHeart download failures, redirect issues
+
+5. **Command Errors**: Missing system commands
+   - Handled by `ErrorHandler.commandNotFound()`
+   - Examples: Java not installed, mvnw not executable
 
 ### Error Recovery
 
-- **Graceful Degradation**: Continue with warnings when possible
+- **Graceful Degradation**: Continue with warnings when possible (e.g., directory creation failures)
 - **User Feedback**: Clear error messages with actionable suggestions
 - **Process Cleanup**: Kill RESTHeart on CTRL-C or fatal errors
 - **Directory Restoration**: Return to original directory after operations
+- **Exit Control**: Each error handler can control whether to exit the process
 
 ## Testing Architecture
 

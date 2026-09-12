@@ -3,9 +3,6 @@ type: Guide
 title: RESTHeart CLI Quickstart
 description: Getting started with RESTHeart CLI - installation, basic usage, and navigation to detailed documentation
 tags: [quickstart, getting-started, restheart-cli]
-verified:
-  - by: openwiki/0.4.3
-    at: 2026-08-29T11:01:08.566Z
 sources:
   - id: openwiki-source-d951bb075777a6947b30eb30
     resource: repo://lib/build-systems/index.js

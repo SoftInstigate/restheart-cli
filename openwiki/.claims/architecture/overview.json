@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:8ca2a116cd6a7a62ef398ad79c21cfaac746536026eecd29efd0eb6494c52e97",
+  "pageVersion": "sha256:44ca261c6aa23795560f5b44797359cea5c34c07991df8ce388dc21058c72711",
   "claims": [
     {
       "id": "claim_e09fa5340e9c4a9ab6e49c2ea4030bb1",
@@ -50,7 +50,7 @@
     },
     {
       "id": "claim_6f6fdc15b177445eae9b6545e689450e",
-      "statement": "The CLI Layer (lib/cli.js) uses yargs for command parsing with strict mode and populate-- configuration, routes commands to RESTHeartManager methods via runCommand function, handles global options (debug, verbose, quiet, timestamps, build-system), and implements global error handling for uncaught exceptions and unhandled rejections.",
+      "statement": "The CLI Layer (lib/cli.js) uses yargs for command parsing with strict mode and populate-- configuration to capture RESTHeart options after -- separator, routes commands to RESTHeartManager methods via runCommand function, handles global options (debug, verbose, quiet, timestamps, build-system), intercepts SIGINT signals to kill RESTHeart before exiting, and implements global error handling for uncaught exceptions and unhandled rejections.",
       "evidence": [
         {
           "resource": "repo://lib/cli.js#L12-L242",
@@ -64,7 +64,7 @@
     },
     {
       "id": "claim_43e9d7d21b174fc695dd4294fd28ceff",
-      "statement": "RESTHeartManager (lib/restheart.js) acts as the orchestration layer that coordinates all components, implements the facade pattern providing simplified public API methods (install, build, deploy, run, watchFiles, kill, status, isRunning, checkAndKill), and delegates to specialized components while managing configuration through ConfigManager.",
+      "statement": "RESTHeartManager (lib/restheart.js) acts as the orchestration layer implementing the facade pattern, provides simplified public API methods (install, build, deploy, run, watchFiles, kill, status, isRunning, checkAndKill), and wires components via dependency injection where Builder, ProcessManager, Installer, and Watcher receive ConfigManager in their constructors.",
       "evidence": [
         {
           "resource": "repo://lib/restheart.js#L12-L30",
@@ -204,7 +204,7 @@
     },
     {
       "id": "claim_16dfcf17a537459591bc8af26aca77d8",
-      "statement": "ErrorHandler (lib/error-handler.js) provides centralized error handling with static methods for different error categories (handleError, commandNotFound, configError, processError, fileSystemError, networkError), controls process exit behavior, and manages stack trace visibility.",
+      "statement": "ErrorHandler (lib/error-handler.js) provides centralized error handling with static methods for different error categories (handleError, commandNotFound, configError, processError, fileSystemError, networkError), controls process exit behavior via exitProcess option, manages stack trace visibility via showStack option, and logs stack traces at DEBUG level.",
       "evidence": [
         {
           "resource": "repo://lib/error-handler.js#L34-L36",
@@ -222,7 +222,7 @@
     },
     {
       "id": "claim_f25f448ae4cc4bea844c258b009beccd",
-      "statement": "Utils (lib/utils.js) provides shared utility functions including commandExists for checking system commands, checkPort for verifying port availability across IPv4/IPv6 hosts, createSpinner for progress indication, and ensureDir for recursive directory creation.",
+      "statement": "Utils (lib/utils.js) provides shared utility functions: commandExists checks system commands via shell.which and throws ErrorHandler.commandNotFound if missing, checkPort verifies port availability across IPv4/IPv6 hosts with 2-second timeout, createSpinner creates ora spinner instances, and ensureDir creates directories recursively via shell.mkdir with ErrorHandler.fileSystemError on failure.",
       "evidence": [
         {
           "resource": "repo://lib/utils.js#L12-L19",
@@ -311,10 +311,72 @@
           "version": "repo-file-v1:sha256:b16c71aa976bd616fddc2325e848779182dbcf5e26b8a00c976008c13c3fba44"
         }
       ]
+    },
+    {
+      "id": "claim_b35aa882f6ad4eeeb4cf9342859ee6a9",
+      "statement": "Logger (lib/logger.js) implements a numeric level system with DEBUG (0), INFO (1), SUCCESS (2), WARNING (3), ERROR (4) levels, provides color-coded output methods (debug=gray, info=cyan, success=green, warning=yellow, error=red), includes status() for bold white lifecycle events and log() that bypasses level filtering, and supports verbosity control via setLevel() method.",
+      "evidence": [
+        {
+          "resource": "repo://lib/logger.js#L100-L104",
+          "version": "repo-lines-v1:sha256:a94ba97ae494a9a4bab305260e0922da155db35a9c0c26ca0b267890aa6ebba4:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODI3ZWRlZGU2ZDk5ZWZiMGNmMWFjZjRiMmFjNmZkODVjY2YyYzUyOTFmYmYxYWMxMjdhNmZkMjhlM2ViNmUzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWU4YTdkMGFlY2RmMDAwOWY4MDU3MzBmZWY2Mjk1OGM0YmQ4YmEwYzVlNDc2MDIzOGUxODg4ZjQ5ZWNiODQ0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGY3NGU3MzAxZWZkN2U3NWUzN2ZmN2IwNmI1NmI5NjVjZTI0MTA3ZDE4NzNmZmZiNmUwZDBlOTcyOTVmNTQ1YSJ9"
+        },
+        {
+          "resource": "repo://lib/logger.js#L110-L112",
+          "version": "repo-lines-v1:sha256:2606c9ed27549472ede24e543544f28e6112358bb154f8a992238e5f987800d3:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTVhNTIxMzgyZTY2YzRiYTEwOTAwMDcwMTRhYzkwOGI2NzM4N2I5MDBmNDc2NGJmODlhNjQ0NDk4NjI4ZDU2OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjZhZDRhYzA1ZjRmZGNlNzcxNjFlYzA2MTAwOTBmMTgwMmFhMTFiYjg1NTBjOTIyZjcxZmRhY2E3YmZmMjc3OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTlkNDRhZWEyOTczMzI1ZWYwNTk3NDIzOGYyNjdhOTdkNDU3ZDM3ZWQ1M2M4MDIyNjdlM2UzZDcwOTQ3ZGJmNSJ9"
+        },
+        {
+          "resource": "repo://lib/logger.js#L49-L53",
+          "version": "repo-lines-v1:sha256:0916d22572faea79c3390dba27892a574d4b3cf02b0d16f1a8de2a1e402fdd42:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGVhNDAxN2VjOWI4N2Y5YTkyYTg1NmM0ZTIyM2FjYTdhMGJhYmNlMTk4OWY3NTE2ZjFjMTMwY2VkNzVlMmM0YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDRiMTMxODQ3NzEyYTFmYmJjMWNhZDNhNTIyMzY0NTE1ZjNjYjgxYTA3NTVlYjlhOTMzOGM0YjAwYTI2N2VjNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjA1YjNjNTQ1M2I3NDBlYzllYmQzMzVmNDczMTg5NjdiOTZmMjgxYmM0ZjM2YjViYTJjNjdlMTYyZjkxZmQyMSJ9"
+        },
+        {
+          "resource": "repo://lib/logger.js#L59-L63",
+          "version": "repo-lines-v1:sha256:e8704f7f21ee6ba989d533a78ac24fc74818260c9788319eda2f75c4b23c2d64:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2VkMmJkZjhhYWMyMWIyNzc4MDEwNmY2OGIyMDM4OTY2ODBjNjY3N2ZkMTJjYjg3MjliZWIzZTgyMGViMDE1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTRhZWZkZmQ2MGY5YzEyOGUzZDFiZmI5YzU5YTY5YTc1MDBlYzAxYTJmYzMxOWI5MmNjYjM5NDdiODgyMDJlOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjlmMWFmMTMwNThlMThiMDljNWVmZWM3Nzc0OWQxMzY1YTVmMWNhM2NlNDM1OTMyZTE2OTE3YTcwN2Q2ZTU1OSJ9"
+        },
+        {
+          "resource": "repo://lib/logger.js#L69-L73",
+          "version": "repo-lines-v1:sha256:b422ab228421c3ec63c327fe23e735772d61eef8681cb2a16371a52c6ec752cb:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODc3NWI1NzAyZjc5Y2UwNjg4ZGFhNWFjNDgxZTc4NjVmYTQ5NDljYWE4NDg1YjhkNzBlYzYyNWRiOTRmNTQ0MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGY2ZWQ4ZmIzM2FjMjczYTI5MzAzNmJjNmJlMDU1OWNiYWI2NDJmZDMyYThhNmYyODNiOGFjYWMyODgxODJhMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTA4MzE0YmQ0ODc1MGM1MTc3NTgyNmM2NTJhNDYxOGRlMzdiYzM3NTNmZTQwOTA5YjkwY2I2NmNiYTdmZTA0ZCJ9"
+        },
+        {
+          "resource": "repo://lib/logger.js#L7-L13",
+          "version": "repo-lines-v1:sha256:74d97a4cb1b59fd8e811936c0208d994e835caf5fc9690825c3367d6cf4af2ff:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmY1NzNmNWRiMDZhYmMxNTg2ZjE3ODM4MGE1ZjM4OTgwYWJhM2E5MjY1YzQzNTQxMTM1YjFmMmE4NzJjMDE5OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzY0YjE2YWJiOWRmMTMyMDEwOWNjMzU4NmIyOWEwM2VhMjYwOGU0YzA2MDZlYTc2YTZjNjg3OWI5MzJkZmI0ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTA3NzJmZjcxMDViYTRhNWQ0OTU3YmNiMDIyODg3NWEwNjBlMzcxZWVjODY2ZGYyZGQ5NTk4YzkyMmE2NjU1OSJ9"
+        },
+        {
+          "resource": "repo://lib/logger.js#L79-L83",
+          "version": "repo-lines-v1:sha256:9a5ee4ccd2f7f0a4f51af3ca62160044dcdc02a6c9c9847e11d98e1647fa81cc:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTU2ODhhNGRjZTgzYTlmNmY4MjA1MDdlM2NjYWUyODFmZjQ0NzBhYmYyY2M2NDg3ZGIzMjJlMmFkYWE3NzJmOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjllMWUyYmU2MDA0NTVjZGE1YWE4M2U2ZTE1ZGJlMjQ1ZWJjMzg3YTJlMjJkM2ZmZjY5N2UzZGRkYTdiYWQxZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjQzYzRlMjlhMzI4NmM1ZWY0MWUyYTk2MDdkNDIxNTA0NjQ0ZDQxNDA1MWYwMDFmODE5ODIxN2U3OGQwNTNlNCJ9"
+        },
+        {
+          "resource": "repo://lib/logger.js#L89-L93",
+          "version": "repo-lines-v1:sha256:e5220ac6312ace7fe6aef5d0f8a65fc55a16f7c51ee763395daaf859816ecf5f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjFmYWViNWE3MzNhNjVmYWU0OWRkMjY3MzlhNWFiODcyOWQ3NWYxODU3Y2FmMzU0YjZkYTVlZDU5Y2U1NDMxMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTBhYjQ2NDM3NjE5NWVjOGI2NDM5YTJmMTc1M2UwNWYzZDY4YWQ1MjdiMjljMzM4ZWE1N2FhZTEwYzhiZjliMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjFjN2MzMjQ4Mzc1ODAxZGQxMWFiN2Q5NWZiNDljMzg5OTM3MTc5ZjIzNDJmMzQ4MDk0ZmE4NjcyMjYxZWM2NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1de4e0bba8fd4032a4059e9de355089d",
+      "statement": "CLI intercepts SIGINT signals via process.on('SIGINT') to ensure clean shutdown: checks if RESTHeart is running via rh.isRunning(), kills the process via rh.kill() if running, then exits with code 0.",
+      "evidence": [
+        {
+          "resource": "repo://lib/cli.js#L34-L45",
+          "version": "repo-lines-v1:sha256:8ddbc7d2b9d1acf88b45b03199b1cb460ec01515b1440ee6ef5fba8406093f3d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0YmQzNDJhZTg5NWRkYTIwZTI5ODhiM2VmMWUwNjRlYWQxZGNlZjI1MTUzNTVlNGQ4MDYyMDU5NzUzMjAwNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NzVlOTRhOTA0YWM0OWIzMTU0ZDQ2NzJhNjZlODYyOWI4NmRhYzc0ZTNlMjkzN2JlNjkyN2FlM2RhMTFjNTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhMTI3N2ZhMWFiNjA5MmYxOGE3M2FlYjVkMDU5MTQ0NWYwYjBiOTcxMGUyYWVmODFiZmE3MzBkNzA4YWUzYmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyN2ExMDIzZWFmZGE1ZWIxYjdmMGRlOTg5OTdmZTZlNTgxYzQ3MWVmYzQ4YTIzNjZjZTBkNDZjOTAyNTJmYjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d405ab909844df6b6ec3ad8fa3ceafd",
+      "statement": "CLI uses yargs parserConfiguration with 'populate--': true to capture arguments after -- separator into argv['--'] array, which runCommand joins into a space-separated string and passes to RESTHeartManager methods as restheartOptions.",
+      "evidence": [
+        {
+          "resource": "repo://lib/cli.js#L253-L253",
+          "version": "repo-lines-v1:sha256:3eb1dcb77fdb382a85187c990e14a68898bc501cb9e79da8a3436f8b7d40900e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2ViMWRjYjc3ZmRiMzgyYTg1MTg3Yzk5MGUxNGE2ODg5OGJjNTAxY2I5ZTc5ZGE4YTM0MzZmOGI3ZDQwOTAwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2ViMWRjYjc3ZmRiMzgyYTg1MTg3Yzk5MGUxNGE2ODg5OGJjNTAxY2I5ZTc5ZGE4YTM0MzZmOGI3ZDQwOTAwZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTQ3NDNkYzI2NzlhMWEzYzIxMTllNjYzMzgxNzQ2MTAyZDIxZGFhNWYyZmEyY2QxNGMzNzVhNTZkOWY0YjQ2OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzU4NTE2Zjg4ZWRhYzBjZTMwNTMzNGIwMTIzNDg3YzY2YjA3N2I4NmEyZTdiMWFjNTQxNzI2ODMxMzY2ZTcwNyJ9"
+        },
+        {
+          "resource": "repo://lib/cli.js#L61-L63",
+          "version": "repo-lines-v1:sha256:eb12013d20841ac82b335e1cddb8f7aed105c1c20b7627b733b17f7b67edb9ad:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODkyZWE0MzFiMWI5YTU0Y2I2ZTAzNzMzZTMzYjZlMjlhOWEwOTc3NjFiNmUxNWVjZTc5NzQyZDk2MWM4YzdlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjliMTk4MmU4ZGQ3NDgxMTgxNDZiMzlhMmQwMDYyZjQwODFlMzQ3NzliODY3NWMyMzRjNGZiMTI0ZGMzOTM5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmEyMWM5NWZkMmJlYzI5NTFlZjdiY2QwM2UxMzFlYThkYzYxN2NhMTU3YjMxZmM1NjJlMTNhNGRmZmQ5ZWRmNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODVjNWZlODUxOTk5NzM5NDZkY2RlNzQwOGQ1M2E2N2MzMWI5ZDczZGU4MWI5OTc1MmViZmMwYzdmOWZhMzg1NyJ9"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.4.3",
-    "at": "2026-08-29T11:01:08.566Z"
+    "by": "openwiki/0.5.1",
+    "at": "2026-09-12T08:36:22.976Z"
   }
 }

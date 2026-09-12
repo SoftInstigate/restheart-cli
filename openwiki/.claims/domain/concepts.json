@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:514e90cfc93381cf5c1200367ab7b3a5dbb8fd7235147b02fe19c0aeba4af3cf",
+  "pageVersion": "sha256:f66f9107f7afc34a4e5e5c32b57a19d984fdad7656eede7da4de46012d047d9b",
   "claims": [
     {
       "id": "claim_880c4c301b0841d2b4a4fb4d163df5d5",
@@ -70,7 +70,7 @@
     },
     {
       "id": "claim_4a6bab7c876e4a14b1509a8697161083",
-      "statement": "ProcessManager.isRunning() checks both the configured HTTP port and HTTP port + 1000 (MongoDB wire protocol port) using checkPort utility that probes both 127.0.0.1 and ::1 with a 2-second timeout.",
+      "statement": "ProcessManager.isRunning() checks both the configured HTTP port and the JDWP debug port (httpPort + 1000) using the checkPort utility that probes both 127.0.0.1 and ::1 with a 2-second timeout.",
       "evidence": [
         {
           "resource": "repo://lib/process-manager.js#L136-L144",
@@ -132,7 +132,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.4.3",
-    "at": "2026-08-29T11:01:08.566Z"
+    "by": "openwiki/0.5.1",
+    "at": "2026-09-12T08:36:22.976Z"
   }
 }

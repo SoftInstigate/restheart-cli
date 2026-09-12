@@ -10,9 +10,6 @@ openwiki:
   symbols: [initCLI, runCommand, Builder, ConfigManager, Watcher, ProcessManager, Logger, ErrorHandler, resolveBuildSystem]
   test_paths: [test/cli.test.js, test/builder.test.js, test/config.test.js, test/watcher.test.js, test/process-manager.test.js, test/utils.test.js, test/logger.test.js, test/error-handler.test.js, test/build-system-resolver.test.js]
   validation_commands: [npm test]
-verified:
-  - by: openwiki/0.4.3
-    at: 2026-08-29T11:01:08.566Z
 sources:
   - id: openwiki-source-5b54a58d1b51cd490b0e7162
     resource: repo://package.json
