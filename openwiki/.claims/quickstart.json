@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:0ac2c86e20d0edc7c9717f204c39dc0e74313d50099743e98d60bcaea666580a",
+  "pageVersion": "sha256:ba86db430a038a7f758eb96eb533ef9757051268317877b3c05b8eea21c4ebaf",
   "claims": [
     {
       "id": "claim_51d6794139544045bbc4dc8b2b540483",
@@ -52,11 +52,15 @@
     },
     {
       "id": "claim_edb8e8ff07ba4de3ba3a4266546da3da",
-      "statement": "The task routing table provides mappings from change areas to source files, symbols, tests, and validation commands.",
+      "statement": "The task routing table provides mappings from change areas to source files, symbols, tests, and validation commands, and includes links to all relevant wiki pages including external integrations.",
       "evidence": [
         {
           "resource": "repo://lib/cli.js#L250-L328",
           "version": "repo-lines-v1:sha256:7a126f4abbeebd89aa5af87660b753542bd82bb66c5657cf7a50341704000dd7:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwMDk4MjBkNmM5ZDNlYWYwM2YyMmRjZDhkODlkMzE3ZTc0YzkzM2NlM2I0NmY2MTdiNjJjZTA4ZjlhM2E0NGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwMmE4ODY3ODQyNTJkNDVmM2FkZTE4YTFhYzU1MDZiMDA1YjcyNjg5YWJkYjg2MjJmODNhMDdkYWI3YzQyMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://lib/config.js#L10-L28",
+          "version": "repo-lines-v1:sha256:e1164b56d2a956d26ba6749cb9f3e82ee3dd2dd40fe83b8ce5c854887bf173e6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5NmNjZTNkMjZiMTQ2NzdmODdhY2M1MDU0Y2QzOGRiZTlkZTFlNTY0ZWQwYmM1M2FkMGIzYTdlMDNmMmI3NDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkYjQwYzFhZjAzMGQ1MGZjYTk0ODg0ODA2Y2M4YWY4YWNkM2Q5MDJkNDUxNWE4MDc2NTY4NTg1MzAzYzkyYTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5MjkxNzMyZDQ5ZDk5MTAzOWY5NGY1MWE1ZDg5ZjVjMTJmMmY3Njc5NDYxNTMzY2U0ODY5MGVhZjg3ZDE4YjUifQ"
         },
         {
           "resource": "repo://test/cli.test.js#L1-L50",
@@ -66,7 +70,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.4.3",
-    "at": "2026-08-29T11:01:08.566Z"
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-19T08:45:59.400Z"
   }
 }
