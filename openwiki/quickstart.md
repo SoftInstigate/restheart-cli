@@ -1,8 +1,11 @@
 ---
 type: Guide
 title: RESTHeart CLI Quickstart
-description: Getting started with RESTHeart CLI - installation, basic usage, and navigation to detailed documentation
-tags: [quickstart, getting-started, restheart-cli]
+description: Primary entry point for engineers and agents. Routes readers to the right page based on their task (new to repo, adding a feature, debugging, contributing, understanding architecture). Includes installation, essential commands, quick reference, and a task routing table that maps change areas to source entry points, key symbols, focused tests, and validation commands.
+tags: [quickstart, getting-started, restheart-cli, navigation]
+verified:
+  - by: openwiki/0.5.2
+    at: 2026-09-19T08:45:59.400Z
 sources:
   - id: openwiki-source-d951bb075777a6947b30eb30
     resource: repo://lib/build-systems/index.js
@@ -12,12 +15,12 @@ sources:
     resource: repo://lib/config.js
   - id: openwiki-source-50f3fd31b652e7ee35122bbb
     resource: repo://test/cli.test.js
-generated: { by: "openwiki/0.4.3", at: "2026-08-29T11:01:08.566Z" }
+generated: { by: "openwiki/0.5.2", at: "2026-09-19T08:45:59.400Z" }
 ---
 
 # RESTHeart CLI Quickstart
 
-Welcome to the RESTHeart CLI documentation. This guide provides a fast introduction to the tool and links to detailed documentation for deeper exploration.
+Welcome to the RESTHeart CLI documentation. This guide provides a fast introduction to the tool and links to detailed documentation for deeper exploration. Use the [Task Routing Table](#task-routing-table) to find the right starting point for common change types.
 
 ## What is RESTHeart CLI?
 
@@ -118,6 +121,7 @@ This documentation is organized into focused sections:
 - **[Domain Concepts](domain/concepts.md)** - Core terminology, build systems, and RESTHeart ecosystem concepts
 - **[Operations Runbook](operations/runbook.md)** - Troubleshooting, debugging, and operational procedures
 - **[Testing Guidance](testing/guidance.md)** - Testing framework, patterns, and quality standards
+- **[External Integrations](integrations/external-systems.md)** - MongoDB and other external system integrations
 
 ## Quick Reference
 
@@ -172,6 +176,7 @@ tail -f restheart.log
 2. **Understanding the code?** Explore the [Architecture Overview](architecture/overview.md)
 3. **Contributing?** Check the [Testing Guidance](testing/guidance.md) and [Source Map](architecture/source-map.md)
 4. **Having issues?** Consult the [Operations Runbook](operations/runbook.md)
+5. **Integrating with external systems?** See [External Integrations](integrations/external-systems.md)
 
 ## Task Routing Table
 
